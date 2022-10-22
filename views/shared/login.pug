@@ -1,0 +1,17 @@
+extends ../layout/base
+
+block append script 
+    script(src="/JS/bundle/user/bundleUser.js") 
+
+block block 
+ .container
+    form#user__login
+        .mb-3.mt-3
+            label.form-label(for='email') Email:
+            input#userEmail.form-control(type='email' placeholder='Enter email' name='email')
+        .mb-3
+            label.form-label(for='pwd') Password:
+            input#userPassword.form-control(type='password' placeholder='Enter password' name='pswd')
+       
+        button.btn.btn-primary(type='submit') Submit
+

@@ -1,0 +1,10 @@
+// Mobile nav section
+.scrollmenu.display-header.p-3
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "home" && "scroll-nav-active" }` href='/vendor/opticals') Manage Opticals
+  if partner.hearingAid.serviceType === "hospital"
+    a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "hospital" && "scroll-nav-active" }` href='/vendor/hearingaid/hospital-booking-management') Hospital Bookings
+  if partner.hearingAid.serviceType === "shop"
+    a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "product" && "scroll-nav-active" }` href='/vendor/hearingaid/hearingaid-product-management') Hearing Product & Orders
+    a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "diffproduct" && "scroll-nav-active" }` href='/vendor/hearingaid/differently-abled-product-management') Differently Abled Product & Orders
+  a.nav-link.scroll-nav.p-1#logoutM Log out
+// Mobile nav section

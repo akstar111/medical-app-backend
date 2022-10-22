@@ -1,0 +1,98 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    .scrollmenu.display-header.p-3
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank') Profile
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/manage-blood') Manage Blood
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/quotes') Purchase
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/job') Post job
+        a.nav-link.scroll-nav.p-1.scroll-nav-active(href='/vendor/blood-bank/advertisement/') Advertisement
+        a.nav-link.scroll-nav.p-1(href='./Donate-for-us.html') Donate for us
+        a.nav-link.scroll-nav.p-1#logoutM log out
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            .col-2.p-0.border.m-0.border-color.display-none
+                ul.nav.flex-column.p-0.m-0
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(aria-current='page' href='/vendor/blood-bank') Profile
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/manage-blood') Manage Blood
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/quotes')
+                            | Purchase
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/job') Post job
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link.vendor-nav-link-active(href='/vendor/blood-bank/advertisement/') Advertisement
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link#logoutW log out
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                if bloodbank
+                    .p-2
+                        h3.vendor-heading.fs-4.mb-0
+                            | #{partner.company}
+                        p.mt-0
+                            | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                            | voluptates quo qui corporis nam rem.
+                    hr
+                    .p-5.pt-2
+                        .text-end
+                            a.btn.main-color-background.color-white(href='/vendor/blood-bank/advertisement/new-advertisement')
+                                | Post Ad
+                        hr
+                        .row.row-cols-1.row-cols-md-2.g-4#manageAds
+                            if advertisement.length
+                                each doc,index in advertisement
+                                    .col
+                                        .card
+                                            img.card-img-top(src=doc.adImage alt='banner Image')
+                                            .card-body
+                                                .d-flex.bd-highlight.ms-0
+                                                    .me-auto.bd-highlight
+                                                        h6.fw-bold.text-dark
+                                                            | Start Date :
+                                                            span.text-secondary.fw-normal
+                                                                |  #{new Date(doc.startDate).toLocaleDateString()}
+                                                    .bd-highlight
+                                                        h6.fw-bold.text-dark
+                                                            | End Date :
+                                                            span.text-secondary.fw-normal
+                                                                | #{new Date(doc.endDate).toLocaleDateString()}
+                                                .d-flex.bd-highlight.ms-0
+                                                    .me-auto.bd-highlight
+                                                        h6.fw-bold.text-dark
+                                                            | Paid amount :
+                                                            span.text-secondary.fw-normal= doc.paidAmount 
+                                                    .p-2.bd-highlight
+                                                        i.fa-solid.fa-trash.text-danger.fs-5#delete_ads(data-ads=doc.hiwnadmID)
+                                                    .p-2.bd-highlight.ms-4
+                                                        a(href=`/vendor/blood-bank/advertisement/update-advertisement/${doc.hiwnadmID}`)
+
+                                                            i.fa-solid.fa-pen.main-color.fs-5
+                            else 
+                                p You don't have any active advertisement
+                else 
+                    div(class="d-grid m-5")
+                        a.btn.btn-success.btn-block(href="/vendor/blood-bank") Create Your Profile

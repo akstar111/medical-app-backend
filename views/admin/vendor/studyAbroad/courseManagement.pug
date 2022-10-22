@@ -1,0 +1,139 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Course Details Management
+            hr.m-0
+            form#update_studyabroad_coursedetails(data-id=partner.hiwpmID) 
+                div
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='underGradationCourse') under graduation course
+                        .col-sm-7
+                            if college.underGraduateCourses && college.underGraduateCourses.length   
+                                each docs in college.underGraduateCourses 
+                                    input.form-control.bg-li#underGradationCourse.border(type='text' value=docs placeholder="under graduation course" )
+                            else 
+                                input.form-control.bg-li#underGradationCourse.border(type='text' value=docs placeholder="under graduation course" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='uniType') Post graduation course
+                        .col-sm-7#addPGCourseText
+                            if college.postGraduateCourses && college.postGraduateCourses.length
+                                each docs in college.postGraduateCourses
+                                    input.form-control.mb-2.bg-li.postGraduateCourses(type='text' placeholder="Post graduation course" value= docs )
+                            else 
+                                input.form-control.mb-2.bg-li.postGraduateCourses(type='text' placeholder="Post graduation course" value= docs )
+
+                        .d-grid
+                            button.btn.btn-outline-primary#addPgCourse(type='button') Add Pg Courses
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Eligibility Criteria :
+
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='minimumPercentage') Minimum percentage of marks required :
+                            .col-sm-7
+                                input.form-control.bg-li#minimumPercentage(type='text' value=`${college.eligiblityCretria && college.eligiblityCretria.minimumPercentage ? college.eligiblityCretria.minimumPercentage :"" }` placeholder="Percentage " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='entranceExam') Entrance Exam :
+                            .col-sm-7
+                                input.form-control.bg-li#entranceExam(type='text' value=`${college.eligiblityCretria && college.eligiblityCretria.entranceExam ? college.eligiblityCretria.entranceExam :"" }` placeholder="Entrance Exam " )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Under Graduation Fees :
+
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Tuition Fees (1 Year)  :
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFees1yearUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.tutionFees ? college.underGraduateFees.tutionFees : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFee1yearsINR(type='text' placeholder="INR " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='tudtionFees') Tuition Fees With Hostel (1 Year)   
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFeesWithHostel1yearUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.tutionFeesHostel ? college.underGraduateFees.tutionFeesHostel : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFeesWithHoste1yearINR(type='text' placeholder="INR " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='tudtionFees') Tuition Fees With AC Hostel (1 Year)   
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFees1yearAcHostelUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.tutionFeesACHostel ? college.underGraduateFees.tutionFeesACHostel : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFees1yearACHostelINR(type='text' placeholder="INR " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='tudtionFees') Tuition Fees (Total Years)   
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFees5yearUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.totalTutionFees ? college.underGraduateFees.totalTutionFees : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFee5yearsINR(type='text' placeholder="INR " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='tudtionFees') Tuition Fees With Hostel (Total Years)   
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFeesWithHostel5yearUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.totalTutionFeesHostel ? college.underGraduateFees.totalTutionFeesHostel : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFeesWithHoste5yearINR(type='text' placeholder="INR " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='tudtionFees') Tuition Fees With AC Hostel (Total Years)   
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFee5yearsAcHostelUSD(type='text' value=`${college.underGraduateFees && college.underGraduateFees.totalTutionFeesACHostel ? college.underGraduateFees.totalTutionFeesACHostel : ""}` placeholder="USD " )
+                            .col-sm-4
+                                input.form-control.bg-li#tudtionFees5yearACHostelINR(type='text' placeholder="INR " )
+                    .mb-3.row#ugCourses
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Under graduation course syllabus :
+                        each docs,index in college.underGraduationCourseSyllabus
+                            -const year = docs.year
+                            -const sem2 = year*1*2;
+                            -const sem1 = sem2*1-1;
+                            .mb-3.row.pd-5.g-1.ps-5.ugCourseList
+                                label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Year #{docs.year}
+                                .col-sm-7
+                                    .mb-4(id=`year${year}sem${sem1}`) Semester #{sem1}
+                                        each doc2 in docs.semester1
+                                            input.form-control.bg-1.mb-2(class=`year${year}sem${sem1}Course` type='text' placeholder="Subject " value=doc2 )
+                                    .d-flex.justify-content-center
+                                        button.btn.btn-primary.addCourse(type='button' id=`addYear${year}Semester${sem1}Course` data-sem=sem1 data-year=year) Add Subject
+
+                                    div(id=`year${year}sem${sem2}`) Semester #{sem2}
+                                        each doc2 in docs.semester2
+                                            input.form-control.bg-li.mb-2(class=`year${year}sem${sem2}Course` type='text' placeholder="Subject" value=doc2)
+                                    .d-flex.justify-content-center
+                                        button.btn.btn-primary.addCourse(id=`addYear${year}Semester${sem2}Course` type='button' data-sem=sem2 data-year=year) Add Subject
+                    .d-grid
+                        button.btn.btn-outline-primary#addyear(type='button') Add Year
+                    .mb-3.row.mt-3
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Term Fees:
+
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='firtTermFees' ) First Term Fees  :
+                            .col-sm-7
+                                input.form-control.bg-li#firtTermFees(type='text' value=`${college.termFees && college.termFees.firstTerm ? college.termFees.firstTerm : ""}` placeholder="First Term Fees " )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='reqminFeesPaitWithin') Remaining Fees to be paid   :
+                            .col-sm-7
+                                input.form-control.bg-li#reminFeesPaitWithin(type='text' value=`${college.termFees && college.termFees.remainingFees ? college.termFees.remainingFees : ""}` placeholder="Remaining Fees to be paid" )
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='courseDuration') Course Duration
+                        .col-sm-7
+                            input.form-control.bg-li#courseDuration(type='text' value=college.courseDuration placeholder="Course Duration" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='labDetails') Lab Details
+                        .col-sm-7
+                            input.form-control.bg-li#labDetails(type='text' value=college.labDetails placeholder="Lab Details" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='scholarshipAvail') Scholarship Availability
+                        .col-sm-7
+                            .form-check.form-check-inline
+                                input#scholarshipAvail.form-check-input(type='radio' name="scholarshipAvail" value=true checked=college.scholrshipAvailablity)
+                                label.form-check-label(for='scholarshipAvail' ) Yes
+                            .form-check.form-check-inline
+                                input#scholarshipAvail.form-check-input(type='radio' name="scholarshipAvail" value=false checked=!college.scholrshipAvailablity)
+                                label.form-check-label(for='scholarshipAvail' ) No
+
+                    div(class="d-grid mt-2")
+                        button.btn.btn-primary.btn-block(type='submit') Update 
+

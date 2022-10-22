@@ -1,0 +1,158 @@
+extends ../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Manage Vendors
+            .me-3.flex-grow-1.bd-highlight
+                form.mt-0(action='')
+                    .p-1.bg-light.rounded.rounded-pill.shadow-sm.mt-0
+                        .input-group
+                            p.form-control.border-0.bg-light(type='search' placeholder="What're you searching for?" aria-describedby='button-addon1')
+                            .input-group-append
+                                button#button-addon1.btn.btn-link.text-secondary(type='submit')
+                                    i.fa.fa-search
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold Akstar111
+            .p-2.bd-highlight
+                img.login-user-image(src='/Assets/image/profile.jpg' alt='user image')
+        hr
+        .d-flex
+            .flex-grow-1.d-flex.justify-content-between
+                h5.fw-bold.mt-3.ms-3 Modules
+
+                //-  span.badge.bg-danger.ms-1 5
+            .p-2
+                p.text-primary.text-decoration-underline.m-0
+        hr.m-0
+        #update_partner_request_status
+         each doc in vendors
+            .card.mb-3(style='max-width:50%')
+                .row.g-0
+                    .col-md-4
+                        img.img-fluid.rounded-start(src=doc.profileImage style='width:200px;' alt='...')
+                    .col-md-8
+                        .card-body
+                            h5.card-title
+                                b Name : 
+                                span= doc.name
+                            p.card-text
+                                b Phone : 
+                                span= doc.phone
+                            p.card-text
+                                b For : 
+                                sapn= doc.for
+                            p.card-text
+                                b Company : 
+                                sapn= doc.company
+
+                            a.col-3.main-color(href='#')
+                                i.fa-solid.fa-pen.justify-content-md-end.main-color.float-end( data-bs-toggle='modal' data-bs-target=`#myModel-${index}`)
+                    p.card-text.text-hidden.m-0.fs-7= doc.description
+                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`myModel-${index}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                        .modal-dialog.modal-dialog-scrollable.modal-lg
+                            .modal-content
+                                .modal-header
+                                    h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                        | Add Facilities Details
+                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                .modal-body
+                                    form.row.g-3( )
+                                        div
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Contact Person Name:
+                                                .col-sm-7
+                                                    p.form-control= doc.name 
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='contactpersonPhone') Contact Person No:
+                                                .col-sm-7
+                                                    p.form-control=doc.phone
+                                            if doc.for === 'Homecare service'
+                                                .mb-3.row
+                                                    label.col-sm-3.col-form-label.fw-bold Service Type:
+                                                    .col-sm-7
+                                                        p.form-control=doc.homecare.serviceType
+
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Company Name :
+                                                .col-sm-7
+                                                    p.form-control=doc.company 
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='Phone') Homecare Phone Number :
+                                                .col-sm-7
+                                                    p.form-control=doc.centerPhone 
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='Landline') Homecare landline Number :
+                                                .col-sm-7
+                                                    p.form-control=doc.centerLandLine 
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='homecareEmail') Homecare Email:
+                                                .col-sm-7
+                                                    p.form-control=doc.email
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='city') Homecare City:
+                                                .col-sm-7
+                                                    p.form-control=doc.city 
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Location :
+                                                .col-sm-3
+                                                    p.form-control=doc.location.coordinates[1] 
+                                                .col-sm-3
+                                                    p.form-control=doc.location.coordinates[0] 
+                                                .col-sm-1
+
+                                                    i.fa-solid.fa-location-dot.border.bg-li.fs-5.p-2.ps-3.pe-3.rounded.text-secondary
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Open / close hours :
+                                                .col-sm-3
+                                                    p.form-control=doc.openTime 
+                                                .col-sm-3
+                                                    p.form-control=doc.closeTime
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='Address') Address :
+                                                .col-sm-7
+                                                    p.form-control= doc.address
+
+                                            h5.mt-5.fw-bold Verification Documents
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Homecare Licence :
+                                                .col-sm-7
+                                                    a(href=doc.licence) View
+
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Aadhar :
+                                                .col-sm-7
+                                                    a(href=doc.aadharId) View
+
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') PAN card :
+                                                .col-sm-7
+                                                    a(href='#')
+                                                        label.col-sm-3.col-form-label.fw-bold View
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Verified video :
+                                                .col-sm-7
+                                                    iframe.embed-responsive-item(src='https://www.youtube.com/embed/tgbNymZ7vqY' allowfullscreen='')
+                                            textarea.mb-2.form-control(id=`status_description-${index}` placeholder="Willing to enter details about your status Update?")
+                                            .mb-3.row
+                                                .col-sm-6
+                                                    .d-grid
+                                                        button.btn.btn-success.btn-block#updateStatus(data-status='accepted' data-partner=doc.hiwpmID data-index=index) Accept
+                                                .col-sm-6
+                                                    .d-grid
+                                                        button.btn.btn-danger.btn-block#updateStatus(data-partner=doc.hiwpmID data-status='rejected') Reject
+
+
+
+                                .modal-footer
+                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                        | Cancel
+

@@ -1,0 +1,460 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .p-5.pt-2.nav-tabs-section
+                ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                    li.nav-item.border.rounded(role='presentation')
+                        button#pills-home-tab.nav-link.inside-nav.active.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-home' type='button' role='tab' aria-controls='pills-home' aria-selected='true')
+                            | Product Managements
+                    li.nav-item.border.rounded(role='presentation')
+                        button#pills-profile-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                            | Order List
+                    li.nav-item.border.rounded(role='presentation')
+                        button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                            | History
+
+                #pills-tabContent.tab-content
+                    #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Products
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                        | Add More
+                                // Modal
+                                #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Product Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-2#create_new_hearingaid_product(data-index=index data-id=partner.hiwpmID)
+                                                    .col-md-12
+                                                        label.form-label(for='newName')
+                                                            |Product Name
+                                                            span.text-danger *
+                                                        input#newName.form-control(type='text' placeholder='Name' required='')
+
+                                                    .col-md-12
+                                                        label.form-label(for='newName')
+                                                            | Features
+                                                            span.text-danger *
+                                                        #newFeatures
+                                                            input.form-control.newFeatures(type='text' placeholder='Features' required='')
+                                                        .d-flex.justify-content-center.mt-3
+                                                            button.btn.btn-block.btn-success#add_new_features(type='button') + Add new Features
+                                                    .col-md-12
+                                                        label.col-form-label.fw-bold Product Type:
+                                                        .col-sm-12
+                                                            select#newProductType.form-select.border.border-2.bg-li(required)
+                                                                option(value="") -- Select Product Type -- 
+                                                                option(value="OF") Open fit 
+                                                                option(value="RIC") Receiver in canal or receiver in the ear (RIC) 
+                                                                option(value="BTE") Behind the ear (BTE) 
+                                                                option(value="ITE") In the ear (ITE) 
+                                                                option(value="ITC") In the canal (ITC) 
+                                                                option(value="CIC") Completely in the canal (CIC) or mini CIC
+                                                    .col-md-12
+                                                        label.col-form-label.fw-bold Product Details
+                                                        #newProductDetails.p-5.border
+                                                        a.btn.btn-primary(id='add_new_hearingaid_color_details') Add Color
+                                                    .col-md-12
+                                                        label.form-label(for='newDescription')
+                                                            |Product Description
+                                                            span.text-danger *
+                                                        input#newDescription.form-control(type='text' placeholder='Description' required='')
+
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Product
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+
+                            hr.m-0
+                            .mt-3
+                                .row.row-cols-1.row-cols-md-4.g-1#update_hearingaid_product
+                                    each doc,index in products
+                                        .col
+                                            .card.h-100
+                                                img.card-img-top(src=doc.bannerImage alt='Product Iamge')
+                                                .card-body.mt-0.p-1
+                                                    .row
+                                                        - var key =  new Date(doc.createdAt).valueOf()
+                                                        h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                            | #{doc.productName}
+                                                        a.col-3.main-color(href='#' data-bs-toggle='modal' data-bs-target=`#openHearingaidProductModal${key}`)
+                                                            i.fa-solid.fa-pen.justify-content-md-end.main-color
+                                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' id=`openHearingaidProductModal${key}` tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                            .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                                .modal-content
+                                                                    .modal-header
+                                                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                            | Update Product Details
+                                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                    .modal-body
+                                                                        form.row.g-2#update_product(data-index=index data-id=partner.hiwpmID data-pid=doc.hiwhapnsID)
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    |Product Name
+                                                                                span.text-danger *
+                                                                                input.form-control(type='text' value=doc.productName id=`updateName${index}` placeholder='Name' required='')
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    | Features
+                                                                                    span.text-danger *
+
+                                                                                div(id=`addUpdateFeatures${index}`)
+                                                                                    each docs in doc.features
+                                                                                        input.form-control.mt-2(class=`newUpdateFeatures${index}` value=docs type='text' placeholder='Features' required='')
+                                                                                .d-flex.justify-content-center.mt-3
+                                                                                    button.btn.btn-block.btn-success.add_update_features(type='button' data-index=index) + Add new Features
+                                                                            .col-md-12
+                                                                                label.col-form-label.fw-bold Product Type:
+                                                                                .col-sm-12
+                                                                                    select.form-select.border.border-2.bg-li(id=`updateProductType${index}` required)
+                                                                                        option(value="") -- Select Product Type -- 
+                                                                                        if doc.productType === "OP"
+                                                                                            option(value="OF" selected) Open fit 
+                                                                                        else
+                                                                                            option(value="OF" selected) Open fit 
+                                                                                        if doc.productType === 'RIC'
+                                                                                            option(value="RIC" selected) Receiver in canal or receiver in the ear (RIC) 
+                                                                                        else
+                                                                                            option(value="RIC" ) Receiver in canal or receiver in the ear (RIC) 
+                                                                                        if doc.productType === "BTE"
+                                                                                            option(value="BTE" selected) Behind the ear (BTE) 
+                                                                                        else
+                                                                                            option(value="BTE") Behind the ear (BTE) 
+                                                                                        if doc.productType === "ITE"
+                                                                                            option(value="ITE" selected) In the ear (ITE) 
+                                                                                        else
+                                                                                            option(value="ITE") In the ear (ITE) 
+                                                                                        if doc.productType === "ITC"
+                                                                                            option(value="ITC" selected) In the canal (ITC) 
+                                                                                        else
+                                                                                            option(value="ITC") In the canal (ITC) 
+                                                                                        if doc.productType === "CIC"
+                                                                                            option(value="CIC" selected) Completely in the canal (CIC) or mini CIC
+                                                                                        else
+                                                                                            option(value="CIC") Completely in the canal (CIC) or mini CIC
+                                                                            .col-md-12
+                                                                                label.col-form-label.fw-bold Product Details
+                                                                                .p-5.border(id=`updateProductUpdateDetails${index}`)
+                                                                                    each product,index2 in doc.productDetails
+                                                                                        .border.m-2.p-3(class=`newHearingAidSubUpdateDetails${index}` id=`updateHearingAidProductDetails${index}${index2}` data-index=index data-index2=index2 data-id=product.hiwhapdsID )
+                                                                                            .d-flex.justify-content-end.position-relative
+                                                                                                a.btn.btn-danger.deleteUpdatedSubColorDetails(id=`delelteupdateProductDetails${index}${index2}` data-index=`${index}` data-index2=index2) Delete
+                                                                                            .col-md-12()
+                                                                                                label.form-label(for=1 id=`updateColor${id}`)
+                                                                                                    | Color
+                                                                                                    span.text-danger *
+                                                                                                input.form-control(value=product.color id=`newColor${index}${index2}` type='text' placeholder='Color' required='')
+                                                                                            .col-md-12
+                                                                                                label.form-label(for=`newProductImage${index}${index2}`)
+                                                                                                    | Product Image
+                                                                                                    span.text-danger *
+                                                                                                br 
+                                                                                                img(src=product.bannerImage style='width:150px;')
+                                                                                                input.form-control(id=`newProductImage${index}${index2}`
+                                                                                                    type='file'  accept='image/*')
+                                                                                            .col-md-12
+                                                                                                label.form-label(for=`newProductImageGallery${index}${index2}`)
+                                                                                                    | Product Image Gallery
+                                                                                                    span.text-danger *
+                                                                                                br
+                                                                                                each imgGal in product.imageGallery
+                                                                                                    img(src=imgGal style='width:130px;')
+                                                                                                input.form-control(id=`newProductImageGallery${index}${index2}` type='file' multiple=''  accept='image/*')
+                                                                                            div(id=`hearingaidUpdateSubDeatail${index}${index2}` )
+                                                                                                each subDoc,index3 in product.subDetails
+                                                                                                    .m-2.p-2(id=`updateHearingAidSubProductDetails${index}${index2}${index3}` class=`updateHearingAidSubColorDetails${index}${index2}` data-index=index data-index2=index2 data-index3=index3 data-id=subDoc.hiwhaicscpID)
+                                                                                                        .d-flex.justify-content-end
+                                                                                                            a.btn.btn-danger.deleteHearingaidSubDetails(id=`delelteNewSubProductDetails${index}${index2}${index3}` data-index=index data-index2=index2 data-index3=index3) Delete
+                                                                                                        .col-md-12
+                                                                                                            label.form-label(for=`newSize${index}${index2}${index3}`)
+                                                                                                                | Size
+                                                                                                                span.text-danger *
+                                                                                                            input.form-control(id=`newSize${index}${index2}${index3}` type='text' placeholder='Size' required='' value=subDoc.size)
+                                                                                                        .col-md-12
+                                                                                                            label.form-label(for=`newPrice${index}${index2}${index3}`)
+                                                                                                                | Price
+                                                                                                                span.text-danger *
+                                                                                                            input.form-control(id=`newPrice${index}${index2}${index3}` type='text'  value=subDoc.price placeholder='Price' required='')
+                                                                                                        .col-md-12
+                                                                                                            label.form-label(for=`newDiscountPrice${index}${index2}${index3}`)
+                                                                                                                | Discount Price
+                                                                                                                span.text-danger *
+                                                                                                            input.form-control(id=`newDiscountPrice${index}${index2}${index3}` type='text' 
+                                                                                                            value=subDoc.discountPrice placeholder='Discount Price')
+
+                                                                                            .d-flex.justify-content-center.mt-2
+                                                                                                button.btn.btn-success.addHearingAidProductSubUpdateDetails(type='button' id=`addHearingaidUpdateSubDeatail${index}${index2}` data-index=index data-index2=index2 ) Add Details
+
+                                                                                a.btn.btn-primary(class=`add_update_hearingaid_product_details` data-index=index) Add Product Details
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    |Product Description
+                                                                                span.text-danger *
+                                                                                input.form-control(type='text' id=`updateProductDescription${index}` placeholder='Description' required='' value=doc.description)
+                                                                            .col-12.text-center
+                                                                                button.btn.main-color-background.color-white(type='submit')
+                                                                                    | Update Product
+                                                                    .modal-footer
+                                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                            | Cancel
+
+                                                    p.card-text.text-hidden.m-0= doc.description
+                                                    .d-flex
+                                                        if doc.opticalDiscountPrice
+                                                            p.fw-bold.m-0.fs-5 Rs. #{doc.opticalDiscountPrice}
+                                                            p.ms-1.m-0.mt-1.text-decoration-line-through.fs-6.text-secondary
+                                                                | #{doc.opticalPrice}
+                                                            //- p.ms-1.m-0.mt-1.text-danger.fs-6 (50%)
+
+                    #pills-profile.tab-pane.fade(role='tabpanel' aria-labelledby='pills-profile-tab')
+                        h6.col-6.fw-bold.main-color.mt-5.text-head
+                            | Order List
+                        hr.m-0
+                        .mt-3.table-responsive
+                            table.table.table-bordered
+                                thead
+                                    tr.text-nowrap
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Name
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Phone Number
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Address
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Product Name
+
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Order Date
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Status
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | View
+                                tbody#update_vendor_hearingaid_product_status(data-id=partner.hiwpmID)
+                                    -const status = ['placed', 'accepted','rejected', 'shipped', 'outofdelivery', 'delivered']
+                                    each doc,inds in orders.active
+                                        tr.text-nowrap
+                                            th(scope='row')= doc.addressDetails.name
+                                            td= doc.addressDetails.phone1
+                                            td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                            td= doc.productData.productName
+                                            td= new Date(doc.createdAt).toLocaleString()
+                                            td  
+                                                select.form-select.border.update_status(aria-label='Default select example' id=`update_hearingaid_status-${inds}` data-index=inds data-id=doc.hiwonhas style="width:auto;")
+                                                    each docs in status
+                                                        if docs === doc.orderStatus
+                                                            option(value=docs selected)= docs
+                                                        else 
+                                                            option(value=docs)= docs
+
+                                            td
+                                                a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderActive-${inds}`) View
+                                                // Modal
+                                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderActive-${inds}`)
+                                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                        .modal-content
+                                                            .modal-header
+                                                                h5#staticBackdropLabel.modal-title
+                                                                    | Product Details
+                                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                            .modal-body.table-responsive
+                                                                table.table.table-bordered
+                                                                    thead
+                                                                        tr
+                                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                                | Order Details
+                                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                                //- | Order ID - 09869766875
+                                                                    tbody
+                                                                        //- tr
+                                                                        //-     th(scope='row') Product Id
+                                                                        //-     td 8798789678
+                                                                        tr
+                                                                            th(scope='row') Product Name
+                                                                            td= doc.productData.productName
+                                                                        tr
+                                                                            th(scope='row') Color
+                                                                            td= doc.productData.color
+                                                                        tr
+                                                                            th(scope='row') Size
+                                                                            td= doc.productData.size
+                                                                        tr
+                                                                            th(scope='row') Hearing aid Image
+                                                                            td
+                                                                                img.thumbnail(src=doc.productData.bannerImage alt='Product Image')
+                                                                        tr
+                                                                            th(scope='row') Hearingaid Image Gallery
+                                                                            td
+                                                                                each galImg in doc.productData.imageGallery
+                                                                                    img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                        tr
+                                                                            th(scope='row') Order Status
+                                                                            td= doc.orderStatus
+                                                                        tr
+                                                                            th(scope='row') Address
+                                                                            td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                        tr
+                                                                            th(scope='row') Phone Number 1
+                                                                            td= doc.addressDetails.phone1
+                                                                        tr
+                                                                            th(scope='row') Phone Number 2
+                                                                            td= doc.addressDetails.phone2
+                                                                        tr
+                                                                            th(scope='row') Quanity
+                                                                            td= doc.productData.quantity
+                                                                        tr
+                                                                            th(scope='row') Price
+                                                                            td= doc.productData.price
+                                                                        tr
+                                                                            th(scope='row') Discount Price
+                                                                            td= doc.productData.discountPrice
+
+                                                                        tr
+                                                                            th.text-danger(scope='row')
+                                                                                | Payment Mode
+                                                                            td.text-danger Online
+                                                                        tr
+                                                                            th(scope='row') Ordered Date
+                                                                            td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Accepted Date
+                                                                            td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Shipped Date
+                                                                            td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Out of Delivery Date Date
+                                                                            td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                            .modal-footer
+                                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                    | Cancel
+                    #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                        h6.col-6.fw-bold.main-color.mt-5.text-head History
+                        hr.m-0
+                        .mt-3.table-responsive
+                            table.table.table-bordered
+                                thead
+                                    tr.text-nowrap
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Name
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Phone Number
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Address
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Product Name
+
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Order Date
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | Status
+                                        th.color-white.main-color-background.text-center(scope='col')
+                                            | View
+                                tbody
+
+                                    each doc,inds in orders.history
+                                        tr.text-nowrap
+                                            th(scope='row')= doc.addressDetails.name
+                                            td= doc.addressDetails.phone1
+                                            td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                            td= doc.productData.productName
+                                            td= new Date(doc.createdAt).toLocaleString()
+                                            td=doc.orderStatus
+
+                                            td
+                                                a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderHistory-${inds}`) View
+                                                // Modal
+                                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderHistory-${inds}`)
+                                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                        .modal-content
+                                                            .modal-header
+                                                                h5#staticBackdropLabel.modal-title
+                                                                    | Product Details
+                                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                            .modal-body.table-responsive
+                                                                table.table.table-bordered
+                                                                    thead
+                                                                        tr
+                                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                                | Order Details
+                                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                                //- | Order ID - 09869766875
+                                                                    tbody
+                                                                        //- tr
+                                                                        //-     th(scope='row') Product Id
+                                                                        //-     td 8798789678
+                                                                        tr
+                                                                            th(scope='row') Product Name
+                                                                            td= doc.productData.productName
+                                                                        tr
+                                                                            th(scope='row') Color
+                                                                            td= doc.productData.color
+                                                                        tr
+                                                                            th(scope='row') Size
+                                                                            td= doc.productData.size
+                                                                        tr
+                                                                            th(scope='row') Hearing aid Image
+                                                                            td
+                                                                                img.thumbnail(src=doc.productData.bannerImage alt='Product Image')
+                                                                        tr
+                                                                            th(scope='row') Hearingaid Image Gallery
+                                                                            td
+                                                                                each galImg in doc.productData.imageGallery
+                                                                                    img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                        tr
+                                                                            th(scope='row') Order Status
+                                                                            td= doc.orderStatus
+                                                                        tr
+                                                                            th(scope='row') Address
+                                                                            td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                        tr
+                                                                            th(scope='row') Phone Number 1
+                                                                            td= doc.addressDetails.phone1
+                                                                        tr
+                                                                            th(scope='row') Phone Number 2
+                                                                            td= doc.addressDetails.phone2
+                                                                        tr
+                                                                            th(scope='row') Quanity
+                                                                            td= doc.productData.quantity
+                                                                        tr
+                                                                            th(scope='row') Price
+                                                                            td= doc.productData.price
+                                                                        tr
+                                                                            th(scope='row') Discount Price
+                                                                            td= doc.productData.discountPrice
+
+                                                                        tr
+                                                                            th.text-danger(scope='row')
+                                                                                | Payment Mode
+                                                                            td.text-danger Online
+                                                                        tr
+                                                                            th(scope='row') Ordered Date
+                                                                            td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Accepted Date
+                                                                            td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Shipped Date
+                                                                            td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row') Out of Delivery Date Date
+                                                                            td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                                        tr
+                                                                            th(scope='row')  Delivery Date 
+                                                                            td=doc.outOfDeliveryDate ? new Date(doc.deliveredDate).toLocaleString():"-"
+                                                            .modal-footer
+                                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                    | Cancel

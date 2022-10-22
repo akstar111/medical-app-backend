@@ -1,0 +1,224 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+
+        hr
+        include ./shared/detailsList
+        h5.fw-bold.mt-3.ms-3 Active Request
+        hr.m-0 
+        .table-responsive
+            table.table.table-bordered.table-font
+                thead
+                    tr
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Patient Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Contact Person Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Phone Number
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Required Date
+
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Status
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Request Details
+                    
+
+                tbody#update_blood_request
+                    each doc,index in request.active
+                        tr
+                            td= doc.requesterName
+                            td= doc.requsterContactName
+                            td= doc.requesterPhone
+                            td= new Date(doc.requestersRequiredDate).toLocaleDateString()
+                            td
+                                select.form-select.update_status(id=`update_blood_request-${index}` data-index=index data-user=user.id data-request=doc.hiwnrqID  )
+                                    if doc.status === "requested"
+                                        option(value="requested" selected) Requested
+                                    else 
+                                        option(value="requested" ) Requested
+                                    if doc.status === "accepted"
+                                        option(value="accepted"  selected) Accepted
+                                    else
+                                        option(value="accepted"  ) Accepted
+                                    option(value="rejected"  ) Rejected
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1'  aria-labelledby='staticBackdropLabel' id= `activeBookingdetails` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Booking Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Booking Details
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                            //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                    tbody
+                                                        tr
+                                                            th(scope='row') Patient Name
+                                                            td= doc.requesterName
+
+                                                        tr
+                                                            th(scope='row') Contact Person Name
+                                                            td= doc.requsterContactName
+
+                                                        tr
+                                                            th(scope='row') Phone Number
+                                                            td= doc.requesterPhone
+
+                                                        tr
+                                                            th(scope='row') Required Date
+                                                            td= new Date(doc.requestersRequiredDate).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Blood Group 
+                                                            td= doc.requesterBloodType
+
+                                                        tr
+                                                            th(scope='row') Blood Operation Type 
+                                                            td= doc.opertionType
+
+                                                        tr
+                                                            th(scope='row') Units Required
+                                                            td= doc.requesterRequiredUnits
+
+                                                        tr
+                                                            th(scope='row') Hospital Name
+                                                            td= doc.hospitalName
+
+                                                        tr
+                                                            th(scope='row') Hospital Address
+                                                            td= doc.hospitalAddress
+
+                                                        tr
+                                                            th(scope='row')  Hospital Location
+                                                            td #{doc.location.coordinates[1]}, #{doc.location.coordinates[0]}
+
+                                                        tr
+                                                            th(scope='row') Requested Date
+                                                            td= new Date(doc.createdAt).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Description
+                                                            td= doc.description
+
+                                                        tr
+                                                            th(scope='row') Status
+                                                            td= doc.status
+
+                
+        hr.m-0  
+        h5.fw-bold.mt-3.ms-3 History Requester
+
+        .table-responsive
+            table.table.table-bordered.table-font
+                thead
+                    tr
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Patient Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Contact Person Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Phone Number
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Required Date
+
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Status
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Request Details
+                    
+                tbody
+                    each doc,index in request.history
+
+                        tr
+                            td= doc.requesterName
+                            td= doc.requsterContactName
+                            td= doc.requesterPhone
+                            td= new Date(doc.requestersRequiredDate).toLocaleDateString()
+                            td= doc.status
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#historyBookingdetails`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1'  aria-labelledby='staticBackdropLabel' id= `historyBookingdetails` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Booking Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Booking Details
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                            //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                    tbody
+                                                        tr
+                                                            th(scope='row') Patient Name
+                                                            td= doc.requesterName
+
+                                                        tr
+                                                            th(scope='row') Contact Person Name
+                                                            td= doc.requsterContactName
+
+                                                        tr
+                                                            th(scope='row') Phone Number
+                                                            td= doc.requesterPhone
+
+                                                        tr
+                                                            th(scope='row') Required Date
+                                                            td= new Date(doc.requestersRequiredDate).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Blood Group 
+                                                            td= doc.requesterBloodType
+
+                                                        tr
+                                                            th(scope='row') Blood Operation Type 
+                                                            td= doc.opertionType
+
+                                                        tr
+                                                            th(scope='row') Units Required
+                                                            td= doc.requesterRequiredUnits
+
+                                                        tr
+                                                            th(scope='row') Hospital Name
+                                                            td= doc.hospitalName
+
+                                                        tr
+                                                            th(scope='row') Hospital Address
+                                                            td= doc.hospitalAddress
+
+                                                        tr
+                                                            th(scope='row')  Hospital Location
+                                                            td #{doc.location.coordinates[1]}, #{doc.location.coordinates[0]}
+
+                                                        tr
+                                                            th(scope='row') Requested Date
+                                                            td= new Date(doc.createdAt).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Description
+                                                            td= doc.description
+
+                                                        tr
+                                                            th(scope='row') Status
+                                                            td= doc.status
+
+                         
+        hr.m-0  

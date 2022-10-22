@@ -1,0 +1,15 @@
+.col-2.p-0.border.m-0.border-color.display-none
+    ul.nav.flex-column.p-0.m-0
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "home" ? "vendor-nav-link-active" : "" }` aria-current='page' href='/vendor/laboratory') Manage Laboratory
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "bookings" ? "vendor-nav-link-active" : "" }` aria-current='page' href='/vendor/laboratory/laboratory-bookings') Laboratory Bookings
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "tests" ? "vendor-nav-link-active" : "" }` href='/vendor/laboratory/manage-services') Laboratory Services
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "facilities" ? "vendor-nav-link-active" : "" }` href='/vendor/laboratory/manage-facilities') Manage Facilities
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "image" ? "vendor-nav-link-active" : "" }` href='/vendor/laboratory/manage-lab-images') Manage Lab Images
+       
+        li.nav-item
+            a.nav-link.border.vendor-nav-link#logoutW log out

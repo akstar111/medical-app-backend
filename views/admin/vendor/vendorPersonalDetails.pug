@@ -1,0 +1,168 @@
+extends ../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9
+        include ../shared/detailsList
+        .p-5.pt-2
+            form#update_personal_details(data-partner=partner.hiwpmID data-module=partner.for) 
+                div
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Contact Person Name:
+                        .col-sm-7
+                            input.form-control.bg-li#contactPerson(type='text' value=partner.name )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='contactpersonPhone') Contact Person No:
+                        .col-sm-7
+                            input.form-control.bg-li#contactpersonPhone(type='text' value=partner.phone )
+                    if partner.for === 'Homecare service'
+                        .mb-3.row
+                            label.col-sm-3.col-form-label.fw-bold Service Type:
+                            .col-sm-7
+                                select#jobType.form-select.border.border-2.bg-li
+                                    option -- Select your Speciality -- 
+                                    if partner.homecare.serviceType === "individual" 
+                                        option(value='individual' selected) Individual
+                                        option(value='company' ) Company
+                                    else if partner.homecare.serviceType === "company" 
+                                        option(value='individual' ) Individual
+                                        option(value='company' selected) Company
+                    if partner.for === 'Meet the Expert'
+                        .mb-3.row
+                            label.col-sm-3.col-form-label.fw-bold Service Type:
+                            .col-sm-7
+                                select#expertServiceType.form-select.border.border-2.bg-li
+                                    option -- Select your Service Type -- 
+                                    if partner.meettheExperts.serviceType === "contractors" 
+                                        option(value='contractors' selected) Contractors
+                                    else
+                                        option(value='contractors' ) Contractors
+                                    if partner.meettheExperts.serviceType === "service" 
+                                        option(value='service' selected) Service
+                                    else
+                                        option(value='service' ) Service
+                                    if partner.meettheExperts.serviceType === "consultants" 
+                                        option(value='consultants' selected) Consultants
+                                    else
+                                        option(value='consultants' ) Consultants
+
+                        .mb-3.row
+                            label.col-sm-3.col-form-label.fw-bold Vendor Type:
+                            .col-sm-7
+                                select#expertVendorType.form-select.border.border-2.bg-li
+                                    option -- Select your Speciality -- 
+                                    if partner.meettheExperts.vendorType === "individual" 
+                                        option(value='individual' selected) Individual
+                                        option(value='company' ) Company
+                                    else if partner.meettheExperts.vendorType === "company" 
+                                        option(value='individual' ) Individual
+                                        option(value='company' selected) Company
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Homecare Name :
+                        .col-sm-7
+                            input.form-control.bg-li(type='text' value=partner.company disabled readonly)
+                    if partner.for === 'Hospital'
+                        .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='hospital name' )
+                                .col-sm-7
+                                    .form-check.form-check-inline
+                                        if partner.hospital.medicalTourism
+                                            input#medicalTourism.form-check-input(type='checkbox' value='option1' checked)
+                                        else
+                                            input#medicalTourism.form-check-input(type='checkbox' value='option1' )
+                                        label.form-check-label(for='medicalTourism') Do you Have Medical tourism? 
+                                    .form-check.form-check-inline
+                                        if partner.hospital.hospitalPackage
+                                            input#hospitalPackage.form-check-input(type='checkbox' value='option2' checked)
+                                        else
+                                            input#hospitalPackage.form-check-input(type='checkbox' value='option2' )
+                                        label.form-check-label(for='hospitalPackage') Do you Have Hospital Package? 
+                    if partner.for === 'Hearing AID'
+                        if partner.hearingAid.serviceType === 'repairStore'
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Service Type :
+                                .col-sm-7
+                                    input.form-control.bg-li(type='text' value=partner.hearingAid.serviceType disabled readonly)
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Battery Changing charge :
+                                .col-sm-7
+                                    input.form-control.bg-li#batteryChanging(type='text' value=partner.hearingAid.batteryChangeCharge)
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Noice Fixing Charge :
+                                .col-sm-7
+                                    input.form-control.bg-li#noiceFixing(type='text' value=partner.hearingAid.noiseFixCharge)
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='homecare name' ) Cleaning Charge :
+                                .col-sm-7
+                                    input.form-control.bg-li#cleaningCharge(type='text' value=partner.hearingAid.cleaningCharge)
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='Phone') Homecare Phone Number :
+                        .col-sm-7
+                            input.form-control.bg-li#Phone(type='text' value=partner.centerPhone )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='Landline') Homecare landline Number :
+                        .col-sm-7
+                            input.form-control.bg-li#landline(type='text' value=partner.centerLandLine )
+                    if partner.for === 'Speak To Us'
+                        .mb-3.row
+                            label.col-sm-3.col-form-label.fw-bold(for='Landline') Counceling Contact Number :
+                            .col-sm-7
+                                input.form-control.bg-li#councelNumber(type='text' value=partner.speakToUs.counselingNumber )
+                    if partner.for === 'Fitness'
+                        .mb-3.row
+                            label.col-sm-3.col-form-label.fw-bold(for='Landline') Providing Service :
+                            .col-sm-7
+                                input.form-control.bg-li#councelNumber(type='text' value=partner.fitness.serviceType )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='homecareEmail') Homecare Email:
+                        .col-sm-7
+                            input.form-control.bg-li#homecareEmail(type='text' value=partner.email disabled readonly)
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='city') Homecare City:
+                        .col-sm-7
+                            input.form-control.bg-li#city(type='text' value=partner.city placeholder='city')
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Location :
+                        .col-sm-3
+                            input.form-control.bg-li#latitude(type='text' value=partner.location.coordinates[1] )
+                        .col-sm-3
+                            input.form-control.bg-li#longtitude(type='text' value=partner.location.coordinates[0] )
+                        .col-sm-1
+
+                            i.fa-solid.fa-location-dot.border.bg-li.fs-5.p-2.ps-3.pe-3.rounded.text-secondary
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Open / close hours :
+                        .col-sm-3
+                            input.form-control.bg-li#openTime(type='text' value=partner.openTime )
+                        .col-sm-3
+                            input.form-control.bg-li#closeTime(type='text'  value=partner.closeTime)
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='Address') Address :
+                        .col-sm-7
+                            textarea#Address.form-control.bg-li(rows='3' )= partner.address
+                    div(class="d-grid m-5")
+                        button.btn.btn-primary.btn-block(type='submit') Update 
+                    h5.mt-5.fw-bold Verification Documents
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Homecare Licence :
+                        .col-sm-7
+                            a(href=partner.licence) View
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Aadhar :
+                        .col-sm-7
+                            a(href=partner.aadharId) View
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') PAN card :
+                        .col-sm-7
+                            a(href='#')
+                                label.col-sm-3.col-form-label.fw-bold View
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Verified video :
+                        .col-sm-7
+                            iframe.embed-responsive-item(src='https://www.youtube.com/embed/tgbNymZ7vqY' allowfullscreen='')
+

@@ -1,0 +1,190 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include layout/pcSidebar
+            .col-9.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-2
+                    h3.vendor-heading.fs-4.mb-0=partner.company
+                    p.mt-0
+                        | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                        | voluptates quo qui corporis nam rem.
+                .p-5.pt-2
+                    hr
+                    .row.ms-3.me-3
+                        h6.col-6.fw-bold.main-color.mt-3.text-head
+                            | Add and Edit Your Services
+                        .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                            button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                | Add More
+                        // Modal
+                        #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                            .modal-dialog.modal-dialog-scrollable
+                                .modal-content
+                                    .modal-header
+                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                            | Add Service Details
+                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                    .modal-body
+                                        form.row.g-3#create_deaddiction_service()
+                                            .col-md-12
+                                                label.col-sm-3.col-form-label.fw-bold Service Type:
+                                                .col-sm-12
+                                                    select#serviceName.form-select.border.border-2.bg-li
+                                                        option -- Select your Speciality -- 
+                                                        each doc in services
+                                                            option(value=doc)= doc
+                                            .col-md-12
+                                                label.form-label(for='startPrice')
+                                                    | Start Price 
+                                                    span.text-danger *
+                                                input#startPrice.form-control(type='text' placeholder='Start Price' required='')
+                                            .col-md-12
+                                                label.form-label(for='endPrice')
+                                                    | End Price 
+                                                    span.text-danger *
+                                                input#endPrice.form-control(type='text' placeholder='End Price' required='')
+                                            .col-md-12
+                                                label.form-label(for='description')
+                                                    | Description 
+                                                    span.text-danger *
+                                                input#description.form-control(type='text' placeholder='Description' required='')
+                                            .col-md-12
+                                                label.form-label(for='city')
+                                                    | City
+                                                    span.text-danger *
+                                                input#city.form-control(type='text' placeholder='City' required='')
+                                            .col-md-12
+                                                label.form-label(for='Latitude')
+                                                    | Latitude 
+                                                    span.text-danger *
+                                                input#latitude.form-control(type='text' placeholder='Latitude' required='')
+                                            .col-md-12
+                                                label.form-label(for='longitude')
+                                                    | Longitude 
+                                                    span.text-danger *
+                                                input#longitude.form-control(type='text' placeholder='longitude' required='')
+                                            div
+                                                .text-center
+                                                    output#result
+                                                .text-center
+                                                    h4.fs-6.main-color.text-uppercase.fw-bold
+                                                        | Upload Service image
+                                                    img#imgFileUpload.img-width(alt='Select File' title='Select File' src='/Assets/images/Pictures-icon.png' style='cursor: pointer')
+                                                input#image(type='file' accept='image/jpeg, image/png, image/jpg' )
+                                                input#imageGallery(type='file' multiple='multiple' accept='image/jpeg, image/png, image/jpg' )
+                                                // <output id="result">
+                                            .col-12.text-center
+                                                button.btn.main-color-background.color-white(type='submit')
+                                                    | Add Service
+
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                            | Cancel
+                    hr.m-0.ms-3.me-3
+                    .mt-3.p-3
+                        .row.row-cols-1.row-cols-md-4.g-3#manage_deaddiction_service
+                            each doc,index in deaddiction
+                                .col
+                                    .card.h-100
+                                        img.card-img-top(src=doc.bannerImage alt='Product Iamge')
+                                        .card-body.mt-0.p-1
+                                            .row
+                                                h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                    | #{doc.serviceName}
+                                                a.col-3.main-color
+                                                    i.fa-solid.fa-pen.justify-content-md-end.main-color( data-bs-toggle='modal' data-bs-target=`#myModal-${index}`)
+                                            p.card-text.text-hidden.m-0.fs-7= doc.description
+                                            p.fw-bold.m-0.fs-6 Rs. #{doc.priceFrom} to Rs.#{doc.priceTo}
+                                    .modal.fade(id=`myModal-${index}`)
+                                        .modal-dialog
+                                            .modal-content
+                                                // Modal Header
+                                                .modal-header
+                                                    h4.modal-title Modal Heading
+                                                    button.btn-close(type='button' data-bs-dismiss='modal')
+                                                // Modal body
+                                                .modal-body
+                                                    form.row.g-3#update_service(data-serviceid=doc.hiwdacmID  data-index=index)
+                                                        .col-md-12
+                                                            label.col-sm-3.col-form-label.fw-bold Service Type:
+                                                            .col-sm-12
+                                                                select.form-select.border.border-2.bg-li(id=`serviceName-${index}`)
+                                                                    option -- Select your Speciality -- 
+                                                                    each docs in services
+                                                                        if docs === doc.serviceName
+                                                                            option(value=docs selected)= docs
+                                                                        else 
+                                                                            option(value=docs)= docs
+
+                                                        .col-md-12
+                                                            label.form-label(for='startPrice')
+                                                                | Start Price 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`startPrice-${index}` value=doc.priceFrom placeholder='Start Price' required='')
+                                                        .col-md-12
+                                                            label.form-label(for='endPrice')
+                                                                | End Price 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`endPrice-${index}` value=doc.priceTo placeholder='End Price' required='')
+                                                        .col-md-12
+                                                            label.form-label(for='description')
+                                                                | Description 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`description-${index}` value=doc.description placeholder='Description' required='')
+                                                        .col-md-12
+                                                            label.form-label(for='city')
+                                                                | City 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`city-${index}` value=doc.city placeholder='City' required='')
+                                                        .col-md-12
+                                                            label.form-label(for='Latitude')
+                                                                | Latitude 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`latitude-${index}` placeholder='Latitude' value=doc.location.coordinates[1]  required='')
+                                                        .col-md-12
+                                                            label.form-label(for='longitude')
+                                                                | Longitude 
+                                                                span.text-danger *
+                                                            input.form-control(type='text' id=`longitude-${index}` value=doc.location.coordinates[0] placeholder='longitude' required='')
+                                                        div
+                                                            .text-center
+                                                                output#result
+                                                            .text-center
+                                                                h4.fs-6.main-color.text-uppercase.fw-bold
+                                                                    | Upload Service image
+                                                                img#imgFileUpload.img-width(alt='Select File' title='Select File' src='/Assets/images/Pictures-icon.png' style='cursor: pointer')
+                                                            input(type='file' id=`serviceImage-${index}` name accept='image/jpeg, image/png, image/jpg' )
+                                                            input(type='file' multiple='multiple' id=`serviceImages-${index}` accept='image/jpeg, image/png, image/jpg' )
+                                                            // <output id="result">
+                                                        .col-12.text-center
+                                                            button.btn.main-color-background.color-white(type='submit' )
+                                                                | Update Service
+                                                // Modal footer
+                                                .modal-footer
+                                                    button.btn.btn-danger(type='button' data-bs-dismiss='modal') Close
+
+

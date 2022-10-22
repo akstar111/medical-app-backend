@@ -1,0 +1,66 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    case partner.for
+        when "Blood Bank" 
+            include ../bloodDonnation/layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        div
+            .border.border-color.width-100.p-0.mt-3
+                .p-5.pt-2
+                    a(href=`/vendor/blood-bank/job/view-a-job/${applicant.jobEId}`)
+                        h6.col-6.fw-bold.main-color.mt-5.text-head.text-decoration-underline
+                            i.fa-solid.fa-left-long
+                            |  GO BACK
+                    h2.text-uppercase.text-center.main-color.fw-bold
+                        | Manage the Job
+                    hr.m-0
+                    .text-center
+                        //- img.rounded-circle.resume-image.mt-3(src=applicant.profileImage alt='...')
+                        h6.main-color.text-uppercase.fw-bold.mt-2=applicant.name
+                    .d-flex.bd-highlight
+                        .p-2.flex-grow-1.bd-highlight
+                            div
+                                h6.fw-bold.text-dark
+                                    | Jobs Applied title:
+                                    span.text-secondary.fw-normal= applicant.jobDetails.jobTitle
+                                        
+                        .p-2.bd-highlight
+                            div
+                                h6.fw-bold.text-dark
+                                    | Year of Experience:
+                                    span.text-secondary.fw-normal #{applicant.jobDetails.experience} years
+                    .d-flex.bd-highlight
+                        .p-2.flex-grow-1.bd-highlight
+                            div
+                                h6.fw-bold.text-dark
+                                    | Posted Date:
+                                    span.text-secondary.fw-normal= new Date(applicant.jobDetails.createdAt).toLocaleDateString()
+                        .p-2.bd-highlight
+                            div
+                                h6.fw-bold.text-dark
+                                    | Willing to Join immediately?:
+                                    span.text-secondary.fw-normal Yes
+                    div
+                        p.text-justify= applicant.jobDetails.description
+                    .text-center
+                        h6.main-color.text-uppercase.fw-bold.mt-5 Resume
+                    hr.m-0
+                    .mt-3
+                        object.w-100.frame-h(data=applicant.resume type='application/pdf')
+                            iframe(src=applicant.resume width='500' height='678')
+                                p This browser does not support PDF!
+    // Nav and Content section

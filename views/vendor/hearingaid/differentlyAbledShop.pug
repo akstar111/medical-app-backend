@@ -1,0 +1,469 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include layout/pcSidebar
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-5.pt-2.nav-tabs-section
+                    ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                        li.nav-item.border.rounded(role='presentation')
+                            button#pills-home-tab.nav-link.inside-nav.active.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-home' type='button' role='tab' aria-controls='pills-home' aria-selected='true')
+                                | Product Managements
+                        li.nav-item.border.rounded(role='presentation')
+                            button#pills-profile-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                                | Order List
+                        li.nav-item.border.rounded(role='presentation')
+                            button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                                | History
+                    #pills-tabContent.tab-content
+                        #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Products
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                        | Add More
+                                // Modal
+                                #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Product Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-2#create_new_differently_product()
+                                                    .col-md-12
+                                                        label.form-label(for='newName')
+                                                            |Product Name
+                                                            span.text-danger *
+                                                        input#newName.form-control(type='text' placeholder='Name' required='')
+                                                    .col-md-12
+                                                        label.col-form-label.fw-bold Matrial Type:
+                                                        .col-sm-12
+                                                            select#newMaterialType.form-select.border.border-2.bg-li(required)
+                                                                option(value="") -- Select Material Type -- 
+                                                                option(value="Iron") Iron 
+                                                                option(value="Plastic") Plastic 
+                                                    .col-md-12
+                                                        label.form-label(for='newName')
+                                                            |Product Price
+                                                            span.text-danger *
+                                                        input#newPrice.form-control(type='text' placeholder='Price' required='')
+                                                    .col-md-12
+                                                        label.form-label(for='newName')
+                                                            |Product Discount Price
+                                                            span.text-danger *
+                                                        input#newDiscountPrice.form-control(type='text' placeholder='Discount Price' required='')
+                                                    .col-md-12
+                                                        label.col-form-label.fw-bold Product Type:
+                                                        .col-sm-12
+                                                            select#newProductType.form-select.border.border-2.bg-li(required)
+                                                                option(value="") -- Select Product Type -- 
+                                                                option(value="wheelchar") Wheelchar
+                                                                option(value="leg") Leg
+                                                                option(value="hand") Hand
+                                                                option(value="support-stick") Support-stick
+
+                                                    .col-md-12#addNewFitType
+                                                    .col-md-12
+                                                        label.form-label(for=`newImages`)
+                                                            | Product Image
+                                                            span.text-danger *
+                                                        input.mt-2.form-control(id=`newImages` type='file'  )
+                                                    .col-md-12
+                                                        label.form-label(for=`newImageGallery`)
+                                                            | Product Image Gallery
+                                                            span.text-danger *
+                                                        input.mt-2.form-control(id=`newImageGallery` multiple type='file'  )
+                                                    .col-md-12
+                                                        label.form-label(for='newDescription')
+                                                            |Product Description
+                                                            span.text-danger *
+                                                        input#newDescription.form-control(type='text' placeholder='Description' required='')
+
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Product
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+
+                            hr.m-0
+                            .mt-3
+                                .row.row-cols-1.row-cols-md-4.g-1#update_differenly_product
+                                    each doc,index in products
+                                        .col
+                                            .card.h-100
+                                                img.card-img-top(src=doc.bannerImage alt='Product Iamge')
+                                                .card-body.mt-0.p-1
+                                                    .row
+                                                        - var key =  new Date(doc.createdAt).valueOf()
+                                                        h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                            | #{doc.productName}
+                                                        a.col-3.main-color(href='#' data-bs-toggle='modal' data-bs-target=`#openDiffProductModal${key}`)
+                                                            i.fa-solid.fa-pen.justify-content-md-end.main-color
+                                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' id=`openDiffProductModal${key}` tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                            .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                                .modal-content
+                                                                    .modal-header
+                                                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                            | Update Product Details
+                                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                    .modal-body
+                                                                        form.row.g-2#update_product(data-index=index data-id=doc.hiwhapdpID)
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    |Product Name
+                                                                                    span.text-danger *
+                                                                                input.form-control(type='text' placeholder='Name' id=`newName${index}` required='' value=doc.productName)
+                                                                            .col-md-12
+                                                                                label.col-form-label.fw-bold Matrial Type:
+                                                                                -const materialType = ["Iron","Plastic"]
+                                                                                .col-sm-12
+                                                                                    select.form-select.border.border-2.bg-li(required id=`newMaterialType${index}`)
+                                                                                        option(value="") -- Select Material Type -- 
+                                                                                        each valDoc in materialType
+                                                                                            if valDoc === doc.meterialType
+                                                                                                option(value=valDoc selected)= valDoc
+                                                                                            else
+                                                                                                option(value=valDoc )= valDoc
+
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    |Product Price
+                                                                                    span.text-danger *
+                                                                                input.form-control(type='text' value=doc.price placeholder='Price' id=`newPrice${index}` required='')
+                                                                            .col-md-12
+                                                                                label.form-label(for='newName')
+                                                                                    |Product Discount Price
+                                                                                    span.text-danger *
+                                                                                input.form-control(type='text' value=doc.discountPrice placeholder='Discount Price' id=`newDiscountPrice${index}` required='')
+                                                                            .col-md-12
+                                                                                label.col-form-label.fw-bold Product Type:
+                                                                                .col-sm-12
+                                                                                    - const keys = ["wheelchar","leg","hand","support-stick"]
+                                                                                    select.form-select.border.border-2.bg-li.updateProdutType(required id=`newProductType${index}` data-index=index)
+                                                                                        option(value="") -- Select Product Type -- 
+                                                                                        each valdocs in keys 
+                                                                                            if valdocs === doc.productType
+                                                                                                option(value=valdocs selected)= valdocs
+                                                                                            else 
+                                                                                                option(value=valdocs )= valdocs
+
+
+                                                                            .col-md-12(id=`addUpdateFitType${index}`)
+                                                                                if doc.productType !== "wheelchar"
+                                                                                    label.col-form-label.fw-bold Fit Type:
+                                                                                    .col-sm-12
+                                                                                        select.form-select.border.border-2.bg-li.u(required id=`newFitType${index}`)
+                                                                                            option -- Select Fit Type --
+                                                                                                if doc.fitType === 'right'
+                                                                                                    option(value='right' selected) Right
+                                                                                                    option(value='left' ) Left
+                                                                                                ele 
+                                                                                                    option(value='right' ) Right
+                                                                                                    option(value='left' selected) Left
+                                                                            .col-md-12
+                                                                                label.form-label(for=`newImages`)
+                                                                                    | Product Image
+                                                                                    span.text-danger *
+                                                                                br
+                                                                                img(src=doc.bannerImage style='width:150px;')
+                                                                                input.mt-2.form-control(id=`newImages${index}` type='file'  )
+                                                                            .col-md-12
+                                                                                label.form-label(for=`newImageGallery`)
+                                                                                    | Product Image Gallery
+                                                                                    span.text-danger *
+                                                                                br
+                                                                                each imggla in doc.imageGallery
+                                                                                    img.me-2(src=imggla style='width:120px;')
+
+                                                                                input.mt-2.form-control(id=`newImageGallery${index}` multiple type='file'  )
+                                                                            .col-md-12
+                                                                                label.form-label(for='newDescription')
+                                                                                    |Product Description
+                                                                                    span.text-danger *
+                                                                                input.form-control(type='text' value = doc.productDescription placeholder='Description' id=`newDescription${index}` required='')
+
+                                                                            .col-12.text-center
+                                                                                button.btn.main-color-background.color-white(type='submit')
+                                                                                    | Update Product
+                                                                    .modal-footer
+                                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                            | Cancel
+
+                                                    p.card-text.text-hidden.m-0= doc.description
+                                                    .d-flex
+                                                        if doc.opticalDiscountPrice
+                                                            p.fw-bold.m-0.fs-5 Rs. #{doc.opticalDiscountPrice}
+                                                            p.ms-1.m-0.mt-1.text-decoration-line-through.fs-6.text-secondary
+                                                                | #{doc.opticalPrice}
+                                                            //- p.ms-1.m-0.mt-1.text-danger.fs-6 (50%)
+
+                        #pills-profile.tab-pane.fade(role='tabpanel' aria-labelledby='pills-profile-tab')
+                            h6.col-6.fw-bold.main-color.mt-5.text-head
+                                | Order List
+                            hr.m-0
+                            .mt-3.table-responsive
+                                table.table.table-bordered
+                                    thead
+                                        tr.text-nowrap
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Name
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Phone Number
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Address
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Product Name
+
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Order Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Status
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | View
+                                    tbody#update_vendor_diffable_product_status
+                                        -const status = ['placed', 'accepted','rejected', 'shipped', 'outofdelivery', 'delivered']
+                                        each doc,inds in orders.active
+                                            tr.text-nowrap
+                                                th(scope='row')= doc.addressDetails.name
+                                                td= doc.addressDetails.phone1
+                                                td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                                td= doc.productData.productName
+                                                td= new Date(doc.createdAt).toLocaleString()
+                                                td  
+                                                    select.form-select.border.update_status(aria-label='Default select example' id=`update_diffable_status-${inds}` data-index=inds data-id=doc.hiwdaposID style="width:auto;")
+                                                        each docs in status
+                                                            if docs === doc.orderStatus
+                                                                option(value=docs selected)= docs
+                                                            else 
+                                                                option(value=docs)= docs
+
+                                                td
+                                                    a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderActive-${inds}`) View
+                                                    // Modal
+                                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderActive-${inds}`)
+                                                        .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                            .modal-content
+                                                                .modal-header
+                                                                    h5#staticBackdropLabel.modal-title
+                                                                        | Product Details
+                                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                .modal-body.table-responsive
+                                                                    table.table.table-bordered
+                                                                        thead
+                                                                            tr
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    | Order Details
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    //- | Order ID - 09869766875
+                                                                        tbody
+                                                                            //- tr
+                                                                            //-     th(scope='row') Product Id
+                                                                            //-     td 8798789678
+                                                                            tr
+                                                                                th(scope='row') Product Name
+                                                                                td= doc.productData.productName
+                                                                            tr
+                                                                                th(scope='row') Matrial Type
+                                                                                td= doc.productData.meterialType
+                                                                            tr
+                                                                                th(scope='row') Product Type
+                                                                                td= doc.productData.productType
+                                                                            if doc.productData.productType !== "wheelchair"
+                                                                                tr
+                                                                                    th(scope='row') Product Type
+                                                                                    td= doc.productData.meterialType
+                                                                            tr
+                                                                                th(scope='row') Hearing aid Image
+                                                                                td
+                                                                                    img.thumbnail(src=doc.productData.bannerImage alt='Product Image')
+                                                                            tr
+                                                                                th(scope='row') Hearingaid Image Gallery
+                                                                                td
+                                                                                    each galImg in doc.productData.imageGallery
+                                                                                        img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                            tr
+                                                                                th(scope='row') Order Status
+                                                                                td= doc.orderStatus
+                                                                            tr
+                                                                                th(scope='row') Address
+                                                                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                            tr
+                                                                                th(scope='row') Phone Number 1
+                                                                                td= doc.addressDetails.phone1
+                                                                            tr
+                                                                                th(scope='row') Phone Number 2
+                                                                                td= doc.addressDetails.phone2
+                                                                            tr
+                                                                                th(scope='row') Quanity
+                                                                                td= doc.productData.quantity
+                                                                            tr
+                                                                                th(scope='row') Price
+                                                                                td= doc.productData.price
+                                                                            tr
+                                                                                th(scope='row') Discount Price
+                                                                                td= doc.productData.discountPrice
+
+                                                                            tr
+                                                                                th.text-danger(scope='row')
+                                                                                    | Payment Mode
+                                                                                td.text-danger Online
+                                                                            tr
+                                                                                th(scope='row') Ordered Date
+                                                                                td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Accepted Date
+                                                                                td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Shipped Date
+                                                                                td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Out of Delivery Date Date
+                                                                                td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                                .modal-footer
+                                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                        | Cancel
+                        #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                            h6.col-6.fw-bold.main-color.mt-5.text-head History
+                            hr.m-0
+                            .mt-3.table-responsive
+                                table.table.table-bordered
+                                    thead
+                                        tr.text-nowrap
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Name
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Phone Number
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Address
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Product Name
+
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Order Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Status
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | View
+                                    tbody
+
+                                        each doc,inds in orders.history
+                                            tr.text-nowrap
+                                                th(scope='row')= doc.addressDetails.name
+                                                td= doc.addressDetails.phone1
+                                                td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                                td= doc.productData.productName
+                                                td= new Date(doc.createdAt).toLocaleString()
+                                                td=doc.orderStatus
+
+                                                td
+                                                    a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderActive-${inds}`) View
+                                                    // Modal
+                                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderActive-${inds}`)
+                                                        .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                            .modal-content
+                                                                .modal-header
+                                                                    h5#staticBackdropLabel.modal-title
+                                                                        | Product Details
+                                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                .modal-body.table-responsive
+                                                                    table.table.table-bordered
+                                                                        thead
+                                                                            tr
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    | Order Details
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    //- | Order ID - 09869766875
+                                                                        tbody
+                                                                            //- tr
+                                                                            //-     th(scope='row') Product Id
+                                                                            //-     td 8798789678
+                                                                            tr
+                                                                                th(scope='row') Product Name
+                                                                                td= doc.productData.productName
+                                                                            tr
+                                                                                th(scope='row') Matrial Type
+                                                                                td= doc.productData.meterialType
+                                                                            tr
+                                                                                th(scope='row') Product Type
+                                                                                td= doc.productData.productType
+                                                                            if doc.productData.productType !== "wheelchair"
+                                                                                tr
+                                                                                    th(scope='row') Product Type
+                                                                                    td= doc.productData.meterialType
+                                                                            tr
+                                                                                th(scope='row') Hearing aid Image
+                                                                                td
+                                                                                    img.thumbnail(src=doc.productData.bannerImage alt='Product Image')
+                                                                            tr
+                                                                                th(scope='row') Hearingaid Image Gallery
+                                                                                td
+                                                                                    each galImg in doc.productData.imageGallery
+                                                                                        img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                            tr
+                                                                                th(scope='row') Order Status
+                                                                                td= doc.orderStatus
+                                                                            tr
+                                                                                th(scope='row') Address
+                                                                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                            tr
+                                                                                th(scope='row') Phone Number 1
+                                                                                td= doc.addressDetails.phone1
+                                                                            tr
+                                                                                th(scope='row') Phone Number 2
+                                                                                td= doc.addressDetails.phone2
+                                                                            tr
+                                                                                th(scope='row') Quanity
+                                                                                td= doc.productData.quantity
+                                                                            tr
+                                                                                th(scope='row') Price
+                                                                                td= doc.productData.price
+                                                                            tr
+                                                                                th(scope='row') Discount Price
+                                                                                td= doc.productData.discountPrice
+
+                                                                            tr
+                                                                                th.text-danger(scope='row')
+                                                                                    | Payment Mode
+                                                                                td.text-danger Online
+                                                                            tr
+                                                                                th(scope='row') Ordered Date
+                                                                                td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Accepted Date
+                                                                                td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Shipped Date
+                                                                                td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                            tr
+                                                                                th(scope='row') Out of Delivery Date Date
+                                                                                td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                                .modal-footer
+                                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                        | Cancel

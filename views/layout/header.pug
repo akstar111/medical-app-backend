@@ -1,0 +1,72 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.shadow.p-0.sticky-top
+    .container-fluid
+        a.navbar-brand(href='#')
+            img.w-75(src='/Assets/images/MediappSampleLogo.png')
+        button.navbar-toggler.collapsed.d-flex.d-lg-none.flex-column.justify-content-around(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+            span.toggler-icon.top-bar
+            span.toggler-icon.middle-bar
+            span.toggler-icon.bottom-bar
+        #navbarSupportedContent.collapse.navbar-collapse
+            ul.navbar-nav.me-auto.mb-lg-0.ms-0
+                li.nav-item
+                    a.nav-link.active.pb-4.pt-4.ps-3.pe-3.hover-underline-animation(aria-current='page' href='#') HOME
+                li.nav-item
+                    a.nav-link.pb-4.pt-4.ps-3.pe-3.hover-underline-animation(href='#') ABOUT US
+                li.nav-item.dropdown.has-megamenu
+                    a#navbarDropdown.nav-link.dropdown-toggle.pb-4.pt-4.ps-3.pe-3.hover-underline-animation.pb-4(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                        | SERVICES
+                    .dropdown-menu.megamenu(role='menu')
+                        .row.row-cols-1.row-cols-md-4
+                            .col
+                                a.dropdown-item(href='#') Ambulance
+                                a.dropdown-item(href='#') Home care services
+                                a.dropdown-item(href='#') Fitness
+                                a.dropdown-item(href='#') Blood Donation
+                                a.dropdown-item(href='#') Job Portal
+                                a.dropdown-item(href='#') De-Addiction
+                            .col
+                                a.dropdown-item(href='#') Medical records
+                                a.dropdown-item(href='#') Hospital Package
+                                a.dropdown-item(href='#') Medical Market
+                                a.dropdown-item(href='#') Disabled abled people
+                                a.dropdown-item(href='#') Medical tourism
+                                a.dropdown-item(href='#') Hospital Details
+                            .col
+                                a.dropdown-item(href='#') Donation &amp; Charity
+                                a.dropdown-item(href='#') Knowledge Base
+                                a.dropdown-item(href='#') Opticals
+                                a.dropdown-item(href='#') Organ Donation
+                                a.dropdown-item(href='#') Study Abroad
+                                a.dropdown-item(href='#') Doctor-Online Consultation
+                            .col
+                                a.dropdown-item(href='#') Pharmacy
+                                a.dropdown-item(href='#') Laboratory
+                                a.dropdown-item(href='#') Meet The Experts
+                                a.dropdown-item(href='#') Medical Insurance
+                                a.dropdown-item(href='#') Community
+                    // dropdown-mega-menu.//
+                li.nav-item
+                    a.nav-link.pb-4.pt-4.ps-3.pe-3.hover-underline-animation(href='#') CAREER
+                li.nav-item
+                    a.nav-link.pb-4.pt-4.ps-3.pe-3.hover-underline-animation.d-none(href='#') JOIN WITH US
+                li.nav-item.dropdown
+                    a#navbarDropdown.nav-link.dropdown-toggle.pb-4.pt-4.ps-3.pe-3.hover-underline-animation.pb-4(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                        | MANAGE ADMIN
+                    ul.dropdown-menu(aria-labelledby='navbarDropdown')
+                        li
+                            a.dropdown-item(href='#') Market Place
+                        li
+                            a.dropdown-item(href='#') Opticals
+                        li
+                            a.dropdown-item(href='#') Join With US
+                li.nav-item
+                    a.nav-link.pb-4.pt-4.ps-3.pe-3.hover-underline-animation(href='#') COMMUNITY
+            a.nav-link.p-3.float-end.fs-6.color-white.fw-bold.icon-header(href='#')
+                i.bi.bi-instagram
+            a.nav-link.p-3.float-end.fs-6.color-white.fw-bold.icon-header(href='#')
+                i.bi.bi-facebook
+            a.nav-link.p-3.float-end.fs-6.color-white.fw-bold.icon-header(href='#')
+                i.bi.bi-whatsapp
+            a.nav-link.p-3.float-end.fs-6.color-white.fw-bold.icon-header(href='#')
+                i.bi.bi-linkedin
+// Navbar End

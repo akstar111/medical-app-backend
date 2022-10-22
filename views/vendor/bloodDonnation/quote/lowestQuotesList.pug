@@ -1,0 +1,174 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+    // Slick-carousel
+    script(type='text/javascript' src='https://code.jquery.com/jquery-1.11.0.min.js')
+    script(type='text/javascript' src='https://code.jquery.com/jquery-migrate-1.2.1.min.js')
+    script(type='text/javascript' src='/Assets/slick/slick.min.js')
+    script(type='text/javascript').
+        $(document).ready(function () {
+        $(".single-item").slick();
+        });
+    script(type='text/javascript').
+        $(document).ready(function () {
+        $(".single-item1").slick();
+        });
+    script(type='text/javascript').
+        $(document).ready(function () {
+        $(".single-item2").slick();
+        });
+
+
+block append head 
+    link(rel='stylesheet' type='text/css' href='/Assets/slick/slick.css')
+    link(rel='stylesheet' type='text/css' href='/Assets/slick/slick-theme.css')
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    .scrollmenu.display-header.p-3
+        a.nav-link.scroll-nav.p-1.scroll-nav-active(href='/vendor/blood-bank') Profile
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/manage-blood') Manage Blood
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/quotes') Purchase
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/job') Post job
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/advertisement/') Advertisement
+        a.nav-link.scroll-nav.p-1(href='./Donate-for-us.html') Donate for us
+        a.nav-link.scroll-nav.p-1#logoutM log out
+    // Mobile nav section
+    // Nav and Content section
+
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            .col-2.p-0.border.m-0.border-color.display-none
+                ul.nav.flex-column.p-0.m-0
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(aria-current='page' href='/vendor/blood-bank') Profile
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/manage-blood') Manage Blood
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link.vendor-nav-link-active(href='/vendor/blood-bank/quotes')
+                            | Purchase
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/job') Post job
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/advertisement/') Advertisement
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link#logoutW log out
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                if bloodbank 
+                    .p-2
+                        h3.vendor-heading.fs-4.mb-0
+                            | Home care Services and Centers
+                        p.mt-0
+                            | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                            | voluptates quo qui corporis nam rem.
+                    hr
+                    .p-3
+                        a(href='/vendor/blood-bank/quotes')
+                            p.ms-3.mt-3
+                                i.fa-solid.fa-arrow-left-long
+                                |  GO BACK
+                        hr
+                        if quotes.length
+                            .p-5.pt-2.nav-tabs-section#proposalUpdate
+                                ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                                    each doc,index in quotes
+                                        li.nav-item.border.rounded(role='presentation')
+                                            button.nav-link.inside-nav.fw-bold(id=`pills-home${index}-tab` data-bs-toggle='pill' data-bs-target=`#pills${index}-home` type='button' class=`${index === 0 ? "active" : ""}` role='tab' aria-controls=`#pills${index}-home` aria-selected='true')
+                                                | quotes Quote #{index +1}
+
+                                #pills-tabContent.tab-content
+                                    each doc,index in quotes
+                                        .tab-pane.show(id=`pills${index}-home` class=`${index === 0 ? "active" : ""}` role='tabpanel' aria-labelledby=`pills-home${index}-tab`)
+                                            .single-item
+                                                each docs in doc.partners
+                                                    div
+                                                        .mt-3.table-responsive
+                                                            table.table.table-bordered
+                                                                thead
+                                                                    tr
+                                                                        th.color-white.main-color-background.text-center(scope='col' colspan='2')
+                                                                            | #{docs.productName}
+                                                                tbody
+                                                                    tr
+                                                                        th(scope='row') Vendor Name
+                                                                        td= docs.partner
+                                                                    //- tr
+                                                                    //-     th(scope='row') Vendor Type
+                                                                    //-     td All
+                                                                    tr
+                                                                        th(scope='row') Product
+                                                                        td #{docs.productName}
+                                                                    //- tr
+                                                                    //-     th(scope='row') Product Specification
+                                                                    //-     td Product Specification
+                                                                    //- tr
+                                                                    //-     th(scope='row') Product Image
+                                                                    //-     td
+                                                                    //-         img.thumbnail(src='./Assets/images/product image.jpg' alt='product image')
+                                                                    tr
+                                                                        th(scope='row') Price / 1 pcs, unit
+                                                                        td= docs.estimateCost
+                                                                    tr
+                                                                        th(scope='row') Required Quantity
+                                                                        td= docs.quantity
+                                                                    tr
+                                                                        th(scope='row') Amount
+                                                                        td= docs.estimateCost * docs.quantity
+                                                                    tr
+                                                                        th(scope='row') GST
+                                                                        td 2000
+                                                                    tr
+                                                                        th(scope='row') Delivery charges
+                                                                        td 2000
+                                                                    tr
+                                                                        th(scope='row') Total Ammount
+                                                                        td 24,000
+                                                                    tr
+                                                                        th(scope='row') Delivery Date
+                                                                        td 19-07-2022
+                                                                    tr
+                                                                        th(scope='row') Quotation Valid Until
+                                                                        td 19-07-2022
+                                                                    tr
+                                                                        th(scope='row') Payment terms
+                                                                        td Lorem ipsum dolor sit amet.
+
+
+                                                            .text-center.mt-5
+                                                                if docs.proposeStatus === "accepted"
+                                                                    button.btn.btn-primary.btn-block You already Accepted this Quote.
+                                                                else if docs.proposeStatus === "proposal-submited"
+                                                                    button.btn.btn-success.ps-5.pe-5.me-5#Accept_Proposal(type='button' 
+
+                                                                    data-proposal=docs.proposal)
+                                                                        | Accept
+                                                                    button.btn.btn-danger.ps-5.pe-5.me-5#Reject_Proposal(type='button' data-proposal=docs.proposal)
+                                                                        | Reject
+                                                                else if docs.proposeStatus === "rejected-by-user"
+                                                                       button.btn.btn-primary.btn-block You rejected this Vendor
+                                                                else if docs.proposeStatus === "completed"
+                                                                       button.btn.btn-primary.btn-block This request was completed.
+                        else 
+                            p Currently you didn't receive any request.
+                else
+
+                    div(class="d-grid m-5")
+                        button.btn.btn-success.btn-block(type='button' data-bs-toggle="modal" data-bs-target="#myModal") Create

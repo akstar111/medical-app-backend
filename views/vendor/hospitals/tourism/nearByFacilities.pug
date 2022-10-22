@@ -1,0 +1,223 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include ../layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include ../layout/pcSidebar
+            .col-9.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-2
+                    h3.vendor-heading.fs-4.mb-0=partner.company
+                    p.mt-0
+                        | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                        | voluptates quo qui corporis nam rem.
+                .p-5.pt-2.nav-tabs-section
+                    include ../layout/dataList
+
+                form#update_nearby_facilities.mb-5
+                    div
+                        -const nearCon = nearby !== undefined
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Transportation Services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#transportationServicz.form-check-input(type='radio' name="transportationService" value=1 required checked=nearCon ? nearby && nearby.transportationService ? true : false : false )
+                                    label.form-check-label(for='transportationServicz' ) Yes
+                                .form-check.form-check-inline
+                                    input#transportationServicz2.form-check-input(type='radio' name="transportationService" value=0 checked=nearCon ?  nearby && !nearby.transportationService ? true : false : false )
+                                    label.form-check-label(for='transportationServicz2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Visa Arrangements  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#visaArrangements.form-check-input(type='radio' name="visaArrangements" value=1 required checked=nearCon ? nearby && nearby.visaArrangements ? true : false : false )
+                                    label.form-check-label(for='visaArrangements' ) Yes
+                                .form-check.form-check-inline
+                                    input#visaArrangements2.form-check-input(type='radio' name="visaArrangements" value=0 checked=nearCon ?  nearby && !nearby.visaArrangements ? true : false : false )
+                                    label.form-check-label(for='visaArrangements2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Flight Arrangements   :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#flightArrangeMents.form-check-input(type='radio' name="flightArrangeMents" value=1 required checked=nearCon ? nearby && nearby.flightArrangeMents ? true : false : false )
+                                    label.form-check-label(for='flightArrangeMents' ) Yes
+                                .form-check.form-check-inline
+                                    input#flightArrangeMents2.form-check-input(type='radio' name="flightArrangeMents" value=0 checked=nearCon ?  nearby && !nearby.flightArrangeMents ? true : false : false )
+                                    label.form-check-label(for='flightArrangeMents2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Travel Desk  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#travelDesk.form-check-input(type='radio' name="travelDesk" value=1 required checked=nearCon ? nearby && nearby.travelDesk ? true : false : false )
+                                    label.form-check-label(for='travelDesk' ) Yes
+                                .form-check.form-check-inline
+                                    input#travelDesk3.form-check-input(type='radio' name="travelDesk" value=0 checked=nearCon ?  nearby && !nearby.travelDesk ? true : false : false )
+                                    label.form-check-label(for='travelDesk3' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='multilingualStaff') Multilingual Staff  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#multilingualStaffRadio.form-check-input(type='radio' name="multilingualStaff" value=1 required checked=nearCon ? nearby && nearby.multilingualStaff ? true : false : false )
+                                    label.form-check-label(for='multilingualStaffRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#multilingualStaffRadio2.form-check-input(type='radio' name="multilingualStaff" value=0 checked=nearCon ?  nearby && !nearby.multilingualStaff ? true : false : false )
+                                    label.form-check-label(for='multilingualStaffRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='interpreterService') Interpreter Services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#interpreterServiceRadio.form-check-input(type='radio' name="interpreterService" value=1 required checked=nearCon ? nearby && nearby.interpreterService ? true : false : false )
+                                    label.form-check-label(for='interpreterServiceRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#interpreterServiceRadio2.form-check-input(type='radio' name="interpreterService" value=0 checked=nearCon ?  nearby && !nearby.interpreterService ? true : false : false )
+                                    label.form-check-label(for='interpreterServiceRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Airport pickup and drop facility  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#airportPickupAndDropFacility.form-check-input(type='radio' name="airportPickupAndDropFacility" value=1 required checked=nearCon ? nearby && nearby.airportPickupAndDropFacility ? true : false : false )
+                                    label.form-check-label(for='airportPickupAndDropFacility' ) Yes
+                                .form-check.form-check-inline
+                                    input#airportPickupAndDropFacility2.form-check-input(type='radio' name="airportPickupAndDropFacility" value=0 checked=nearCon ?  nearby && !nearby.airportPickupAndDropFacility ? true : false : false )
+                                    label.form-check-label(for='airportPickupAndDropFacility2' ) No
+                    
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='rentalCarService') Rental car services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#rentalCarServiceRadio.form-check-input(type='radio' name="rentalCarService" value=1 required checked=nearCon ? nearby && nearby.rentalCarService ? true : false : false )
+                                    label.form-check-label(for='rentalCarServiceRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#rentalCarServiceRadio2.form-check-input(type='radio' name="rentalCarService" value=0 checked=nearCon ?  nearby && !nearby.rentalCarService ? true : false : false )
+                                    label.form-check-label(for='rentalCarServiceRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Insurance coordination   :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#insuranceContidion.form-check-input(type='radio' name="insuranceContidion" value=1 required checked=nearCon ? nearby && nearby.insuranceContidion ? true : false : false )
+                                    label.form-check-label(for='insuranceContidion' ) Yes
+                                .form-check.form-check-inline
+                                    input#insuranceContidion2.form-check-input(type='radio' name="insuranceContidion" value=0 checked=nearCon ?  nearby && !nearby.insuranceContidion ? true : false : false )
+                                    label.form-check-label(for='insuranceContidion2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodAndDietaryService') Food & Dietary services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#foodAndDietaryServiceRadio.form-check-input(type='radio' name="foodAndDietaryService" value=1 required checked=nearCon ? nearby && nearby.foodAndDietaryService ? true : false : false )
+                                    label.form-check-label(for='foodAndDietaryServiceRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#foodAndDietaryServiceRadio2.form-check-input(type='radio' name="foodAndDietaryService" value=0 checked=nearCon ?  nearby && !nearby.foodAndDietaryService ? true : false : false )
+                                    label.form-check-label(for='foodAndDietaryServiceRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='suiteRooms') Suite Rooms  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#suiteRoomsRadio.form-check-input(type='radio' name="suiteRooms" value=1 required checked=nearCon ? nearby && nearby.suiteRooms ? true : false : false )
+                                    label.form-check-label(for='suiteRoomsRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#suiteRoomsRadio2.form-check-input(type='radio' name="suiteRooms" value=0 checked=nearCon ?  nearby && !nearby.suiteRooms ? true : false : false )
+                                    label.form-check-label(for='suiteRoomsRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='laundryAndHouseKeepingService') Laundry and House keeping services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#laundryAndHouseKeepingServiceRadio.form-check-input(type='radio' name="laundryAndHouseKeepingService" value=1 required checked=nearCon ? nearby && nearby.laundryAndHouseKeepingService ? true : false : false )
+                                    label.form-check-label(for='laundryAndHouseKeepingServiceRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#laundryAndHouseKeepingServiceRadio2.form-check-input(type='radio' name="laundryAndHouseKeepingService" value=0 checked=nearCon ?  nearby && !nearby.laundryAndHouseKeepingService ? true : false : false )
+                                    label.form-check-label(for='laundryAndHouseKeepingServiceRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='hotelAndGuestHouseAccommodation') Hotel/Guest house accommodation  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#hotelAndGuestHouseAccommodation.form-check-input(type='radio' name="hotelAndGuestHouseAccommodation" value=1 required checked=nearCon ? nearby && nearby.hotelAndGuestHouseAccommodation ? true : false : false )
+                                    label.form-check-label(for='hotelAndGuestHouseAccommodation' ) Yes
+                                .form-check.form-check-inline
+                                    input#hotelAndGuestHouseAccommodation2.form-check-input(type='radio' name="hotelAndGuestHouseAccommodation" value=0 checked=nearCon ?  nearby && !nearby.hotelAndGuestHouseAccommodation ? true : false : false )
+                                    label.form-check-label(for='hotelAndGuestHouseAccommodation2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='internationalCuisine') International cuisine  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#internationalCuisineRadio.form-check-input(type='radio' name="internationalCuisine" value=1 required checked=nearCon ? nearby && nearby.internationalCuisine ? true : false : false )
+                                    label.form-check-label(for='internationalCuisineRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#internationalCuisineRadio2.form-check-input(type='radio' name="internationalCuisine" value=0 checked=nearCon ?  nearby && !nearby.internationalCuisine ? true : false : false )
+                                    label.form-check-label(for='internationalCuisineRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='specialIndianFoodOrChoiceOfMeals') Special Indian Food / Choice of Meals  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#specialIndianFoodOrChoiceOfMealsRadio.form-check-input(type='radio' name="specialIndianFoodOrChoiceOfMeals" value=1 required checked=nearCon ? nearby && nearby.specialIndianFoodOrChoiceOfMeals ? true : false : false )
+                                    label.form-check-label(for='specialIndianFoodOrChoiceOfMealsRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#specialIndianFoodOrChoiceOfMealsRadio2.form-check-input(type='radio' name="specialIndianFoodOrChoiceOfMeals" value=0 checked=nearCon ?  nearby && !nearby.specialIndianFoodOrChoiceOfMeals ? true : false : false )
+                                    label.form-check-label(for='specialIndianFoodOrChoiceOfMealsRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='foodFacility') Day care Services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#dayCareService.form-check-input(type='radio' name="dayCareService" value=1 required checked=nearCon ? nearby && nearby.dayCareService ? true : false : false )
+                                    label.form-check-label(for='dayCareService' ) Yes
+                                .form-check.form-check-inline
+                                    input#dayCareService2.form-check-input(type='radio' name="dayCareService" value=0 checked=nearCon ?  nearby && !nearby.dayCareService ? true : false : false )
+                                    label.form-check-label(for='dayCareService2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='nearByHotels') Nearby Hotels  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#nearByHotelsRadio.form-check-input(type='radio' name="nearByHotels" value=1 required checked=nearCon ? nearby && nearby.nearByHotels ? true : false : false )
+                                    label.form-check-label(for='nearByHotelsRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#nearByHotelsRadio2.form-check-input(type='radio' name="nearByHotels" value=0 checked=nearCon ?  nearby && !nearby.nearByHotels ? true : false : false )
+                                    label.form-check-label(for='nearByHotelsRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='parkingFacility') Parking Facility  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#parkingFacilityRadio.form-check-input(type='radio' name="parkingFacility" value=1 required checked=nearCon ? nearby && nearby.parkingFacility ? true : false : false )
+                                    label.form-check-label(for='parkingFacilityRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#parkingFacilityRadio2.form-check-input(type='radio' name="parkingFacility" value=0 checked=nearCon ?  nearby && !nearby.parkingFacility ? true : false : false )
+                                    label.form-check-label(for='parkingFacilityRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='securityService') Security Services  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#securityServiceRadio.form-check-input(type='radio' name="securityService" value=1 required checked=nearCon ? nearby && nearby.securityService ? true : false : false )
+                                    label.form-check-label(for='securityServiceRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#securityServiceRadio2.form-check-input(type='radio' name="securityService" value=0 checked=nearCon ?  nearby && !nearby.securityService ? true : false : false )
+                                    label.form-check-label(for='securityServiceRadio2' ) No
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='postTravelMedicalCare') Post Travel Medical Care  :
+                            .col-sm-7
+                                .form-check.form-check-inline
+                                    input#postTravelMedicalCareRadio.form-check-input(type='radio' name="postTravelMedicalCare" value=1 required checked=nearCon ? nearby && nearby.postTravelMedicalCare ? true : false : false )
+                                    label.form-check-label(for='postTravelMedicalCareRadio' ) Yes
+                                .form-check.form-check-inline
+                                    input#postTravelMedicalCareRadio2.form-check-input(type='radio' name="postTravelMedicalCare" value=0 checked=nearCon ?  nearby && !nearby.postTravelMedicalCare ? true : false : false )
+                                    label.form-check-label(for='postTravelMedicalCareRadio2' ) No
+                        .d-grid 
+                            button.btn.btn-primary.btn-block Submit

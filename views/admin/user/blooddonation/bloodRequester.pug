@@ -1,0 +1,283 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+
+        hr
+        include ./shared/detailsList
+        h5.fw-bold.mt-3.ms-3 Active Requester
+        hr.m-0 
+        if requester.active
+            .table-responsive
+                table.table.table-bordered.table-font
+                    thead
+                        tr
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Patient Name
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Contact Person Name
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Phone Number
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Required Date
+
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Status
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Request Details
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Donner Details
+
+                    tbody#update_blood_donner
+
+                        tr
+                            td= requester.active.patientName
+                            td= requester.active.contactName
+                            td= requester.active.phoneNumber
+                            td= new Date(requester.active.requriedDate).toLocaleDateString()
+
+                            td
+                                select.form-select.update_status(id=`update_blood_requester` data-user=user.id data-requester=requester.active.hiwnbrID  )
+                                    option(value="active"  selected) Active
+                                    option(value="canceled"  ) Cancel
+                                    option(value="received"  ) Received
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `activeBookingdetails` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Booking Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Booking Details
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                            //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                    tbody
+                                                        tr
+                                                            th(scope='row') Patient Name
+                                                            td= requester.active.patientName
+
+                                                        tr
+                                                            th(scope='row') Contact Person Name
+                                                            td= requester.active.contactName
+
+                                                        tr
+                                                            th(scope='row') Phone Number
+                                                            td= requester.active.phoneNumber
+
+                                                        tr
+                                                            th(scope='row') Required Date
+                                                            td= new Date(requester.active.requriedDate).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Blood Group 
+                                                            td= requester.active.bloodGroup
+
+                                                        tr
+                                                            th(scope='row') Blood Operation Type 
+                                                            td= requester.active.opertionType
+
+                                                        tr
+                                                            th(scope='row') Units Required
+                                                            td= requester.active.unitsRequird
+
+                                                        tr
+                                                            th(scope='row') Hospital Name
+                                                            td= requester.active.hospitalName
+
+                                                        tr
+                                                            th(scope='row') Hospital Address
+                                                            td= requester.active.hospitalAddress
+
+                                                        tr
+                                                            th(scope='row')  Hospital Location
+                                                            td #{requester.active.location.coordinates[1]}, #{requester.active.location.coordinates[0]}
+
+                                                        tr
+                                                            th(scope='row') Requested Date
+                                                            td= new Date(requester.active.createdAt).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Description
+                                                            td= requester.active.description
+
+                                                        tr
+                                                            th(scope='row') Status
+                                                            td= requester.active.status
+
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeDonnerBookingdetails`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `activeDonnerBookingdetails` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Donner Details Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Name
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Phone
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Status
+
+                                                    tbody 
+                                                        if requester.active
+                                                            each doc in requester.active.requests
+                                                                tr
+                                                                    td(scope='row')= doc.donnerName
+                                                                    td= doc.donnerPhone
+                                                                    td= doc.status
+
+
+
+        hr.m-0  
+        h5.fw-bold.mt-3.ms-3 History Requester
+
+        .table-responsive
+            table.table.table-bordered.table-font
+                thead
+                    tr
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Patient Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Contact Person Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Phone Number
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Required Date
+
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Status
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Request Details
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Donner Details
+                tbody
+                    each doc,index in requester.history
+
+                        tr
+                            td= doc.patientName
+                            td= doc.contactName
+                            td= doc.phoneNumber
+                            td= new Date(doc.requriedDate).toLocaleDateString()
+
+                            td= doc.status
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#historyBookingdetails-${index}`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `historyBookingdetails-${index}` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Booking Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Booking Details
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                            //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                    tbody
+                                                        tr
+                                                            th(scope='row') Patient Name
+                                                            td= doc.patientName
+
+                                                        tr
+                                                            th(scope='row') Contact Person Name
+                                                            td= doc.contactName
+
+                                                        tr
+                                                            th(scope='row') Phone Number
+                                                            td= doc.phoneNumber
+
+                                                        tr
+                                                            th(scope='row') Required Date
+                                                            td= new Date(doc.requriedDate).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Blood Group 
+                                                            td= doc.bloodGroup
+
+                                                        tr
+                                                            th(scope='row') Blood Operation Type 
+                                                            td= doc.opertionType
+
+                                                        tr
+                                                            th(scope='row') Units Required
+                                                            td= doc.unitsRequird
+
+                                                        tr
+                                                            th(scope='row') Hospital Name
+                                                            td= doc.hospitalName
+
+                                                        tr
+                                                            th(scope='row') Hospital Address
+                                                            td= doc.hospitalAddress
+
+                                                        tr
+                                                            th(scope='row')  Hospital Location
+                                                            td #{doc.location.coordinates[1]}, #{doc.location.coordinates[0]}
+
+                                                        tr
+                                                            th(scope='row') Requested Date
+                                                            td= new Date(doc.createdAt).toLocaleDateString()
+
+                                                        tr
+                                                            th(scope='row') Description
+                                                            td= doc.description
+
+                                                        tr
+                                                            th(scope='row') Status
+                                                            td= doc.status
+
+                            td
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#historyDonnerBookingdetails-${index}`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `historyDonnerBookingdetails-${index}` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Donner Details Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                table.table.table-bordered
+                                                    thead
+                                                        tr
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Name
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Phone
+                                                            th.color-white.main-color-background.text-center(scope='col')
+                                                                | Donner Status
+
+                                                    tbody 
+
+                                                        each docs in doc.requests
+                                                            tr
+                                                                td(scope='row')= docs.donnerName
+                                                                td= docs.donnerPhone
+                                                                td= docs.status
+
+
+
+        hr.m-0  

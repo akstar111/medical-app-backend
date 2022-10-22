@@ -1,0 +1,174 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Booking Summary
+            hr.m-0
+            .modal-body.table-responsive.mt-2
+                table.table.table-bordered.table-font
+                    thead
+                        tr
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | User Name
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Phone Number
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Address
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Requested Service
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Date
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Update Status 
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Details
+                    tbody#expert_booking_status
+                        each doc,index in partner.booking.active
+                            tr
+                                td= doc.addressDetails.name
+                                td= doc.addressDetails.phone1
+                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                td= doc.serviceDetails.expertType
+                                td= new Date(doc.createdAt).toLocaleDateString()
+                                td
+                                    select.form-select.update_status(id=`updateStatus-${index}` data-apply=doc.hiwmthebsID data-index=index )
+                                        if doc.status === 'pending'
+                                            option(value="pending"  selected) Pending
+                                        else 
+                                            option(value="pending") Pending
+                                        if doc.status === "accepted"
+                                            option(value="accepted" selected) Accepted
+                                        else
+                                            option(value="accepted" ) Accepted
+                                        if doc.status === "rejected"
+                                            option(value="rejected" selected) Rejected
+                                        else
+                                            option(value="rejected" ) Rejected
+                                        option(value='canceled') Canceled
+                                        option(value='completed') completed
+                                td
+                                    a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails-${index}`) View
+
+                                    // Modal
+                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`activeBookingdetails-${index}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                        .modal-dialog.modal-dialog-scrollable
+                                            .modal-content
+                                                .modal-header
+                                                    h5#staticBackdropLabel.modal-title
+                                                        | Booking Details
+                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                .modal-body.table-responsive
+                                                    table.table.table-bordered
+                                                        thead
+                                                            tr
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    | Booking Details
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    //- | Booking ID - 09869766875
+                                                        tbody
+                                                            //- tr
+                                                            //-     th(scope='row') Booking Id
+                                                            //-     td 8798789678
+                                                            tr
+                                                                th(scope='row')  User Name
+                                                                td=doc.addressDetails.name
+                                                            tr
+                                                                th(scope='row') Phone Number
+                                                                td=doc.addressDetails.phone1
+                                                            tr
+                                                                th(scope='row') Address
+                                                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                            tr
+                                                                th(scope='row') Request Service 
+                                                                td=doc.serviceDetails.expertType
+                                                            tr
+                                                                th(scope='row') Date
+                                                                td=new Date(doc.createdAt).toLocaleDateString()
+                                                            tr
+                                                                th(scope='row') Update Status 
+                                                                td= doc.status
+                                                .modal-footer
+                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                        | Cancel
+            .d-flex.mt-3
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Previous booking
+            hr.m-0
+            .modal-body.table-responsive.mt-2
+                table.table.table-bordered.table-font
+                    thead
+                        tr
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | User Name
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Phone Number
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Address
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Requested Service
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Date
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Update Status 
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Details
+                    tbody
+                        each doc,index in partner.booking.history
+                            tr
+                                td= doc.addressDetails.name
+                                td= doc.addressDetails.phone1
+                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                td= doc.serviceDetails.expertType
+                                td= new Date(doc.createdAt).toLocaleDateString()
+                                td= doc.status
+                                td
+                                    a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails-${index}`) View
+
+                                    // Modal
+                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`activeBookingdetails-${index}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                        .modal-dialog.modal-dialog-scrollable
+                                            .modal-content
+                                                .modal-header
+                                                    h5#staticBackdropLabel.modal-title
+                                                        | Booking Details
+                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                .modal-body.table-responsive
+                                                    table.table.table-bordered
+                                                        thead
+                                                            tr
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    | Booking Details
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    //- | Booking ID - 09869766875
+                                                        tbody
+                                                            //- tr
+                                                            //-     th(scope='row') Booking Id
+                                                            //-     td 8798789678
+                                                            tr
+                                                                th(scope='row')  User Name
+                                                                td=doc.addressDetails.name
+                                                            tr
+                                                                th(scope='row') Phone Number
+                                                                td=doc.addressDetails.phone1
+                                                            tr
+                                                                th(scope='row') Address
+                                                                td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                            tr
+                                                                th(scope='row') Request Service 
+                                                                td=doc.serviceDetails.expertType
+                                                            tr
+                                                                th(scope='row') Date
+                                                                td=new Date(doc.createdAt).toLocaleDateString()
+                                                            tr
+                                                                th(scope='row') Update Status 
+                                                                td= doc.status
+                                                .modal-footer
+                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                        | Cancel

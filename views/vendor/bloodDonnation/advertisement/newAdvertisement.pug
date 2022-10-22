@@ -1,0 +1,94 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    .scrollmenu.display-header.p-3
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank') Profile
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/manage-blood') Manage Blood
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/quotes') Purchase
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/job') Post job
+        a.nav-link.scroll-nav.p-1.scroll-nav-active(href='/vendor/blood-bank/advertisement/') Advertisement
+        a.nav-link.scroll-nav.p-1(href='./Donate-for-us.html') Donate for us
+        a.nav-link.scroll-nav.p-1#logoutM log out
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            .col-2.p-0.border.m-0.border-color.display-none
+                ul.nav.flex-column.p-0.m-0
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(aria-current='page' href='/vendor/blood-bank') Profile
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/manage-blood') Manage Blood
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/quotes')
+                            | Purchase
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/job') Post job
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link.vendor-nav-link-active(href='/vendor/blood-bank/advertisement/') Advertisement
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link#logoutW log out
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                .p-5.pt-2
+
+                    if bloodbank
+                        h2.text-center.fw-bold.m-4 Post Advertisement
+                        div
+                          
+                            form#createNewAdvertisement(data-advertisement=bloodbank.hiwbdbbmID)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Start Date:
+                                    .col-sm-7
+                                        input.form-control.bg-li#startDate(type='date' placeholder='10-02-2022')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') End Date:
+                                    .col-sm-7
+                                        input.form-control.bg-li#endDate(type='date' placeholder='10-02-2022')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Location :
+                                    .col-sm-3
+                                        input.form-control.bg-li#latitude(type='text' placeholder='latitude')
+                                    .col-sm-3
+                                        input.form-control.bg-li#longitude(type='text' placeholder='longitude')
+                                    .col-sm-1
+                                        i.fa-solid.fa-location-dot.border.bg-li.fs-5.p-2.ps-3.pe-3.rounded.text-secondary
+                                .text-center.mt-5.mb-3
+                                    img.w-50.rounded.border(src='/Assets/banner.jpg')
+                                p.text-center.fw-bold.fs-6
+                                    | Please Upload Add in 40 * 200 View
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Upload Service Images :
+                                    .col-sm-7
+                                        div
+                                            img#imgFileUpload.img-width(alt='Select File' title='Select File' src='/Assets/images/Pictures-icon.png' style='cursor: pointer')
+                                        input#advertisement(type='file' accept='image/jpeg, image/png, image/jpg' )
+                                        output#result
+                                .text-center
+                                    button.btn.btn-danger.ps-5.pe-5.me-5(type='button')
+                                        | Cancel
+                                    button.btn.btn-success.ps-4.pe-4.me-s(type='submit')
+                                        | Pay 150
+
+                    else 
+                        div(class="d-grid m-5")
+                            a.btn.btn-success.btn-block(href="/vendor/blood-bank") Create Your Profile

@@ -1,0 +1,206 @@
+extends layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+    script.
+        google.charts.load("current", {
+        packages: ["geochart"],
+        });
+        google.charts.setOnLoadCallback(drawRegionsMap);
+        function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable([
+        ["Country", "Popularity"],
+        ["Germany", 200],
+        ["United States", 300],
+        ["Brazil", 400],
+        ["Canada", 500],
+        ["France", 600],
+        ["RU", 700],
+        ]);
+        var options = {};
+        var chart = new google.visualization.GeoChart(
+        document.getElementById("regions_div")
+        );
+        chart.draw(data, options);
+        }
+        google.charts.load("current", { packages: ["corechart", "line"] });
+        google.charts.setOnLoadCallback(drawLineColors);
+        function drawLineColors() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("number", "X");
+        data.addColumn("number", "New Users");
+        data.addColumn("number", "Deleted Users");
+        data.addRows([
+        [0, 0, 0],
+        [1, 10, 5],
+        [2, 23, 15],
+        [3, 17, 9],
+        [4, 18, 10],
+        [5, 9, 5],
+        [6, 11, 3],
+        [7, 27, 19],
+        [8, 33, 25],
+        [9, 40, 32],
+        [10, 32, 24],
+        [11, 35, 27],
+        [12, 30, 22],
+        [13, 40, 32],
+        [14, 42, 34],
+        [15, 47, 39],
+        [16, 44, 36],
+        [17, 48, 40],
+        [18, 52, 44],
+        [19, 54, 46],
+        [20, 42, 34],
+        [21, 55, 47],
+        [22, 56, 48],
+        [23, 57, 49],
+        [24, 60, 52],
+        [25, 50, 42],
+        [26, 52, 44],
+        [27, 51, 43],
+        [28, 49, 41],
+        [29, 53, 45],
+        [30, 55, 47],
+        [31, 60, 52],
+        [32, 61, 53],
+        [33, 59, 51],
+        [34, 62, 54],
+        [35, 65, 57],
+        [36, 62, 54],
+        [37, 58, 50],
+        [38, 55, 47],
+        [39, 61, 53],
+        [40, 64, 56],
+        [41, 65, 57],
+        [42, 63, 55],
+        [43, 66, 58],
+        [44, 67, 59],
+        [45, 69, 61],
+        [46, 69, 61],
+        [47, 70, 62],
+        [48, 72, 64],
+        [49, 68, 60],
+        [50, 66, 58],
+        [51, 65, 57],
+        [52, 67, 59],
+        [53, 70, 62],
+        [54, 71, 63],
+        [55, 72, 64],
+        [56, 73, 65],
+        [57, 75, 67],
+        [58, 70, 62],
+        [59, 68, 60],
+        [60, 64, 56],
+        [61, 60, 52],
+        [62, 65, 57],
+        [63, 67, 59],
+        [64, 68, 60],
+        [65, 69, 61],
+        [66, 70, 62],
+        [67, 72, 64],
+        [68, 75, 67],
+        [69, 80, 72],
+        ]);
+        var options = {
+        hAxis: {
+        title: "Time",
+        },
+        vAxis: {
+        title: "Popularity",
+        },
+        colors: ["#a52714", "#097138"],
+        };
+        var chart = new google.visualization.LineChart(
+        document.getElementById("chart_div")
+        );
+        chart.draw(data, options);
+        }
+        google.charts.load("current", { packages: ["corechart", "bar"] });
+        google.charts.setOnLoadCallback(drawMultSeries);
+        function drawMultSeries() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("timeofday", "Time of Day");
+        data.addColumn("number", "Motivation Level");
+        data.addColumn("number", "Energy Level");
+        data.addRows([
+        [{ v: [8, 0, 0], f: "8 am" }, 1, 0.25],
+        [{ v: [9, 0, 0], f: "9 am" }, 2, 0.5],
+        [{ v: [10, 0, 0], f: "10 am" }, 3, 1],
+        [{ v: [11, 0, 0], f: "11 am" }, 4, 2.25],
+        [{ v: [12, 0, 0], f: "12 pm" }, 5, 2.25],
+        [{ v: [13, 0, 0], f: "1 pm" }, 6, 3],
+        [{ v: [14, 0, 0], f: "2 pm" }, 7, 4],
+        [{ v: [15, 0, 0], f: "3 pm" }, 8, 5.25],
+        [{ v: [16, 0, 0], f: "4 pm" }, 9, 7.5],
+        [{ v: [17, 0, 0], f: "5 pm" }, 10, 10],
+        ]);
+        var options = {
+        title: "Motivation and Energy Level Throughout the Day",
+        hAxis: {
+        title: "Time of Day",
+        format: "h:mm a",
+        viewWindow: {
+        min: [7, 30, 0],
+        max: [17, 30, 0],
+        },
+        },
+        vAxis: {
+        title: "Rating (scale of 1-10)",
+        },
+        };
+        var chart = new google.visualization.ColumnChart(
+        document.getElementById("chart_div1")
+        );
+        chart.draw(data, options);
+        }
+
+block append head 
+    script(src='https://kit.fontawesome.com/bd6e4adc4b.js' crossorigin='anonymous')
+    script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
+
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Overview
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold Akstar111
+            .p-2.bd-highlight
+                img.login-user-image(src='/Assets/image/profile.jpg' alt='user image')
+        hr
+        .row.row-cols-1.row-cols-md-4.g-4
+            .col
+                a(href='/admin/user-management')
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Users
+                        h2.fw-bold.count-text= userCount
+            .col
+                a(href='/admin/vendor-management')
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Vendors
+                        h2.fw-bold.count-text=vendorCount
+            .col
+                a(href='#')
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Review
+                        h2.fw-bold.count-text 300
+            .col
+                a(href='#')
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Complines
+                        h2.fw-bold.count-text 80
+        h5.fw-bold.mt-3.ms-3 Application Usage
+        hr.m-0
+        #regions_div(style='width: 900px; height: 500px')
+        h5.fw-bold.mt-3.ms-3 User Flow
+        hr.m-0
+        #chart_div.h-50
+        h5.fw-bold.mt-3.ms-3 Vendor Flow
+        hr.m-0
+        #chart_div1.h-50

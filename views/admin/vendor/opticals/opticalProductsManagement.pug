@@ -1,0 +1,525 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")       
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Optical Product Management
+            hr.m-0
+            ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                li.nav-item.border.rounded(role='presentation')
+                    button#pills-home-tab.nav-link.inside-nav.active.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-home' type='button' role='tab' aria-controls='pills-home' aria-selected='true')
+                        | Add Product
+                li.nav-item.border.rounded(role='presentation')
+                    button#pills-profile-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                        | Order List
+                li.nav-item.border.rounded(role='presentation')
+                    button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                        | History
+            #pills-tabContent.tab-content
+                #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                    .row
+                        h6.col-6.fw-bold.main-color.mt-3.text-head
+                            | Add and Edit Your Products
+                        .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                            button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                | Add More
+                        // Modal
+                        #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                            .modal-dialog.modal-dialog-scrollable.modal-lg
+                                .modal-content
+                                    .modal-header
+                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                            | Add Product Details
+                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                    .modal-body
+                                        form.row.g-2#create_new_optical_product(data-id=partner.hiwpmID)
+                                            .col-md-12
+                                                label.form-label(for='newName')
+                                                    |Product Name
+                                                    span.text-danger *
+                                                input#newName.form-control(type='text' placeholder='Name' required='')
+                                            .col-sm-12
+                                                label.col-form-label.fw-bold Glass Type:
+                                                select#glassType.form-select.border.border-2.bg-li(required)
+                                                    option(value="") -- Select Glass type -- 
+                                                    option(value="sun") Sun
+                                                    option(value="power") Power
+                                                    option(value="read") Read
+                                                    option(value="computer") Computer
+                                            .col-md-12
+                                                label.col-form-label.fw-bold Gender Type:
+                                                select#genderType.form-select.border.border-2.bg-li(required)
+                                                    option(value="") -- Select Gender Type -- 
+                                                    option(value='male') Male
+                                                    option(value='female') Female
+                                            .col-md-12
+                                                label.col-form-label.fw-bold Glass's Frame Type:
+                                                .col-sm-12
+                                                    select#frameType.form-select.border.border-2.bg-li(required)
+                                                        option(value="") -- Select Glass's Frame Type -- 
+                                                        option(value="full-rim") Full-rim
+                                                        option(value="semi-rimless") Semi-rimless
+                                                        option(value="rimless") Rimless
+                                                        option(value="low-brideg") Low-brideg
+                                                        option(value="wire") Wire
+                                            .col-md-12
+                                                label.col-form-label.fw-bold Material Type:
+                                                select#materialType.form-select.border.border-2.bg-li(required)
+                                                    option(value="") -- Select Material Type -- 
+                                                    option(value="plastic") Plastic
+                                                    option(value="acetate") Acetate
+                                                    option(value="wood") Wood
+                                                    option(value="metal") Metal
+                                                    option(value="taitanium") Taitanium
+
+                                            .col-md-12
+                                                label.col-form-label.fw-bold Frame Details
+                                                #newFrameDetails.p-5.border
+                                                a.btn.btn-primary(id='addFrameDetails') Add Product Details
+
+                                            .col-md-12
+                                                label.form-label(for='newdescription')
+                                                    | Description
+                                                    span.text-danger *
+                                                input#newdescription.form-control(type='text' placeholder='Description' required='')
+
+                                            .col-12.text-center
+                                                button.btn.main-color-background.color-white(type='submit')
+                                                    | Add Product
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                            | Cancel
+
+                    hr.m-0
+                    .mt-3
+                        .row.row-cols-1.row-cols-md-4.g-1#update_optical_product
+                            each doc,index in products
+                                .col
+                                    .card.h-100
+                                        img.card-img-top(src=doc.frameImage alt='Product Iamge')
+                                        .card-body.mt-0.p-1
+                                            .row
+                                                - var key =  new Date(doc.createdAt).valueOf()
+                                                h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                    | #{doc.name}
+                                                a.col-3.main-color(href='#' data-bs-toggle='modal' data-bs-target=`#openOpticalProductModal-${key}`)
+                                                    i.fa-solid.fa-pen.justify-content-md-end.main-color
+                                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' id=`openOpticalProductModal-${key}` tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                                        .modal-content
+                                                            .modal-header
+                                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                    | Update Product Details
+                                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                            .modal-body
+                                                                form.row.g-2#update_product(data-key=key data-optical=doc.hiwnopmID data-id=partner.hiwpmID)
+                                                                    .col-md-12
+                                                                        label.form-label(for='newName')
+                                                                            |Product Name
+                                                                            span.text-danger *
+                                                                        input.form-control(type='text' id=`updateName-${key}` placeholder='Name' value=doc.name  required='')
+                                                                    .col-sm-12
+                                                                        label.col-form-label.fw-bold Glass Type:
+                                                                        -const glassTypeArray = ["sun","power","read","computer"]
+                                                                        select.form-select.border.border-2.bg-li(required id=`updateGlassType-${key}`)
+                                                                            option(value="") -- Select Glass type -- 
+                                                                            each loopGlasstype in glassTypeArray
+                                                                                if loopGlasstype === doc.glassType
+                                                                                    option(value=doc.glassType selected)= doc.glassType
+                                                                                else 
+                                                                                    option(value=loopGlasstype)= loopGlasstype
+                                                                    .col-md-12
+                                                                        label.col-form-label.fw-bold Gender Type:
+
+                                                                        select.form-select.border.border-2.bg-li(required id=`updateGenderType-${key}`)
+                                                                            option(value="") -- Select Gender Type -- 
+                                                                            if doc.glassGenderType === "male"
+                                                                                option(value='male' selected) Male
+                                                                                option(value='female') Female
+                                                                            else if(doc.glassGenderType === 'female')
+                                                                                option(value='male' ) Male
+                                                                                option(value='female' selected) Female
+                                                                    .col-md-12
+                                                                        label.col-form-label.fw-bold Glass's Frame Type:
+                                                                        .col-sm-12
+                                                                            -const glassFrameTypeArray = ["full-rim","semi-rimless","rimless","low-brideg","wire"]
+                                                                            select.form-select.border.border-2.bg-li(required id=`updateFrameType-${key}`)
+                                                                                option(value="") -- Select Glass's Frame Type -- 
+                                                                                each docs in glassFrameTypeArray
+                                                                                    if docs === doc.glassFrameType
+                                                                                        option(value=docs selected)=docs
+                                                                                    else        
+                                                                                        option(value=docs)=docs
+                                                                    .col-md-12
+                                                                        label.col-form-label.fw-bold Material Type:
+                                                                        -const val =["plastic","acetate","wood","metal","taitanium"]
+                                                                        select.form-select.border.border-2.bg-li(required id=`updateMaterialType-${key}`)
+                                                                            option(value="") -- Select Material Type -- 
+                                                                            each docs in val
+                                                                                if(docs === doc.materiralType)
+                                                                                    option(value=docs selected)=docs
+                                                                                else
+                                                                                    option(value=docs )=docs
+                                                                    .col-md-12
+                                                                        label.col-form-label.fw-bold Frame Details
+                                                                        .p-5.border(id=`updateFrameDetails-${key}`)
+                                                                            -const vals = ['oval','round','quare','large','horn','browline','aviator','cateye','oversized','geomateric']
+                                                                            each docs,ind in doc.frameDetails
+                                                                                div(class=`updateFrameDetails-${key}` id=`updateFrameOptions-${key}-${ind}` data-key=`${key}` data-index=ind data-id=docs.hiwopptmID)
+
+                                                                                    a.btn.btn-danger(id=`updateFrameValues-${key}-${ind}` class='deleteFrameDetailsForUpdate' data-key=`${key}` data-index=`${ind}` ) Delete
+                                                                                    .col-md-12
+                                                                                        label.col-form-label.fw-bold Frame Type:
+                                                                                        select.form-select.border.border-2.bg-li(id=`updateFrameType-${key}-${ind}` required='')
+                                                                                            option -- Select Frame Type --
+                                                                                            each doc2 in vals
+                                                                                                if doc2 === docs.frameType
+                                                                                                    option(value=doc2 selected )= doc2 
+                                                                                                else
+                                                                                                    option(value=doc2  )= doc2 
+
+                                                                                    .col-md-12
+                                                                                        label.form-label(for=`updateColor-${key}-${ind}`)
+                                                                                            | Color
+                                                                                            span.text-danger *
+                                                                                        input.form-control(id=`updateColor-${key}-${ind}` value=docs.color type='text' placeholder='Color' required='')
+                                                                                    .col-md-12
+                                                                                        label.col-form-label.fw-bold Available Size:
+                                                                                        select.form-select.border.border-2.bg-li(id=`updateSize-${key}-${ind}` required='')
+                                                                                            option -- Select Frame Type -- 
+                                                                                            if docs.availableSize === 'small'
+                                                                                                option(value='small' selected) Small
+                                                                                                option(value='medium') Medium
+                                                                                                option(value='large') Large
+                                                                                            else if docs.availableSize === 'medium'
+                                                                                                option(value='small' ) Small
+                                                                                                option(value='medium' selected) Medium
+                                                                                                option(value='large') Large
+                                                                                            else if docs.availableSize === 'large'
+                                                                                                option(value='small' ) Small
+                                                                                                option(value='medium' ) Medium
+                                                                                                option(value='large' selected) Large
+
+                                                                                    .col-md-12
+                                                                                        label.form-label(for=`updatePrice-${key}-${ind}`)
+                                                                                            | Optical Price
+                                                                                            span.text-danger *
+                                                                                        input.form-control(id=`updatePrice-${key}-${ind}` type='text' placeholder='Price' value=docs.opticalPrice required='')
+                                                                                    .col-md-12
+                                                                                        label.form-label(for=`updateDiscountPrice-${key}-${ind}`)
+                                                                                            | Optical Discount Price
+                                                                                            span.text-danger *
+                                                                                        input.form-control(id=`updateDiscountPrice-${key}-${ind}` type='text' value=docs.opticalDiscountPrice placeholder='Discount Price' required='')
+                                                                                    .col-md-12
+                                                                                        img.p-2(src=docs.frameImage,style=`width:130px`, alt="", srcset="")
+                                                                                        label.form-label(for=`updateFrameImage-${key}-${ind}`)
+                                                                                            | Frame Image
+                                                                                            span.text-danger *
+                                                                                        input.form-control(id=`updateFrameImage-${key}-${ind}` type='file'  accept='image/*')
+                                                                                    .col-md-12
+                                                                                        .d-flex.flex-row.p-2
+                                                                                            each galImg in docs.frameImageGallery
+                                                                                                img.p-2(src=galImg,style=`width:110px`, alt="", srcset="")
+                                                                                        label.form-label(for=`updateFrameImageGallery-${key}-${ind}`)
+                                                                                            | Frame Image Gallery
+                                                                                            span.text-danger *
+                                                                                        input.form-control(id=`updateFrameImageGallery-${key}-${ind}` type='file' multiple=''  accept='image/*')
+
+                                                                        a.btn.btn-primary(class='addFrameDetailsForUpdate' id=`addFrameDetailsForUpdate-${key}` data-key=key) Add Product Details
+
+                                                                    .col-md-12
+                                                                        label.form-label(for='updatedescription')
+                                                                            | Description
+                                                                            span.text-danger *
+                                                                        input.form-control(type='text' placeholder='Description' required='' value=doc.description id=`updateDescription-${key}`)
+
+                                                                    .col-12.text-center
+                                                                        button.btn.main-color-background.color-white(type='submit')
+                                                                            | Update Product
+                                                            .modal-footer
+                                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                    | Cancel
+
+                                            p.card-text.text-hidden.m-0= doc.description
+                                            .d-flex
+                                                if doc.opticalDiscountPrice
+                                                    p.fw-bold.m-0.fs-5 Rs. #{doc.opticalDiscountPrice}
+                                                    p.ms-1.m-0.mt-1.text-decoration-line-through.fs-6.text-secondary
+                                                        | #{doc.opticalPrice}
+                                                    //- p.ms-1.m-0.mt-1.text-danger.fs-6 (50%)
+
+                #pills-profile.tab-pane.fade(role='tabpanel' aria-labelledby='pills-profile-tab')
+                    h6.col-6.fw-bold.main-color.mt-5.text-head
+                        | Order List
+                    hr.m-0
+                    .mt-3.table-responsive
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Name
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Phone Number
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Address
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Size
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Qty
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Color
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Order Date
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Status
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | View
+                            tbody#update_vendor_optical_product_status
+                                -const status = ['placed', 'accepted', 'shipped', 'outofdelivery', 'delivered']
+                                each doc,index in orders.active
+                                    tr
+                                        th(scope='row')= doc.addressDetails.name
+                                        td= doc.addressDetails.phone1
+                                        td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                        td= doc.availableSize
+                                        td= doc.quantity
+                                        td= doc.color
+                                        td= new Date(doc.createdAt).toLocaleString()
+                                        td  
+                                            select.form-select.border.update_status(aria-label='Default select example' id=`update_optical_status-${index}` data-index=index data-id=doc.hiwonsmID data-pid=partner.hiwpmID)
+                                                each docs in status
+                                                    if docs === doc.orderStatus
+                                                        option(value=docs selected)= docs
+                                                    else 
+                                                        option(value=docs)= docs
+
+                                        td
+                                            a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderActive-${index}`) View
+                                            // Modal
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderActive-${index}`)
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title
+                                                                | Product Details
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body.table-responsive
+                                                            table.table.table-bordered
+                                                                thead
+                                                                    tr
+                                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                                            | Order Details
+                                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                                            //- | Order ID - 09869766875
+                                                                tbody
+                                                                    //- tr
+                                                                    //-     th(scope='row') Product Id
+                                                                    //-     td 8798789678
+                                                                    tr
+                                                                        th(scope='row') Product Name
+                                                                        td= doc.name
+                                                                    tr
+                                                                        th(scope='row') Glass Type
+                                                                        td= doc.glassType
+                                                                    tr
+                                                                        th(scope='row') Glass Gender Type
+                                                                        td= doc.glassGenderType
+                                                                    tr
+                                                                        th(scope='row') Frame Type
+                                                                        td= doc.glassFrameType
+                                                                    tr
+                                                                        th(scope='row') Color
+                                                                        td= doc.color
+                                                                    tr
+                                                                        th(scope='row') Size
+                                                                        td= doc.availableSize
+                                                                    tr
+                                                                        th(scope='row') Optical Image
+                                                                        td
+                                                                            img.thumbnail(src=doc.productImage alt='Product Image')
+                                                                    tr
+                                                                        th(scope='row') Optical Image Gallery
+                                                                        td
+                                                                            each galImg in doc.productImageGallery
+                                                                                img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                    tr
+                                                                        th(scope='row') Order Status
+                                                                        td= doc.orderStatus
+                                                                    tr
+                                                                        th(scope='row') Address
+                                                                        td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                    tr
+                                                                        th(scope='row') Phone Number 1
+                                                                        td= doc.addressDetails.phone1
+                                                                    tr
+                                                                        th(scope='row') Phone Number 2
+                                                                        td= doc.addressDetails.phone2
+                                                                    tr
+                                                                        th(scope='row') Quanity
+                                                                        td= doc.quantity
+                                                                    tr
+                                                                        th(scope='row') Price
+                                                                        td= doc.opticalPrice
+                                                                    tr
+                                                                        th(scope='row') Discount Price
+                                                                        td= doc.opticalDiscountPrice
+
+                                                                    tr
+                                                                        th.text-danger(scope='row')
+                                                                            | Payment Mode
+                                                                        td.text-danger Online
+                                                                    tr
+                                                                        th(scope='row') Ordered Date
+                                                                        td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Accepted Date
+                                                                        td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Shipped Date
+                                                                        td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Out of Delivery Date Date
+                                                                        td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+                #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                    h6.col-6.fw-bold.main-color.mt-5.text-head History
+                    hr.m-0
+                    .mt-3.table-responsive
+                        table.table.table-bordered
+                            thead
+                                tr
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Name
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Phone Number
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Address
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Size
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Qty
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Color
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Order Date
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Order Status
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | Status
+                                    th.color-white.main-color-background.text-center(scope='col')
+                                        | View
+                            tbody
+                                each doc,inds in orders.history
+                                    tr
+                                        th(scope='row')= doc.addressDetails.name
+                                        td= doc.addressDetails.phone1
+                                        td #{doc.addressDetails.address},#{doc.addressDetails.pincode}
+                                        td= doc.availableSize
+                                        td= doc.quantity
+                                        td= doc.color
+                                        td= new Date(doc.createdAt).toLocaleString()
+                                        td= doc.orderStatus
+                                        td= doc.status
+                                        td
+                                            a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderHistory-${inds}`) View
+                                            // Modal
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderHistory-${inds}`)
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title
+                                                                | Product Details
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body.table-responsive
+                                                            table.table.table-bordered
+                                                                thead
+                                                                    tr
+                                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                                            | Order Details
+                                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                                            //- | Order ID - 09869766875
+                                                                tbody
+                                                                    //- tr
+                                                                    //-     th(scope='row') Product Id
+                                                                    //-     td 8798789678
+                                                                    tr
+                                                                        th(scope='row') Product Name
+                                                                        td= doc.name
+                                                                    tr
+                                                                        th(scope='row') Glass Type
+                                                                        td= doc.glassType
+                                                                    tr
+                                                                        th(scope='row') Glass Gender Type
+                                                                        td= doc.glassGenderType
+                                                                    tr
+                                                                        th(scope='row') Frame Type
+                                                                        td= doc.glassFrameType
+                                                                    tr
+                                                                        th(scope='row') Color
+                                                                        td= doc.color
+                                                                    tr
+                                                                        th(scope='row') Size
+                                                                        td= doc.availableSize
+                                                                    tr
+                                                                        th(scope='row') Optical Image
+                                                                        td
+                                                                            img.thumbnail(src=doc.productImage alt='Product Image')
+                                                                    tr
+                                                                        th(scope='row') Optical Image Gallery
+                                                                        td
+                                                                            each galImg in doc.productImageGallery
+                                                                                img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                    tr
+                                                                        th(scope='row') Order Status
+                                                                        td= doc.orderStatus
+                                                                    tr
+                                                                        th(scope='row') Address
+                                                                        td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                    tr
+                                                                        th(scope='row') Phone Number 1
+                                                                        td= doc.addressDetails.phone1
+                                                                    tr
+                                                                        th(scope='row') Phone Number 2
+                                                                        td= doc.addressDetails.phone2
+                                                                    tr
+                                                                        th(scope='row') Quanity
+                                                                        td= doc.quantity
+                                                                    tr
+                                                                        th(scope='row') Price
+                                                                        td= doc.opticalPrice
+                                                                    tr
+                                                                        th(scope='row') Discount Price
+                                                                        td= doc.opticalDiscountPrice
+                                                                    tr
+                                                                        th.text-danger(scope='row')
+                                                                            | Payment Mode
+                                                                        td.text-danger Online
+                                                                    tr
+                                                                        th(scope='row') Ordered Date
+                                                                        td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Accepted Date
+                                                                        td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Shipped Date
+                                                                        td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Out of Delivery Date Date
+                                                                        td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Canceled Date
+                                                                        td=doc.canceledDate ? new Date(doc.canceledDate).toLocaleString():"-"
+                                                                    tr
+                                                                        th(scope='row') Deliverd Date
+                                                                        td=doc.deliveredDate ? new Date(doc.deliveredDate).toLocaleString():"-"
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel

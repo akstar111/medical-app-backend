@@ -1,0 +1,156 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+
+        hr
+        include ./shared/detailsList
+        .d-flex
+            .flex-grow-1.d-flex.justify-content-between
+                h5.fw-bold.mt-3.ms-3 Modules
+                button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop-Facilities')
+                    | Add More
+                #staticBackdrop-Facilities.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                    .modal-dialog.modal-dialog-scrollable
+                        .modal-content
+                            .modal-header
+                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                    | Add Driver Details
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .modal-body
+                                form.row.g-3(id=`create_new_blood_donner` data-user=user.id)
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Donner Name
+                                            span.text-danger *
+                                        input#name.form-control(type='text' placeholder='Donner Name' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Donner Phone
+                                            span.text-danger *
+                                        input#phone.form-control(type='text' placeholder='Donner Name' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Blood Group
+                                            span.text-danger *
+                                        input#bloodGroup.form-control(type='text' placeholder='Blood Group' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Last Donated date
+                                            span.text-danger *
+                                        input#lastDate.form-control(type='date' placeholder='Last Donated date' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Donner Address
+                                            span.text-danger *
+                                        input#donnerAddress.form-control(type='text' placeholder='Donner Address' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Latitude
+                                            span.text-danger *
+                                        input#latitude.form-control(type='text' placeholder='Latitude' required='')
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Longitude
+                                            span.text-danger *
+                                        input#longitude.form-control(type='text' placeholder='Longitude' required='')
+                                    input(type='file' id=`image`)
+                                    .col-12.text-center
+                                        button.btn.main-color-background.color-white(type='submit')
+                                            | Create Donner
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                    | Cancel
+
+            .p-2
+                p.text-primary.text-decoration-underline.m-0
+        hr.m-0
+        h5.fw-bold.mt-3.ms-3 Active books
+        hr.m-0 
+        table.table.table-bordered.table-font
+            thead
+                tr
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Donner Name
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Donner Phone
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Blood Group 
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Donner Address
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Last Donated Date
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Location 
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Update
+
+            tbody#update_blood_donner
+                each doc,index in donner
+                    tr
+                        td= doc.donnerName
+                        td= doc.donnerPhone
+                        td= doc.bloodGroup
+                        td= doc.donnerAddress
+                        td= new Date(doc.lastDonatedDate).toLocaleDateString()
+                        td #{doc.location.coordinates[1]}, #{doc.location.coordinates[0]}
+                        td 
+                            a(href="#")
+                                i.fa-solid.fa-pencil.fs-5.text-body(  data-bs-toggle='modal' data-bs-target=`#staticBackdrop-Facilities-${index}`)
+                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`staticBackdrop-Facilities-${index}`)
+                                .modal-dialog.modal-dialog-scrollable
+                                    .modal-content
+                                        .modal-header
+                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                | Add Driver Details
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                        .modal-body
+                                            form.row.g-3(id=`update-donner` data-user=user.id data-donner=doc.hiwbdndID data-index=index)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Donner Name
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.donnerName placeholder='Donner Name' required='' id=`name-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Donner Phone
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.donnerPhone placeholder='Donner Name' required='' id=`phone-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Blood Group
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.bloodGroup placeholder='Blood Group' required='' id =`bloodGroup-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Last Donated date
+                                                        span.text-danger *
+                                                    input.form-control(type='date' value=new Date(doc.lastDonatedDate).toISOString().toString().split('T')[0] placeholder='Last Donated date' required='' id=`lastDate-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Donner Address
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.donnerAddress placeholder='Donner Address' required='' id=`donnerAddress-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Latitude
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.location.coordinates[1] placeholder='Latitude' required='' id=`latitude-${index}`)
+                                                .col-md-12
+                                                    label.form-label(for='title')
+                                                        | Longitude
+                                                        span.text-danger *
+                                                    input.form-control(type='text' value=doc.location.coordinates[0] placeholder='Longitude' required='' id=`longitude-${index}`)
+                                                img(src=doc.idProof style='width:200px;')
+                                                input(type='file' id=`image-${index}` )
+                                                .col-12.text-center
+                                                    button.btn.main-color-background.color-white(type='submit')
+                                                        | Update Donner
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                | Cancel
+
+        hr.m-0  

@@ -1,0 +1,119 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    case from
+        when "bloodDonnation" 
+            include ../bloodDonnation/layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            case from
+                when "bloodDonnation" 
+                    include ../bloodDonnation/layout/pcSidebar
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+              
+                hr
+                .p-5.pt-2
+                        h2.text-center.fw-bold.m-4 Post Job
+                        div
+                            form#createBloodBankJob(data-bloodbank=partner.hiwpmID data-from=partner.for)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Title:
+                                    .col-sm-7
+                                        input.form-control.bg-li#jobTitle(type='text' placeholder='Job Title')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Category:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobCategory
+                                            option -- Select your category -- 
+                                            each doc in Object.keys(categories)
+                                                option(value=doc)= doc
+                                            
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Specilality:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobSpeciality
+                                            option -- Select your Speciality -- 
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Type:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobType
+                                            option -- Select your Job Type -- 
+                                            option(value="Part-Time") Part-Time 
+                                            option(value="Full-Time") Full-Time 
+                                            
+
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Year of Experience:
+                                    .col-sm-7
+                                        input.form-control.bg-li#yearOfExperience(type='text' placeholder='Year of Experience')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') salary per month:
+                                    .col-sm-7
+                                        input.form-control.bg-li#salaryPerMonth(type='text' placeholder='salary per month')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Number of Vacancy:
+                                    .col-sm-7
+                                        input.form-control.bg-li#vacancy(type='text' placeholder='Number of vancancy')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Location :
+                                    .col-sm-3
+                                        input.form-control.bg-li#latitude(type='text' placeholder='latitude')
+                                    .col-sm-3
+                                        input.form-control.bg-li#longitide(type='text' placeholder='longitude')
+                                    .col-sm-1
+                                        i.fa-solid.fa-location-dot.border.bg-li.fs-5.p-2.ps-3.pe-3.rounded.text-secondary
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Hours :
+                                    .col-sm-3
+                                        input.form-control.bg-li#openTime(type='text' placeholder='Open time')
+                                    .col-sm-3
+                                        input.form-control.bg-li#closeTime(type='text' placeholder='Close time')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') City :
+                                    .col-sm-7
+                                        input.form-control.bg-li#city(type='text' placeholder='City')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') State:
+                                    .col-sm-7
+                                        input.form-control.bg-li#state(type='text' placeholder='State')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Pincode/Zip :
+                                    .col-sm-7
+                                        input.form-control.bg-li#pincode(type='text' placeholder='Pincode')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Country : :
+                                    .col-sm-7
+                                        input.form-control.bg-li#country(type='text' placeholder='Country ')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Address :
+                                    .col-sm-7
+                                        textarea.form-control.bg-li#address(rows='3')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Description :
+                                    .col-sm-7
+                                        textarea.form-control.bg-li#description(rows='3')
+                                .text-center
+                                    button.btn.btn-danger.ps-5.pe-5.me-5(type='button')
+                                        | Cancel
+                                    button.btn.btn-success.ps-4.pe-4.me-s(type='submit' )
+                                        | Post Job

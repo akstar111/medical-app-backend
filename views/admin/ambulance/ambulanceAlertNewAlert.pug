@@ -1,0 +1,78 @@
+extends ../layout/adminBase
+
+block append head 
+    script(src='https://polyfill.io/v3/polyfill.min.js?features=default')
+
+
+block append script 
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDNGeNSIMOhpEMyJy4bS2W0uKue0IBoutk&callback=initMap&v=weekly' defer='') 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+mixin drivers(request,index)
+    each docs in drivers
+        .col.bg-light.m-3.border
+            .d-flex.justify-content-between
+                .d-flex.flex-wrap.align-content-center
+                    p 
+                        img.rounded(src=docs.profileImage style="width:50px;")
+                    div.ps-4
+                        p= docs.driverName 
+                        p= docs.phone 
+                div
+                    a.btn.btn-primary(id=`assignAmbulanceDriver-${index}` data-index=index class='assignAmbulanceDriver' href="#" data-request=request data-driver=docs.hiwaladsID) Assign Driver
+
+block block 
+    #right.col-9
+        include shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 New Booking Requests
+        hr.m-0
+        .modal-body.table-responsive.mt-2
+            table.table.table-bordered.table-font
+                thead
+                    tr
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Request Received
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Request From
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Assign Available Driver
+                tbody#assign_ambulance_drivers
+                    each doc,index in requests
+                        tr
+                            td=new Date(doc.createdAt).toLocaleString()
+                            td.text-center
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#Bookingdetails-${index}`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `Bookingdetails-${index}` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Patient Location
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                div(class='newRequestPatientLocation' style="width:100%;height:500px;" id=`newRequestPatientLocation-${index}`,data-index=index, data-location=[doc.tempUserLocation.coordinates[1],doc.tempUserLocation.coordinates[0]])
+
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+
+                            td.text-center
+                                a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#selectDriver-${index}`) View
+                                // Modal
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `selectDriver-${index}` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable.modal-lg
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title
+                                                    | Patient Location
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body.table-responsive
+                                                .row 
+                                                    +drivers(doc.hiwalbcmID,index)
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel

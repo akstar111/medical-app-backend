@@ -1,0 +1,135 @@
+extends ../../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../../shared/detailsList
+        .ps-5.pe-5.pt-2.nav-tabs-section
+            include ./layout/dataList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Nearby Airport Management
+            hr.m-0
+            .p-5.pt-2.nav-tabs-section
+                .row
+                    h6.col-6.fw-bold.main-color.mt-3.text-head
+                        | Add and Edit Your Services
+                    .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                        button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                            | Add More
+                    // Modal
+                    #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                        .modal-dialog.modal-dialog-scrollable
+                            .modal-content
+                                .modal-header
+                                    h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                        | Add Service Details
+                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                .modal-body
+                                    form.row.g-3#add_nearby_hospital_airport_service(data-id=partner.hiwpmID)
+
+                                        .col-md-12
+                                            label.form-label(for='serviceName')
+                                                | Airport Name
+                                                span.text-danger *
+                                            input#airportName.form-control(type='text' placeholder='Airport Name' required='')
+                                        .col-md-12
+                                            label.form-label(for='serviceName')
+                                                | City
+                                                span.text-danger *
+                                            input#city.form-control(type='text' placeholder='City' required='')
+                                        .col-md-12
+                                            label.form-label(for='distance')
+                                                | Distance 
+                                                span.text-danger *
+                                            input#distance.form-control(type='text' placeholder='Distance' required='')
+                                        .col-md-12
+                                            label.form-label(for='distance')
+                                                | Latitude 
+                                                span.text-danger *
+                                            input#latitude.form-control(type='text' placeholder='Latidude' required='')
+                                        .col-md-12
+                                            label.form-label(for='distance')
+                                                | Longitude 
+                                                span.text-danger *
+                                            input#longitude.form-control(type='text' placeholder='Longitude' required='')
+                                        .col-md-12
+                                            label.form-label(for='banner')
+                                                | Airport Image 
+                                                span.text-danger *
+                                            input#banner.form-control(type='file'  required=''  accept='image/jpeg, image/png, image/jpg')
+
+                                        .col-12.text-center
+                                            button.btn.main-color-background.color-white(type='submit')
+                                                | Add Service
+                                .modal-footer
+                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                        | Cancel
+                .mt-3.ps-3
+                    .row.row-cols-1.row-cols-md-4.g-3#update_nearby_airport_service(data-id=partner.hiwpmID)
+                        each doc,index in airports
+                            .col
+                                .card.h-100
+                                    img.card-img-top(src=doc.bannerImage alt='Product Iamge')
+                                    .card-body.mt-0.p-1
+                                        .row
+                                            h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                | #{doc.name}
+                                            a.col-3.main-color()
+                                                i.fa-solid.fa-pen.justify-content-md-end.main-color(data-bs-toggle='modal' data-bs-target=`#staticBackdrop-${index}`)
+                                        .d-flex
+                                            p.card-text.text-hidden.m-0.fs-7.fw-bold City
+                                            p  : #{ doc.city}
+                                       
+                                .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id=`staticBackdrop-${index}` aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Update Service Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-3#update_service(data-index=index data-id=doc.hiwhtsmadsID)
+                                                    .col-md-12
+                                                        label.form-label(for='serviceName')
+                                                            | Hotel Name
+                                                            span.text-danger *
+                                                        input.form-control(type='text' value=doc.name placeholder='Airport Name' required='' id=`airportName${index}`)
+                                                 
+                                                    .col-md-12
+                                                        label.form-label(for='serviceName')
+                                                            | City
+                                                            span.text-danger *
+                                                        input.form-control(type='text' value=doc.city placeholder='City' required='' id=`city${index}`)
+                                                 
+                                                    .col-md-12
+                                                        label.form-label(for='distance')
+                                                            | Distance 
+                                                            span.text-danger *
+                                                        input.form-control(type='text' value=doc.distance placeholder='Distance' required='' id=`distance${index}`)
+                                                    .col-md-12
+                                                        label.form-label(for='distance')
+                                                            | Latitude 
+                                                            span.text-danger *
+                                                        input.form-control(type='text' placeholder='Latidude' value=doc.location.coordinates[1] required='' id=`latitude${index}`)
+                                                    .col-md-12
+                                                        label.form-label(for='distance')
+                                                            | Longitude 
+                                                            span.text-danger *
+                                                        input.form-control(type='text' value=doc.location.coordinates[0] placeholder='Longitude' required='' id=`longitude${index}`)
+                                                    .col-md-12
+                                                        label.form-label(for='banner')
+                                                            | Airport Image 
+                                                            span.text-danger *
+                                                        br
+                                                        img.mt-3(src=doc.bannerImage style="width:150px;")
+                                                        input.mt-3.form-control(type='file'    accept='image/jpeg, image/png, image/jpg' id=`banner${index}`)
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Update Service
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel

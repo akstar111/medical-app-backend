@@ -1,0 +1,86 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-5.pt-2
+            hr
+            .row.mt-3.ms-3.me-3
+                h6.col-6.fw-bold.main-color.mt-3.text-head
+                    | Add and Edit Your Facilities
+                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop-Facilities')
+                        | Add More
+                // Modal
+                #staticBackdrop-Facilities.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                    .modal-dialog.modal-dialog-scrollable
+                        .modal-content
+                            .modal-header
+                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                    | Add Driver Details
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .modal-body
+                                form.row.g-3(id=`create_ambulance_driver` data-partner= partner.hiwpmID)
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Driver Name
+                                            span.text-danger *
+                                        input#name.form-control(type='text' placeholder='Facility Name' required='')
+                                    .col-md-12
+                                        label.form-label(for='phone')
+                                            | Driver Phone 
+                                            span.text-danger *
+                                        input#phone.form-control(type='text'  placeholder='phone' required='')
+                                    input(type='file' id=`driverProfile`)
+                                    .col-12.text-center
+                                        button.btn.main-color-background.color-white(type='submit')
+                                            | Add Facility
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                    | Cancel
+            hr.m-0.ms-3.me-3
+            mb-5.m-3(id=`manage_ambulance_drivers`)
+                each doc,index in partner.ambulance.driverDetails
+                    .card.mb-3(style='max-width:50%')
+                        .row.g-0
+                            .col-md-4
+                                img.img-fluid.rounded-start(src=doc.driverProfile alt='...')
+                            .col-md-8
+                                .card-body
+                                    h5.card-title= doc.name
+                                    p.card-text= doc.phone
+                                    p.card-text
+                                        small.text-muted Verified
+                                    a.col-3.main-color(href='#')
+                                        i.fa-solid.fa-pen.justify-content-md-end.main-color.float-end( data-bs-toggle='modal' data-bs-target=`#myModel-${index}`)
+                    p.card-text.text-hidden.m-0.fs-7= doc.description
+                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`myModel-${index}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                        .modal-dialog.modal-dialog-scrollable
+                            .modal-content
+                                .modal-header
+                                    h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                        | Add Facilities Details
+                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                .modal-body
+                                    form.row.g-3( data-index=index data-partner= partner.hiwpmID data-driver=doc.hiwaddusID)
+                                        .col-md-12
+                                            label.form-label(for='title')
+                                                | Driver Name
+                                                span.text-danger *
+                                            input.form-control(type='text' id=`name-${index}` value=doc.name placeholder='Driver Name' required='')
+                                        .col-md-12
+                                            label.form-label(for='phone')
+                                                | Phone 
+                                                span.text-danger *
+                                            input.form-control(type='text' value=doc.phone id=`phone-${index}` placeholder='phone' required='')
+                                        input(type='file' id=`driverProfile-${index}` value=doc.profileImage data-index=index  accept='image/jpeg, image/png, image/jpg')
+                                        .col-12.text-center
+                                            button.btn.main-color-background.color-white#update_drivers(type='submit' )
+                                                | Update Facility
+                                .modal-footer
+                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                        | Cancel
+

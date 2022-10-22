@@ -1,0 +1,76 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex.justify-content-between
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 My Availablity Slots
+                .form-check.form-switch
+                        label.form-check-label(for='counsilarStatus') Status
+                        if slots.status === "active"
+                            input#counsilarStatus.form-check-input(type='checkbox' data-id=partner.hiwpmID checked)
+                        else if slots.status === "inactive"
+                            input#counsilarStatus.form-check-input(type='checkbox' data-id=partner.hiwpmID)
+            hr.m-0
+            -const arr = [0,1,2,3,4,5,6]
+            -const weekDay =  ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+            -const day = new Date().getDay()
+            ul#pills-tab.nav.nav-pills.mb-3.d-flex.justify-content-around.mt-3(role='tablist')
+                each doc,index in arr
+                    li.nav-item(role='presentation')
+                        a.btn.btn-outline-primary(class=`${index === 0 && 'active'}` data-bs-toggle='pill' id=`day-tab-${index}` data-bs-target=`#day-${index}` type='button' role='tab' aria-controls=`day-${index}` aria-selected='true')
+                            span 
+                                div #{`${doc+day < 7  ? weekDay[doc+day] : weekDay[doc+day-7]}`} 
+                                div  #{new Date(new Date().setDate(new Date().getDate()+index)).toLocaleDateString()}
+
+
+            h5.fw-bold.mt-3.ms-3.fs-5 Scheduled Slots
+            div#update_schudle
+                #pills-tabContent.tab-content.ms-3.mt-3.mb-3.p-2.border.pt-2
+                    -const availableTimes = ['01PM','02PM','03PM','04PM','05PM','06PM','07PM','08PM','09PM','10PM','11PM','12PM','01AM','02AM','03AM','04AM','05AM','06AM','07AM','08AM','09AM','10AM','11AM','12AM'];
+                    each index in arr
+                        .tab-pane.fade.show(role='tabpanel' class=`${index === 0 && 'active'}` aria-labelledby=`day-tab-${index}` id=`day-${index}`) 
+                            -const len = index+day < 7  ? index+day : index+day-7
+                                .d-flex.justify-content-between
+                                    div
+                                        each docs in slots.availableQuota
+                                            if docs.day === len && new Date(docs.date).valueOf() >= new Date().setHours(00,00,00).valueOf() && new Date(docs.date).valueOf() <= new Date().setHours(00,00,00).valueOf()+1000*60*60*24*7
+                                                each time in docs.availableTime
+                                                    button.btn.btn-primary.me-2.mb-2= time
+                                    div
+                                        button.btn.btn-success.me-3.addSchedules(data-id=index data-bs-toggle="modal" data-bs-target=`#schule${index}`) Update Schedules
+                                        .modal.fade(id=`schule${index}`)
+                                            .modal-dialog
+                                                .modal-content
+                                                    // Modal Header
+                                                    .modal-header
+                                                        h4.modal-title Select Schedules in  #{new Date(new Date().setDate(new Date().getDate()+index)).toLocaleDateString()}
+                                                        button.btn-close(type='button' data-bs-dismiss='modal')
+                                                    // Modal body
+                                                    .modal-body.p-3
+                                                        form#update_schudles(data-index=index,data-id=partner.hiwpmID)
+                                                            .d-flex.justify-content-around.flex-wrap(id=`addHourBasein${index}`)
+                                                                each docs in slots.availableQuota
+                                                                    if docs.day === len && new Date(docs.date).valueOf() >= new Date().setHours(00,00,00).valueOf() && new Date(docs.date).valueOf() <= new Date().setHours(00,00,00).valueOf()+1000*60*60*24*7
+                                                                        each newVal,inds in docs.availableTime
+                                                                            div.ms-2.mb-2
+                                                                                select.form-select(class=`hour${index}` type='text' placeholder='Another input placeholder')
+                                                                                    each a,nin in availableTimes
+                                                                                        -const reg = new RegExp(`^${a}`,"i")
+
+                                                                                        if reg.test(newVal)
+                                                                                            option(value=a selected)=a
+                                                                                        else
+                                                                                            option(value=a )=a
+                                                            .d-flex.justify-content-center.mt-3
+                                                                button.btn.btn-success.hourlyAdd(data-in=index) Add Time
+                                                            .d-grid.mt-3
+                                                                button.btn.btn-primary.btn-block(data-in=index type='submit') Update Schedule
+                                                    // Modal footer
+                                                    .modal-footer
+                                                        button.btn.btn-danger(type='button' data-bs-dismiss='modal') Close

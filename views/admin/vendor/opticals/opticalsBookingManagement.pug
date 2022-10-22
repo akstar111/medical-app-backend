@@ -1,0 +1,210 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")       
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 Optical Product Management
+            hr.m-0
+            .p-5.pt-2.nav-tabs-section
+                    ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+
+                        li.nav-item.border.rounded(role='presentation')
+                            button#pills-profile-tab.nav-link.inside-nav.fw-bold.active(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                                | Order List
+                        li.nav-item.border.rounded(role='presentation')
+                            button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                                | History
+                    #pills-tabContent.tab-content
+
+                        #pills-profile.tab-pane.fade.active.show(role='tabpanel' aria-labelledby='pills-profile-tab')
+                            h6.col-6.fw-bold.main-color.mt-5.text-head
+                                | Order List
+                            hr.m-0
+                            .mt-3.table-responsive
+                                table.table.table-bordered
+                                    thead
+                                        tr
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Name
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Phone Number
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Created Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Asked Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Status
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | View
+                                    tbody#update_optical_showroom_booking(data-id=partner.hiwpmID)
+                                        each doc,inds in active
+                                            tr
+                                                th(scope='row')= doc.user.name
+                                                td= doc.user.phone
+                                                td=new Date(doc.createdAt).toLocaleString()
+                                                td= new Date(doc.scheduledDate).toLocaleDateString()
+                                                td  
+                                                    select.form-select.border.update_status(aria-label='Default select example' id=`update_optical_status-${inds}` data-index=inds data-id=doc.hiwosopsID)
+                                                        if doc.status === "pending"
+                                                            option(value='pending' selected) pending
+                                                            option(value='accepted') Accepted
+                                                        else if doc.status === 'accepted'
+                                                            option(value='pending' ) Pending
+                                                            option(value='accepted' selected) Accepted
+                                                        option(value='rejected' ) Rejected
+                                                        option(value='completed' ) Completed
+                                                        option(value='not-arrived' ) Not-arrived
+                                                        option(value='canceled' ) Canceled
+                                                td
+                                                    a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#bookingActive-${inds}`) View
+                                                    // Modal
+                                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`bookingActive-${inds}`)
+                                                        .modal-dialog.modal-dialog-scrollable
+                                                            .modal-content
+                                                                .modal-header
+                                                                    h5#staticBackdropLabel.modal-title
+                                                                        | Active Booked list
+                                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                .modal-body.table-responsive
+                                                                    table.table.table-bordered
+                                                                        thead
+                                                                            tr
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    | Booking Details
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    //- | Order ID - 09869766875
+                                                                        tbody
+                                                                            //- tr
+                                                                            //-     th(scope='row') Product Id
+                                                                            //-     td 8798789678
+                                                                            tr
+                                                                                th(scope='row') Name
+                                                                                td= doc.user.name
+                                                                            tr
+                                                                                th(scope='row') Phone Number
+                                                                                td= doc.user.phone
+                                                                            tr
+                                                                                th(scope='row') User's Profile
+                                                                                td
+                                                                                    img.thumbnail(src=doc.user.profileImage alt='Product Image')
+                                                                            tr
+                                                                                th(scope='row') Created Date
+                                                                                td= new Date(doc.createdAt).toLocaleString()
+                                                                            tr
+                                                                                th(scope='row') Asked Date
+                                                                                td= new Date(doc.scheduledDate).toLocaleString()
+                                                                            tr
+                                                                                th(scope='row') Schudled Time
+                                                                                td= doc.scheduledTime ? doc.scheduledTime : "doc.scheduledTime"
+                                                                            tr
+                                                                                th(scope='row') Vendor Accepted Date
+                                                                                td= doc.vendorAcceptedDate ? doc.vendorAcceptedDate : "-" 
+                                                                            tr
+                                                                                th(scope='row') Accepted Description
+                                                                                td= doc.vendorAcceptedDescription ? doc.vendorAcceptedDescription : "-"
+
+                                                                .modal-footer
+                                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                        | Cancel
+                        #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                            h6.col-6.fw-bold.main-color.mt-5.text-head History
+                            hr.m-0
+                            .mt-3.table-responsive
+                                table.table.table-bordered
+                                    thead
+                                        tr
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Name
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Phone Number
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Created Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Asked Date
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | Status
+                                            th.color-white.main-color-background.text-center(scope='col')
+                                                | View
+                                    tbody 
+                                        each doc,inds in history
+                                            tr
+                                                th(scope='row')= doc.user.name
+                                                td= doc.user.phone
+                                                td=new Date(doc.createdAt).toLocaleString()
+                                                td= new Date(doc.scheduledDate).toLocaleDateString()
+                                                td=doc.status
+                                                td
+                                                    a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#bookingActive-${inds}`) View
+                                                    // Modal
+                                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`bookingActive-${inds}`)
+                                                        .modal-dialog.modal-dialog-scrollable
+                                                            .modal-content
+                                                                .modal-header
+                                                                    h5#staticBackdropLabel.modal-title
+                                                                        | Active Booked list
+                                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                .modal-body.table-responsive
+                                                                    table.table.table-bordered
+                                                                        thead
+                                                                            tr
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    | Booking Details
+                                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                                    //- | Order ID - 09869766875
+                                                                        tbody
+                                                                            //- tr
+                                                                            //-     th(scope='row') Product Id
+                                                                            //-     td 8798789678
+                                                                            tr
+                                                                                th(scope='row') Name
+                                                                                td= doc.user.name
+                                                                            tr
+                                                                                th(scope='row') Phone Number
+                                                                                td= doc.user.phone
+                                                                            tr
+                                                                                th(scope='row') User's Profile
+                                                                                td
+                                                                                    img.thumbnail(src=doc.user.profileImage alt='Product Image')
+                                                                            tr
+                                                                                th(scope='row') Created Date
+                                                                                td= new Date(doc.createdAt).toLocaleString()
+                                                                            tr
+                                                                                th(scope='row') Asked Date
+                                                                                td= new Date(doc.scheduledDate).toLocaleString()
+                                                                            tr
+                                                                                th(scope='row') Schudled Time
+                                                                                td= doc.scheduledTime ? doc.scheduledTime : "-"
+                                                                            tr
+                                                                                th(scope='row') Vendor Accepted Date
+                                                                                td= doc.vendorAcceptedDate ?new Date( doc.vendorAcceptedDate).toLocaleString() : "-" 
+                                                                            tr
+                                                                                th(scope='row') Accepted Description
+                                                                                td= doc.vendorAcceptedDescription ? doc.vendorAcceptedDescription : "-"
+                                                                            tr
+                                                                                th(scope='row') Vendor Rejected Date
+                                                                                td= doc.VendorRejectedDate ?new Date( doc.VendorRejectedDate).toLocaleString() : "-" 
+                                                                            tr
+                                                                                th(scope='row') Rejected Description
+                                                                                td= doc.VendorRejectedDescription ? doc.VendorRejectedDescription : "-"
+                                                                            tr
+                                                                                th(scope='row') Vendor Response Date
+                                                                                td= doc.vendorStatusResponseDate ?new Date( doc.vendorStatusResponseDate).toLocaleString() : "-" 
+                                                                            tr
+                                                                                th(scope='row') Vendor Response Description
+                                                                                td= doc.vendorStatusResponseDescription ? doc.vendorStatusResponseDescription : "-"
+                                                                            tr
+                                                                                th(scope='row') User Response Date
+                                                                                td= doc.userResponseDate ?new Date( doc.userResponseDate).toLocaleString() : "-" 
+                                                                            tr
+                                                                                th(scope='row') User Response Description
+                                                                                td= doc.userResponseDescription ? doc.userResponseDescription : "-"
+
+                                                                .modal-footer
+                                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                        | Cancel

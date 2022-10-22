@@ -1,0 +1,95 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    case partner.for
+        when "Blood Bank" 
+            include ../bloodDonnation/layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            case partner.for
+                when "Blood Bank"
+                    include ../bloodDonnation/layout/pcSidebar
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                
+                .p-2
+                        h3.vendor-heading.fs-4.mb-0
+                            | #{partner.company}
+                        p.mt-0
+                            | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                            | voluptates quo qui corporis nam rem.
+                hr
+                .p-5.pt-2
+                        h6.col-6.fw-bold.main-color.mt-5.text-head
+                            | You job
+                        hr.m-0
+                        div#manage_data
+                            .border.rounded.p-3.mt-4
+                                .d-flex.bd-highlight.ms-0
+                                    .me-auto.bd-highlight
+                                        h6.fs-5.main-color.fw-bold= job.jobTitle
+                                    .p-2.bd-highlight
+                                        i.fa-solid.fa-trash.text-danger.fs-5#deletejob(data-job=job.hiwjbmID data-from=partner.for)
+                                    .p-2.bd-highlight.ms-4
+                                        a(href=`/vendor/${partner.for}/job-management/update-my-job/${job.hiwjbmID}`)
+                                            i.fa-solid.fa-pen.main-color.fs-5
+                                div
+                                    h6.fw-bold.text-dark
+                                        | Job Description:
+                                        span.text-secondary.fw-normal= job.description
+                                div
+                                    h6.fw-bold.text-dark
+                                        | Year of Experience:
+                                        span.text-secondary.fw-normal= job.yearOfExperience
+                                div
+                                    h6.fw-bold.text-dark
+                                        | Salary :
+                                        span.text-secondary.fw-normal= job.salaryPerMonth
+                                .d-flex.bd-highlight.ms-0
+                                    .me-auto.bd-highlight
+                                        h6.fw-bold.text-dark
+                                            | Posted Date:
+                                            span.text-secondary.fw-normal= new Date(job.createdAt).toLocaleDateString()
+                            .mt-3.table-responsive
+                                if job.applicants.length
+                                    table.table.table-bordered
+                                        thead
+                                            tr
+                                                th.color-white.main-color-background.text-center(scope='col')
+                                                    | Name
+                                                th.color-white.main-color-background.text-center(scope='col')
+                                                    | Phone Number
+                                                th.color-white.main-color-background.text-center(scope='col')
+                                                    | Email
+                                                th.color-white.main-color-background.text-center(scope='col')
+                                                    | Applied Date
+                                                th.color-white.main-color-background.text-center(scope='col')
+                                                    | Resume
+                                        tbody
+                                            each doc,index in job.applicants
+                                                tr
+                                                    th(scope='row')= doc.name
+                                                    td= doc.phone
+                                                    td=doc.email
+                                                    td= new Date(doc.createdAt).toLocaleDateString()
+                                                    td
+                                                        a(href=`/vendor/${partner.for}/job-management/applicant/${doc.hiwnjasID}`) View

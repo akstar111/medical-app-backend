@@ -1,0 +1,19 @@
+ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold.text-nowrap( href='./nearby-facilities-management' class=`${activeSubList === "nearbyfac" ? "active" : ""}` )
+            | Nearby Facilities
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold(  href='./nearby-hotels-management' class=`${activeSubList === "hotels" ? "active" : ""}`)
+            | Hotels 
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold(  href='./nearby-restaurants-management' class=`${activeSubList === "restaurants" ? "active" : ""}`)
+            | Restaurants
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold(  href='./nearby-airport-management' class=`${activeSubList === "airports" ? "active" : ""}`)
+            | Airports
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold(  href='./nearby-railwayStation-management' class=`${activeSubList === "train" ? "active" : ""}`)
+            | Trains
+    li.nav-item.border.rounded(role='presentation')
+        a.nav-link.inside-nav.fw-bold(  href='./nearby-busstops-management' class=`${activeSubList === "bus" ? "active" : ""}`)
+            | Buses

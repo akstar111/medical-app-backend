@@ -1,0 +1,27 @@
+.d-flex.bd-highlight.mt-3
+    .p-2.flex-grow-1.bd-highlight
+        h6.fs-5.text-body.fw-bold.text-uppercase
+            | Manage Vendors
+    .p-2.bd-highlight
+        i.fa-solid.fa-bell.fs-5.text-body
+    .p-2.bd-highlight
+        h6.fs-5.text-body.fw-bold |
+    .p-2.bd-highlight
+        //- h6.fs-5.text-body.fw-bold=partner.name
+    .p-2.bd-highlight
+        img.login-user-image(src=user.profileImage alt='user image')
+
+hr.m-100
+
+ul.nav.nav-pills.nav-fill
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./blood-donner-list' 
+            class=`${activeList==='donners' && 'active'}`) Blood Donners
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./user-blood-request' 
+            class=`${activeList==='requesters' && 'active'}`) New Request From User
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./user-blood-request-received' 
+            class=`${activeList==='request' && 'active'}`) Received Requests
+  
+hr.mt-2.mb-2

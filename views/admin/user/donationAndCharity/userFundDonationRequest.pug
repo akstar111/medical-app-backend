@@ -1,0 +1,172 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+        hr
+        include ./shared/detailsList
+        .d-flex.mt-3
+            .flex-grow-1
+                h5.fw-bold.mt-3.ms-3 Donation Request list
+        .row.row-cols-1.row-cols-md-2.g-4.mt-4
+            each doc,index in fundreq
+                .col
+                    .card.mb-3(style='max-width: 540px')
+                        .row.g-0
+                            .col-md-4
+                                img.img-fluid.rounded-start(src=doc.bannerImage alt='User Image')
+                            .col-md-8
+                                .card-body.g-4
+                                    h6.card-title.text-uppercase.fw-bold.fs-7
+                                        | #{doc.name}
+                                    p.card-text.m-0.fs-8
+                                        | #{doc.about}
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | Phone Number:   
+                                        span.text-danger= doc.phone1
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | Phone Number:   
+                                        span.text-danger= doc.phone2
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | Amount:  
+                                        span.text-danger Rs. #{doc.amount}
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | status:  
+                                        span.text-danger= doc.status ? "Donated" :"Pending" 
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | Date :  
+                                        span.text-danger= new Date(doc.createdAt).toLocaleDateString()
+                                    p.card-text.m-0.fs-8.fw-bold.text-uppercase
+                                        | Description :  
+                                        span.text-danger= doc.description
+                                    
+                                    .d-flex.justify-content-end
+                                            button.btn.btn-primary(data-bs-toggle='modal' data-bs-target=`#bookingActive-${index}`) View
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`bookingActive-${index}`)
+                                                .modal-dialog.modal-dialog-scrollable.modal-fullscreen
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title
+                                                                | Active Booked list
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body.table-responsive
+
+                                                                    .container.ps-4.pe-4
+                                                                      div
+                                                                        .border.border-color.width-100.p-0
+                                                                          .p-5.pt-2
+                                                           
+                                                                            .text-center
+                                                                              img.rounded-circle.resume-image.mt-3(src=doc.bannerImage alt='User Image')
+                                                                              h6.main-color.text-uppercase.fw-bold.mt-2
+                                                                                | #{doc.name}
+                                                                              h1.secondary-color.text-uppercase.fw-bold.mt-2
+                                                                                | Rs.#{doc.amount}
+                                                                            .row.border.rounded
+                                                                              .col-6.p-2
+                                                                                h6.main-color.fs-5.fw-bold= doc.name
+                                                                                p.fs-7.secondary-color.fw-bold
+                                                                                  | #{doc.cause}
+                                                                                p.text-secondary.fw-bold
+                                                                                  | #{doc.hospitalAddress}
+                                                                                p.text-secondary.fw-bold= doc.phone1
+                                                                              .col-6.p-2.border-start
+                                                                                h6.main-color.fs-5.fw-bold
+                                                                                  | Verification Documents
+                                                                                .d-flex
+                                                                                  .p-2.flex-grow-1
+                                                                                    p.fw-bold Medical Certificate :
+                                                                                  .p-2
+                                                                                    a(href=doc.patientMedicalCertificate) View ID
+                                                                                .d-flex
+                                                                                  .p-2.flex-grow-1
+                                                                                    p.fw-bold Report Sheet ID &amp; Document :
+                                                                                  .p-2
+                                                                                    a(href=doc.patientReportSheet) View ID
+                                                                                .d-flex
+                                                                                  .p-2.flex-grow-1
+                                                                                    p.fw-bold Aadhar :
+                                                                                  .p-2
+                                                                                    a(href=doc.idProof1) View ID
+                                                                                .d-flex
+                                                                                  .p-2.flex-grow-1
+                                                                                    p.fw-bold PAN card :
+                                                                                  .p-2
+                                                                                    a(href=doc.idProof2) View ID
+                                                                            .text-center
+                                                                              h6.main-color.text-uppercase.fw-bold.mt-5
+                                                                                | Receipt
+                                                                            hr.m-0
+                                                                            .col-10.m-auto.border.mt-2
+                                                                              // Hero Section
+                                                                              .vendor-hero-image(style=`background-image:url("${doc.bannerImage}")`)
+                                                                              // Hero Section
+                                                                              .p-3
+                                                                                .d-flex
+                                                                                  .flex-grow-1
+                                                                                    h4= doc.name
+                                                                                  //- .me-2
+                                                                                  //-   i.fa-solid.fa-eye.secondary-color.fs-5.me-2
+                                                                                  //-   | 333
+                                                                                  //- div
+                                                                                  //-   i.fa-solid.fa-user-check.secondary-color.fs-5
+                                                                                h6.secondary-color=doc.cause
+                                                                                h6.fw-bold.text-uppercase.main-color
+                                                                                  | Hospital Details
+                                                                                h6.fw-bold.text-secondary
+                                                                                  | #{doc.hospitalName},#{doc.hospitalCity}
+                                                                                h6.text-secondary= doc.hospitalAddress
+                                                                                hr
+                                                                                .d-flex
+                                                                                  .flex-grow-1
+                                                                                    p
+                                                                                      span.fw-bold Phone : 
+                                                                                      | #{doc.phone1}
+                                                                                  div
+                                                                                    p
+                                                                                      span.fw-bold Hours: 
+                                                                                      |#{doc.hospitalAvailableTimeFrom} to #{doc.hospitalAvailableTimeTo}
+                                                                                      |                           pm
+                                                                                p
+                                                                                  span.fw-bold landline: 
+                                                                                  | 
+                                                                                hr
+                                                                                h6.fw-bold.text-uppercase.main-color
+                                                                                  | Patient Details
+                                                                                h6.fw-bold.text-secondary Address
+                                                                                h6.text-secondary
+                                                                                  | #{doc.nativeAddress}
+                                                                                p.text-secondary
+                                                                                  span.fw-bold Disease : 
+                                                                                  | #{doc.ucase}
+                                                                                p.text-secondary
+                                                                                  span.fw-bold Started From : 
+                                                                                  | #{new Date(doc.createdAt).toLocaleDateString()}
+                                                                                p.text-danger
+                                                                                  span.fw-bold.text-secondary Quote amount : 
+                                                                                  | Rs.#{doc.amount}
+                                                                                p.text-danger
+                                                                                  span.fw-bold.text-secondary Donation Received amount : 
+                                                                                  | Rs. #{doc.amountRecived}
+                                                                                h6.fw-bold.text-secondary
+                                                                                  | Patient Information :
+                                                                                h6.text-secondary= doc.cause
+                                                                                hr
+                                                                                p
+                                                                                  span.fw-bold Phone Number 1 : 
+                                                                                  |#{doc.phone1}
+                                                                                p
+                                                                                  span.fw-bold Phone Number 1 :#{doc.phone2}
+                                                                                  
+                                                                                hr
+                                                                            //- .d-grid.gap-2.col-6.mx-auto.m-3
+                                                                            //-   button.btn.btn-success(type='button') Donate Now
+                                                                    
+                                                                 
+
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+                

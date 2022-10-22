@@ -1,0 +1,274 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include ../layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include ../layout/pcSidebar
+            .col-9.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-2
+                    h3.vendor-heading.fs-4.mb-0=partner.company
+                    p.mt-0
+                        | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                        | voluptates quo qui corporis nam rem.
+                .tab-content.ms-4
+                    #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                        .row
+                            h6.col-6.fw-bold.main-color.mt-3.text-head.ps-3 
+                                | Add New Package
+                            .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                    | Add More
+                            #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                .modal-dialog.modal-dialog-scrollable
+                                    .modal-content
+                                        .modal-header
+                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                | Add Product Details
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                        .modal-body
+                                            form.row.g-2#add_new_hospital_package
+                                                .col-sm-12
+                                                    label.col-form-label.fw-bold Package:
+                                                    select#newPackage.form-select.border.border-2.bg-li(required)
+                                                        option(value="") -- Select Package -- 
+                                                        each docs in packages
+                                                            option(value=docs.name)= docs.name
+                                                .col-12.text-center
+                                                    button.btn.main-color-background.color-white(type='submit')
+                                                        | Add Package
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                | Cancel
+                    #update_hospital_category.mt-2
+                        each doc,ind1 in packs.packageDetails
+                            div.d-flex.justify-content-between
+                                p.h4= doc.category
+                                div.me-5
+                                    button.btn.btn-primary(type='button' data-bs-toggle='modal' data-bs-target=`#addSubCategory${ind1}`) Add Sub Category
+                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`addSubCategory${ind1}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                        .modal-dialog.modal-dialog-scrollable
+                                            .modal-content
+                                                .modal-header
+                                                    h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                        | Add Sub Category
+                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                .modal-body
+                                                    form.row.g-2#add_sub_category(data-key=ind1 data-id=doc.hiwhpdsnmID)
+                                                        .col-sm-12
+                                                            label.col-form-label.fw-bold Package:
+                                                            input.form-control(id=`addNewSubCategory${ind1}`)
+
+                                                        .col-12.text-center
+                                                            button.btn.main-color-background.color-white(type='submit')
+                                                                | Add Sub-Category
+                                                .modal-footer
+                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                        | Cancel
+
+                                    a.ps-2.pt-1(type='button' data-bs-toggle='modal' data-bs-target=`#updateCategory${ind1}`) Edit
+                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`updateCategory${ind1}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                        .modal-dialog.modal-dialog-scrollable
+                                            .modal-content
+                                                .modal-header
+                                                    h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                        | Update Category
+                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                .modal-body
+                                                    form.row.g-2#update_category(data-key=ind1 data-id=doc.hiwhpdsnmID)
+                                                        .col-sm-12
+                                                            label.col-form-label.fw-bold Package:
+                                                            select.form-select.border.border-2.bg-li(id=`newPackage${ind1}` required)
+                                                                option(value="") -- Select Package -- 
+                                                                each docs in packages
+                                                                    if docs.name === doc.category
+                                                                        option(value=docs.name selected)= docs.name
+                                                                    else    
+                                                                        option(value=docs.name)= docs.name
+
+                                                        .col-12.text-center
+                                                            button.btn.main-color-background.color-white(type='submit')
+                                                                | Update Category
+                                                .modal-footer
+                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                        | Cancel
+
+                            if doc.subCategory.length
+                                each doc2,ind2 in doc.subCategory
+                                    div.ps-3.d-flex.justify-content-between.mt-3
+                                        p.h5= doc2.name
+                                        div.me-5
+                                            button.btn.btn-primary(type='button' data-bs-toggle='modal' data-bs-target=`#packagetype${ind1}${ind2}`) Add Package Type
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`packagetype${ind1}${ind2}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                | Add Package Type
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body
+                                                            form.row.g-2#add_package_type(data-key1=ind1 data-key2=ind2 data-id=doc.hiwhpdsnmID data-sid=doc2.hiwhppdsID)
+                                                                .col-sm-12
+                                                                    label.col-form-label.fw-bold Package Name:
+                                                                    input.form-control(id=`packageName${ind1}${ind2}`)
+                                                                .col-sm-12
+                                                                    label.col-form-label.fw-bold Recommend Age:
+                                                                    input.form-control(id=`recommendAge${ind1}${ind2}`)
+                                                                .col-sm-12
+                                                                    label.col-form-label.fw-bold Description :
+                                                                    input.form-control(id=`description${ind1}${ind2}`)
+                                                                .col-sm-12
+                                                                    label.col-form-label.fw-bold Price :
+                                                                    input.form-control(id=`price${ind1}${ind2}`)
+
+                                                                .col-12.text-center
+                                                                    button.btn.main-color-background.color-white(type='submit')
+                                                                        | Add Package Type
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+                                            a.ps-2.pt-1(type='button' data-bs-toggle='modal' data-bs-target=`#openUpdateSubCategorys${ind1}${ind2}`) Edit
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`openUpdateSubCategorys${ind1}${ind2}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                | Update Sub-Category
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body
+                                                            form.row.g-2#update_sub_category(data-key1=ind1 data-key2=ind2 data-id=doc.hiwhpdsnmID data-sId=doc2.hiwhppdsID)
+                                                                .col-sm-12
+                                                                    label.col-form-label.fw-bold Package:
+                                                                    input.form-control(id=`updateSubCategory${ind1}${ind2}` value=doc2.name)
+                                                                .col-12.text-center
+                                                                    button.btn.main-color-background.color-white(type='submit')
+                                                                        | Update Sub-Category
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+
+                                    .d-flex.flex-wrap
+                                        if doc2.packType.length
+                                            each doc3,ind3 in doc2.packType
+                                                .card.ms-3.m-2(style='width: 20rem;')
+                                                    .card-body
+                                                        .d-flex.justify-content-between
+                                                            h5.card-title= doc3.packageName
+                                                            a.ps-2.pt-1(type='button' data-bs-toggle='modal' data-bs-target=`#openUpdatePackTypes${ind1}${ind2}${ind3}`) Edit
+                                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`openUpdatePackTypes${ind1}${ind2}${ind3}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                                .modal-dialog.modal-dialog-scrollable
+                                                                    .modal-content
+                                                                        .modal-header
+                                                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                                | Update Sub-Category
+                                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                        .modal-body
+                                                                            form.row.g-2#update_package_type(data-key1=ind1 data-key2=ind2 data-key3=ind3 data-spid=doc3.hiwhppscdID data-id=doc.hiwhpdsnmID data-sid=doc2.hiwhppdsID)
+                                                                                .col-sm-12
+                                                                                    label.col-form-label.fw-bold Package Name:
+                                                                                    input.form-control(value=doc3.packageName id=`packageName${ind1}${ind2}${ind3}`)
+                                                                                .col-sm-12
+                                                                                    label.col-form-label.fw-bold Recommend Age:
+                                                                                    input.form-control(value=doc3.recommendAge id=`recommendAge${ind1}${ind2}${ind3}`)
+                                                                                .col-sm-12
+                                                                                    label.col-form-label.fw-bold Description :
+                                                                                    input.form-control(value=doc3.description id=`description${ind1}${ind2}${ind3}`)
+                                                                                .col-sm-12
+                                                                                    label.col-form-label.fw-bold Price :
+                                                                                    input.form-control(value=doc3.price id=`price${ind1}${ind2}${ind3}`)
+
+                                                                                .col-12.text-center
+                                                                                    button.btn.main-color-background.color-white(type='submit')
+                                                                                        | Update Package Type
+                                                                        .modal-footer
+                                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                                | Cancel
+                                                        h6.card-subtitle.mb-2.text-muted Recommended To : 
+                                                            span.text-muted=doc3.recommendAge
+                                                        p.card-text= doc3.description
+                                                        a.card-link.btn.btn-primary() Price : #{doc3.price}
+                                                        a.card-link.btn.btn-primary(data-bs-toggle="modal"  href=`#openManageServiceList${ind1}${ind2}${ind3}` role="button") Manage Packages
+                                                        // Modal
+                                                        .modal.fade(id=`openManageServiceList${ind1}${ind2}${ind3}` aria-hidden="true"   aria-labelledby="exampleModalToggleLabel" tabindex='-1' )
+                                                            .modal-dialog.modal-dialog-scrollable.modal-fullscreen
+                                                                .modal-content
+                                                                    .modal-header
+                                                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                            | Add Facilities Details
+                                                                        div
+                                                                            button.btn.main-color-background.color-white.addServiceList.me-4(data-bs-target=`#openAddHospitalPacksSeriviceList${ind1}${ind2}${ind3}` data-bs-toggle='modal' data-bs-dismiss='modal'  )
+                                                                                | Add Service List
+                                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+
+                                                                    .modal-body
+                                                                        .d-flex.flex-wrap.justify-content-around(id=`addServiceDetailsList${ind1}${ind2}${ind3}`)
+                                                                            if doc3.serviceList.length
+                                                                                each doc4,ind4 in doc3.serviceList
+                                                                                    form.row.g-3#update_service_list(style="width:22%;" data-key1=ind1 data-key2=ind2 data-key3=ind3 data-key4=ind4 data-spid=doc3.hiwhppscdID data-id=doc.hiwhpdsnmID data-sid=doc2.hiwhppdsID data-hsi=doc4.hiwhpslsID)
+                                                                                        .col-md-12
+                                                                                            label.form-label(for='title')
+                                                                                                | Title
+                                                                                                span.text-danger *
+                                                                                            input.form-control(type='text' id=`hospitalServiceListUpdateTitle${ind1}${ind2}${ind3}${ind4}` placeholder='Title' value=doc4.serviceTitle required='')
+                                                                                            label.form-label(for='description')
+                                                                                                    | Services 
+                                                                                                    span.text-danger *
+                                                                                        .col-md-12(id=`hospitalServiceUpdate${ind1}${ind2}${ind3}${ind4}`)
+                                                                                            each doci in doc4.services
+                                                                                                input.form-control.mt-3(class=`hospitalServiceListUpdate${ind1}${ind2}${ind3}${ind4}` type='text'  value=doci placeholder='List' required='')
+                                                                                        .d-grid
+                                                                                            a.btn.btn-primary.btn-block.updateServicesForHospitals(type='button' data-key1=ind1 data-key2=ind2 data-key3=ind3 data-key4=ind4 ) Add Services
+                                                                                        .col-12.text-center
+                                                                                            button.btn.main-color-background.color-white(type='submit')
+                                                                                                | Update Service
+                                                                    .modal-footer
+                                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                            | Cancel
+
+                                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='1' id=`openAddHospitalPacksSeriviceList${ind1}${ind2}${ind3}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                            .modal-dialog.modal-dialog-scrollable
+                                                                .modal-content
+                                                                    .modal-header
+                                                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                            | Add Service List
+                                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                                    .modal-body
+                                                                        form.row.g-2#add_service_list(data-key1=ind1 data-key2=ind2 data-key3=ind3 data-spid=doc3.hiwhppscdID data-id=doc.hiwhpdsnmID data-sid=doc2.hiwhppdsID)
+                                                                            .col-sm-12
+                                                                                label.col-form-label.fw-bold Service Name:
+                                                                                input.form-control(placeholder='title' id=`hospitalServiceName${ind1}${ind2}${ind3}`)
+                                                                                label.col-form-label.fw-bold Service List:
+                                                                            .col-sm-12(id=`hospitalServiceAdd${ind1}${ind2}${ind3}`)
+                                                                                input.form-control(class=`hospitalservices${ind1}${ind2}${ind3} mt-2` placeholder="List")
+                                                                            .d-grid
+                                                                                a.btn.btn-primary.btn-block.addServicesForHospitals(type='button' data-key1=ind1 data-key2=ind2 data-key3=ind3 ) Add Services
+                                                                            .col-12.text-center
+                                                                                button.btn.main-color-background.color-white(type='submit')
+                                                                                    |  Add Service List
+                                                                    .modal-footer
+                                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                            | Cancel
+
+                            hr
+                            br

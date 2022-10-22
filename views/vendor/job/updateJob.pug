@@ -1,0 +1,120 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    case partner.for
+        when "Blood Bank" 
+            include ../bloodDonnation/layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            case partner.for
+                when "Blood Bank" 
+                    include ../bloodDonnation/layout/pcSidebar
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                hr
+                .p-5.pt-2
+                        h2.text-center.fw-bold.m-4 Update your Job
+                        div
+                            form#updateJob(data-job=job.hiwjbmID data-from=partner.for)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Title:
+                                    .col-sm-7
+                                        input.form-control.bg-li#jobTitle(type='text' value=job.jobTitle placeholder='Job Title')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Category:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobCategory
+                                            option(value="") -- Select your category --                                             
+                                            each doc in Object.keys(categories)
+                                                option(value=doc selected=doc===job.category ? true : false)= doc
+
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Specilality:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobSpeciality
+                                            option(value="") -- Select your Speciality -- 
+                                            each doc in categories[job.category]
+                                                option(value=doc selected=doc===job.speciality ? true : false)=doc
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold() Job Type:
+                                    .col-sm-7
+                                        select.form-select.border.border-2.bg-li#jobType
+                                            option -- Select your Job Type -- 
+                                            option(value="Part-Time" selected=job.jobType === "Part-Time" ? true : false) Part-Time 
+                                            option(value="Full-Time" selected=job.jobType === "Full-Time" ? true : false) Full-Time 
+
+
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Year of Experience:
+                                    .col-sm-7
+                                        input.form-control.bg-li#yearOfExperience(type='text' value=job.yearOfExperience placeholder='Year of Experience')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword' value=job.salaryPerMonth) salary per month:
+                                    .col-sm-7
+                                        input.form-control.bg-li#salaryPerMonth(type='text' value=job.salaryPerMonth placeholder='salary per month')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Number of Vacancy:
+                                    .col-sm-7
+                                        input.form-control.bg-li#vacancy(type='text' value=job.vacancy placeholder='Number of vancancy')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Location :
+                                    .col-sm-3
+                                        input.form-control.bg-li#latitude(type='text' value=job.location.coordinates[1] placeholder='latitude')
+                                    .col-sm-3
+                                        input.form-control.bg-li#longitide(type='text' value=job.location.coordinates[0] placeholder='longitude')
+                                    .col-sm-1
+                                        i.fa-solid.fa-location-dot.border.bg-li.fs-5.p-2.ps-3.pe-3.rounded.text-secondary
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Hours :
+                                    .col-sm-3
+                                        input.form-control.bg-li#openTime(type='text' value=job.workTimeFrom placeholder='Open time')
+                                    .col-sm-3
+                                        input.form-control.bg-li#closeTime(type='text' value=job.workTimeTo placeholder='Close time')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') City :
+                                    .col-sm-7
+                                        input.form-control.bg-li#city(type='text' value=job.city placeholder='City')
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') State:
+                                    .col-sm-7
+                                        input.form-control.bg-li#state(type='text' placeholder='State' value=job.state)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Pincode/Zip :
+                                    .col-sm-7
+                                        input.form-control.bg-li#pincode(type='text' placeholder='Pincode' value=job.pincode)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Country : :
+                                    .col-sm-7
+                                        input.form-control.bg-li#country(type='text' placeholder='Country ' value=job.country)
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Address :
+                                    .col-sm-7
+                                        textarea.form-control.bg-li#address(rows='3')= job.address
+                                .mb-3.row
+                                    label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Description :
+                                    .col-sm-7
+                                        textarea.form-control.bg-li#description(rows='3')=job.description
+                                .text-center
+                                    button.btn.btn-danger.ps-5.pe-5.me-5(type='button')
+                                        | Cancel
+                                    button.btn.btn-success.ps-4.pe-4.me-s(type='submit' )
+                                        | Update Job

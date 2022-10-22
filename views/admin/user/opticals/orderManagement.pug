@@ -1,0 +1,276 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+
+        hr
+        include ./shared/detailsList
+        .pt-2.nav-tabs-section
+            ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                li.nav-item.border.rounded(role='presentation')
+                    button#pills-profile-tab.nav-link.inside-nav.fw-bold.active(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                        | Order List
+                li.nav-item.border.rounded(role='presentation')
+                    button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                        | History
+        #pills-tabContent.tab-content
+
+            #pills-profile.tab-pane.fade.active.show(role='tabpanel' aria-labelledby='pills-profile-tab')
+                h6.col-6.fw-bold.main-color.mt-5.text-head
+                    | Order List
+                hr.m-0
+                .mt-3.table-responsive
+                    table.table.table-bordered
+                        thead
+                            tr
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Product Name
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Size
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Qty
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Color
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Order Date
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Status
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | View
+                        tbody#update_user_optical_product_status(data-id=user.id)
+                           
+                            each doc,inds in orders.active
+                                tr
+                                    th(scope='row')= doc.name
+                                
+                                    td= doc.availableSize
+                                    td= doc.quantity
+                                    td= doc.color
+                                    td= new Date(doc.createdAt).toLocaleString()
+                                    td  
+                                        select.form-select.border.update_status(aria-label='Default select example' id=`update_optical_status-${index}` data-index=index data-id=doc.hiwonsmID)
+                                           option(value="") -- Select Status --
+                                           option(value='canceled') Canceled
+                                    td
+                                        a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderActive-${inds}`) View
+                                        // Modal
+                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderActive-${inds}`)
+                                            .modal-dialog.modal-dialog-scrollable
+                                                .modal-content
+                                                    .modal-header
+                                                        h5#staticBackdropLabel.modal-title
+                                                            | Product Details
+                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                    .modal-body.table-responsive
+                                                        table.table.table-bordered
+                                                            thead
+                                                                tr
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        | Order Details
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        //- | Order ID - 09869766875
+                                                            tbody
+                                                                //- tr
+                                                                //-     th(scope='row') Product Id
+                                                                //-     td 8798789678
+                                                                tr
+                                                                    th(scope='row') Product Name
+                                                                    td= doc.name
+                                                                tr
+                                                                    th(scope='row') Glass Type
+                                                                    td= doc.glassType
+                                                                tr
+                                                                    th(scope='row') Glass Gender Type
+                                                                    td= doc.glassGenderType
+                                                                tr
+                                                                    th(scope='row') Frame Type
+                                                                    td= doc.glassFrameType
+                                                                tr
+                                                                    th(scope='row') Color
+                                                                    td= doc.color
+                                                                tr
+                                                                    th(scope='row') Size
+                                                                    td= doc.availableSize
+                                                                tr
+                                                                    th(scope='row') Optical Image
+                                                                    td
+                                                                        img.thumbnail(src=doc.productImage alt='Product Image')
+                                                                tr
+                                                                    th(scope='row') Optical Image Gallery
+                                                                    td
+                                                                        each galImg in doc.productImageGallery
+                                                                            img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                tr
+                                                                    th(scope='row') Order Status
+                                                                    td= doc.orderStatus
+                                                                tr
+                                                                    th(scope='row') Address
+                                                                    td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                tr
+                                                                    th(scope='row') Phone Number 1
+                                                                    td= doc.addressDetails.phone1
+                                                                tr
+                                                                    th(scope='row') Phone Number 2
+                                                                    td= doc.addressDetails.phone2
+                                                                tr
+                                                                    th(scope='row') Quanity
+                                                                    td= doc.quantity
+                                                                tr
+                                                                    th(scope='row') Price
+                                                                    td= doc.opticalPrice
+                                                                tr
+                                                                    th(scope='row') Discount Price
+                                                                    td= doc.opticalDiscountPrice
+
+                                                                tr
+                                                                    th.text-danger(scope='row')
+                                                                        | Payment Mode
+                                                                    td.text-danger Online
+                                                                tr
+                                                                    th(scope='row') Ordered Date
+                                                                    td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Accepted Date
+                                                                    td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Shipped Date
+                                                                    td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Out of Delivery Date Date
+                                                                    td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                    .modal-footer
+                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                            | Cancel
+            #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                h6.col-6.fw-bold.main-color.mt-5.text-head History
+                hr.m-0
+                .mt-3.table-responsive
+                    table.table.table-bordered
+                        thead
+                            tr
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Product Name
+                               
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Size
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Qty
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Color
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Order Date
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Order Status
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Status
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | View
+                        tbody
+                            each doc,inds in orders.history
+                                tr
+                                    th(scope='row')= doc.name
+                                  
+                                    td= doc.availableSize
+                                    td= doc.quantity
+                                    td= doc.color
+                                    td= new Date(doc.createdAt).toLocaleString()
+                                    td= doc.orderStatus
+                                    td= doc.status
+                                    td
+                                        a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#orderHistory-${inds}`) View
+                                        // Modal
+                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`orderHistory-${inds}`)
+                                            .modal-dialog.modal-dialog-scrollable
+                                                .modal-content
+                                                    .modal-header
+                                                        h5#staticBackdropLabel.modal-title
+                                                            | Product Details
+                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                    .modal-body.table-responsive
+                                                        table.table.table-bordered
+                                                            thead
+                                                                tr
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        | Order Details
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        //- | Order ID - 09869766875
+                                                            tbody
+                                                                //- tr
+                                                                //-     th(scope='row') Product Id
+                                                                //-     td 8798789678
+                                                                tr
+                                                                    th(scope='row') Product Name
+                                                                    td= doc.name
+                                                                tr
+                                                                    th(scope='row') Glass Type
+                                                                    td= doc.glassType
+                                                                tr
+                                                                    th(scope='row') Glass Gender Type
+                                                                    td= doc.glassGenderType
+                                                                tr
+                                                                    th(scope='row') Frame Type
+                                                                    td= doc.glassFrameType
+                                                                tr
+                                                                    th(scope='row') Color
+                                                                    td= doc.color
+                                                                tr
+                                                                    th(scope='row') Size
+                                                                    td= doc.availableSize
+                                                                tr
+                                                                    th(scope='row') Optical Image
+                                                                    td
+                                                                        img.thumbnail(src=doc.productImage alt='Product Image')
+                                                                tr
+                                                                    th(scope='row') Optical Image Gallery
+                                                                    td
+                                                                        each galImg in doc.productImageGallery
+                                                                            img.p-2(src=galImg,style=`width:75px`, alt="", srcset="")
+                                                                tr
+                                                                    th(scope='row') Order Status
+                                                                    td= doc.orderStatus
+                                                                tr
+                                                                    th(scope='row') Address
+                                                                    td #{doc.addressDetails.address}, #{doc.addressDetails.city}, #{doc.addressDetails.state}, #{doc.addressDetails.pincode}
+                                                                tr
+                                                                    th(scope='row') Phone Number 1
+                                                                    td= doc.addressDetails.phone1
+                                                                tr
+                                                                    th(scope='row') Phone Number 2
+                                                                    td= doc.addressDetails.phone2
+                                                                tr
+                                                                    th(scope='row') Quanity
+                                                                    td= doc.quantity
+                                                                tr
+                                                                    th(scope='row') Price
+                                                                    td= doc.opticalPrice
+                                                                tr
+                                                                    th(scope='row') Discount Price
+                                                                    td= doc.opticalDiscountPrice
+                                                                tr
+                                                                    th.text-danger(scope='row')
+                                                                        | Payment Mode
+                                                                    td.text-danger Online
+                                                                tr
+                                                                    th(scope='row') Ordered Date
+                                                                    td=doc.createdAt ? new Date(doc.createdAt).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Accepted Date
+                                                                    td=doc.acceptedDate ? new Date(doc.acceptedDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Shipped Date
+                                                                    td=doc.shippedDate ? new Date(doc.shippedDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Out of Delivery Date Date
+                                                                    td=doc.outOfDeliveryDate ? new Date(doc.outOfDeliveryDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Canceled Date
+                                                                    td=doc.canceledDate ? new Date(doc.canceledDate).toLocaleString():"-"
+                                                                tr
+                                                                    th(scope='row') Deliverd Date
+                                                                    td=doc.deliveredDate ? new Date(doc.deliveredDate).toLocaleString():"-"
+                                                    .modal-footer
+                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                            | Cancel

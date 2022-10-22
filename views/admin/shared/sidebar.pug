@@ -1,0 +1,79 @@
+#left.col-3.main-color-background.p-0.m-0
+    img.ms-2.mb-4.mt-3(src='/Assets/images/MediappSampleLogo.png' alt='logo')
+    ul.nav.flex-column.p-0.m-0
+        li.nav-item(class=`${activeService === "home" && "nav-active"}`)
+            a.nav-link(aria-current='page' href='/admin')
+                i.fa-solid.fa-house.me-3
+                |  Dashboard
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "user" && "nav-active"}`)
+            a.nav-link(href='/admin/user-management')
+                i.fa-solid.fa-circle-user.me-3
+                |  Manage User
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "vendors" && "nav-active"}`)
+            a.nav-link(href='/admin/vendor-management')
+                i.fa-solid.fa-users-gear.me-3
+                |  Manage Vendors
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "module" && "nav-active"}`)
+            a.nav-link(href='/admin/module-management/')
+                i.fa-solid.fa-table-cells.me-3
+                |  All Module
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "ambulance" && "nav-active"}`)
+            a.nav-link(href='/admin/ambulance-alert/')
+                i.fa-solid.fa-truck-medical.me-3
+                |  Ambulance
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-credit-card.me-3
+                |  Payment
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-hand-holding-dollar.me-3
+                |  App Donation
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-tower-broadcast.me-3
+                |  SOS
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-rectangle-ad.me-3
+                |  Advertisement
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-star.me-3
+                |  Review Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-clipboard-list.me-3
+                |  Compliance
+                |               Management
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-headset.me-3
+                |  Support
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-user-shield.me-3
+                |  Privacy Policy
+        hr.color-white.hr-style
+        li.nav-item(class=`${activeService === "x" && "nav-active"}`)
+            a.nav-link(href='#')
+                i.fa-solid.fa-arrow-right-from-bracket.me-3
+                |  Log
+                |               out

@@ -1,0 +1,10 @@
+// Mobile nav section
+.scrollmenu.display-header.p-3
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "home" && "scroll-nav-active" }` href='/vendor/laboratory') Manage laboratory
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "bookings" && "scroll-nav-active" }` href='/vendor/laboratory/laboratory-bookings') Laboratory Bookings
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "tests" && "scroll-nav-active" }` href='/vendor/laboratory/manage-services') Laboratory Services
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "facilities" && "scroll-nav-active" }` href='/vendor/laboratory/manage-facilities') Manage Facilities
+  a.nav-link.scroll-nav.p-1(class=`${ activeScreen === "image" && "scroll-nav-active" }` href='/vendor/laboratory/manage-lab-images') Manage Lab Images
+  
+  a.nav-link.scroll-nav.p-1#logoutM Log out
+// Mobile nav section

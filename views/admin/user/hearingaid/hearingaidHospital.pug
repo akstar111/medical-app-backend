@@ -1,0 +1,176 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+
+        hr
+        include ./shared/detailsList
+        .flex-grow-1
+            h5.fw-bold.mt-3.ms-3.fs-5 Booking Summary 
+            hr.m-0
+            .modal-body.table-responsive.mt-2
+                table.table.table-bordered.table-font
+                    thead
+                        tr
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Hospital Name`
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Phone Number
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Booked Date
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Requested Date
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Update Status
+                            th.color-white.main-color-background.text-center(scope='col')
+                                | Details
+                    tbody#update_hearingaid_user_hospital_booking_status(data-id=user.id)
+                        each doc,index in booking.active
+                            tr
+                                td= doc.partner.company
+                                td= doc.partner.centerPhone
+                                td= new Date(doc.createdAt).toLocaleDateString()
+                                td= new Date(doc.bookedDate).toLocaleDateString()
+                                td
+                                    select.update_status.form-select.border.border-2.bg-li(id=`hearingaid_hospital_status_${index}` data-index= index data-id=doc.hiwbhhID required)
+                                        if doc.status === 'requested'
+                                            option(value="requested" selected) Requested 
+                                            option(value="accepted" ) Accepted
+                                            option(value="rejected" ) Rejected
+                                            option(value="canceled" ) Canceled
+                                            option(value="not-arrived" ) Not Arrived
+                                        else if doc.status === 'accepted'
+                                            option(value="requested" ) Requested 
+                                            option(value="accepted" selected) Accepted
+                                            option(value="rejected" ) Rejected
+                                            option(value="canceled" ) Canceled
+                                            option(value="not-arrived" ) Not Arrived
+                                td
+                                    a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeHearingaidBooking-${index}`) View
+
+                                    // Modal
+                                    .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`activeHearingaidBooking-${index}`)
+                                        .modal-dialog.modal-dialog-scrollable
+                                            .modal-content
+                                                .modal-header
+                                                    h5#staticBackdropLabel.modal-title
+                                                        | Booking Details
+                                                    button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                .modal-body.table-responsive
+                                                    table.table.table-bordered
+                                                        thead
+                                                            tr
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    | Booking Details
+                                                                th.color-white.main-color-background.text-center(scope='col')
+                                                                    //- | Booking ID - 09869766875
+                                                        tbody
+                                                            tr
+                                                                th(scope='row') Hospital name
+                                                                td=doc.partner.company
+                                                            tr
+                                                                th(scope='row') Phone Number
+                                                                td= doc.partner.centerPhone
+                                                            tr
+                                                                th(scope='row') Booked Date
+                                                                td= new Date(doc.createdAt).toLocaleString()
+                                                            tr
+                                                                th(scope='row') Requested Date
+                                                                td= new Date(doc.bookedDate).toLocaleDateString()
+                                                            tr
+                                                                th(scope='row') Status
+                                                                td= doc.status
+                                                            tr
+                                                                th(scope='row') Scheduled Time
+                                                                td= doc.scheduleTime ? doc.scheduleTime : "-"
+                                                            tr
+                                                                th(scope='row') Vendor Action Date
+                                                                td= doc.vendorActionDate ? new Date(doc.vendorActionDate).toLocaleString() : "-"
+                                                            tr
+                                                                th(scope='row') Vendor Response
+                                                                td= doc.vendorResposnse ? doc.vendorResposnse : "-"
+
+
+                                                .modal-footer
+                                                    button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                        | Cancel
+        .d-flex.mt-3
+            .flex-grow-1
+                h5.fw-bold.mt-3.ms-3.fs-5 Previous booking
+                hr.m-0
+                .modal-body.table-responsive.mt-2
+                    table.table.table-bordered.table-font
+                        thead
+                            tr
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Hospital Name`
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Phone Number
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Booked Date
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Requested Date
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Update Status
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Details
+                        tbody
+                            each doc,index in booking.history
+                                tr
+                                    td= doc.partner.company
+                                    td= doc.partner.centerPhone
+                                    td= new Date(doc.createdAt).toLocaleDateString()
+                                    td= new Date(doc.bookedDate).toLocaleDateString()
+                                    td= doc.status
+                                    td
+                                        a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#historyHearingaidBooking-${index}`) View
+
+                                        // Modal
+                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true' id=`historyHearingaidBooking-${index}`)
+                                            .modal-dialog.modal-dialog-scrollable
+                                                .modal-content
+                                                    .modal-header
+                                                        h5#staticBackdropLabel.modal-title
+                                                            | Booking Details
+                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                    .modal-body.table-responsive
+                                                        table.table.table-bordered
+                                                            thead
+                                                                tr
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        | Booking Details
+                                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                                        //- | Booking ID - 09869766875
+                                                            tbody
+                                                                tr
+                                                                    th(scope='row') Hospital name
+                                                                    td=doc.partner.company
+                                                                tr
+                                                                    th(scope='row') Phone Number
+                                                                    td= doc.partner.centerPhone
+                                                                tr
+                                                                    th(scope='row') Booked Date
+                                                                    td= new Date(doc.createdAt).toLocaleString()
+                                                                tr
+                                                                    th(scope='row') Requested Date
+                                                                    td= new Date(doc.bookedDate).toLocaleDateString()
+                                                                tr
+                                                                    th(scope='row') Status
+                                                                    td= doc.status
+                                                                tr
+                                                                    th(scope='row') Scheduled Time
+                                                                    td= doc.scheduleTime ? doc.scheduleTime : "-"
+                                                                tr
+                                                                    th(scope='row') Vendor Action Date
+                                                                    td= doc.vendorActionDate ? new Date(doc.vendorActionDate).toLocaleString() : "-"
+                                                                tr
+                                                                    th(scope='row') Vendor Response
+                                                                    td= doc.vendorResposnse ? doc.vendorResposnse : "-"
+
+
+                                                    .modal-footer
+                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                            | Cancel

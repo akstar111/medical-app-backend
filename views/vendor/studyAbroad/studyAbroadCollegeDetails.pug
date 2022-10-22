@@ -1,0 +1,189 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include layout/pcSidebar
+            .col-9.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-2
+                    h3.vendor-heading.fs-4.mb-0=partner.company
+                    p.mt-0
+                        | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                        | voluptates quo qui corporis nam rem.
+                .p-5.pt-2
+                    form#update_studyabroad_collegedetails() 
+                        div
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='estalisedYear') University Established Year:
+                                .col-sm-7
+                                    input.form-control.bg-li#estalisedYear(type='text' value=college.establishedYear placeholder="University Established Year" )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='uniType') University Type:
+                                .col-sm-7
+                                    input.form-control.bg-li#uniType(type='text' placeholder="University Type" value=college.universityType )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='affliiation' ) Affiliation :
+                                .col-sm-7
+                                    input.form-control.bg-li#affliiation(type='text' value=college.affliation placeholder="Affiliation ")
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='teachingLanguage') Teaching Language :
+                                .col-sm-7
+                                    input.form-control.bg-li#teachingLanguage(type='text' placeholder="Teaching Language" value=college.teachingLanguage )
+
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='Syllabus') Syllabus :
+                                .col-sm-7
+                                    input.form-control.bg-li#syllabus(type='text' placeholder="Syllabus" value=college.syllabus )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='availHospitalBedsClg') No Of Hospitals Beds Available in The College :
+                                .col-sm-7
+                                    input.form-control.bg-li#availHospitalBedsClg(type='text' placeholder="No Of Hospitals Beds Available in The College" value=college.availableHospitalBeds )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='majaorStrudentFrom') Majority of students are from :
+                                .col-sm-7
+                                    input.form-control.bg-li#majaorStrudentFrom(type='text' placeholder="Majority of students are from" value=college.majorityStrudentsFrom )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='infraStructureVideo') College Infrastructure Video :
+                                .col-sm-7
+                                    input.form-control.pb-3.bg-li#infraStructureVideo(type='file' placeholder="College Infrastructure Video" )
+                                    video(width='320' height='240' controls='')
+                                        source(src=college.collegeInfraStructureVideo type='video/mp4')
+                                        | Your browser does not support the video tag.
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='availCourse') Courses available :
+                                .col-sm-7.mt-2.d-flex
+                                    .form-check.pe-2
+                                        if college.courseAvailable.some(el=> el === 'UG')
+                                            input.courseAvail.form-check-input(type='checkbox' name='couseAvai' value='UG'  checked)
+                                        else
+                                            input.courseAvail.form-check-input(type='checkbox' name='couseAvai' value='UG' )
+                                        label.form-check-label UG
+                                    .form-check.pe-2
+                                        if college.courseAvailable.some(el=> el === 'PG')
+                                            input.courseAvail.form-check-input(type='checkbox' name='couseAvai' value='PG' checked='')
+                                        else
+                                            input.courseAvail.form-check-input(type='checkbox' name='couseAvai' value='PG' )
+                                        label.form-check-label PG
+
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='ugcourse') UG Courses :
+                                -const ugCour =['Course 1','Course 2']
+                                .col-sm-7
+                                    select.border#ugcourse.form-select(name='sellist1' multiple)
+                                        each docs in ugCour
+                                            if college.ugCourses.some(el=> el === docs) 
+                                                option(value=docs selected)= docs
+                                            else 
+                                                option(docs)= docs
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='pgcourse') PG Courses :
+                                -const pgCour =['Course 1','Course 2']
+                                .col-sm-7
+                                    select.border#pgcourse.form-select(name='sellist1' multiple)
+                                        each docs in pgCour
+                                            if college.pgCourses.some(el=> el === docs) 
+                                                option(value=docs selected)= docs
+                                            else 
+                                                option(docs)= docs
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='totalUGSeats') Total number of seats available in UG :
+                                .col-sm-7
+                                    input.form-control.bg-li#totalUGSeats(type='text' placeholder="Total number of seats available in UG" value=college.availableSeatsinUG )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='totalPGSeats') Total number of seats available in PG :
+                                .col-sm-7
+                                    input.form-control.bg-li#totalPGSeats(type='text' placeholder="Total number of seats available in PG" value=college.availableSeatsinPG )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='hotelImages') Hostel Images :
+                                .col-sm-7
+                                    input.form-control.bg-li#hotelImages(type='file' placeholder="Hostel Images" multiple)
+                                    .d-flex.flex-wrap 
+                                        each doc in college.hostelImages
+                                            img(src=doc style="width:200px;")
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Hostel Facilities  :
+
+                                .mb-3.row.pd-5.g-1.ps-5
+                                    label.col-sm-3.col-form-label.fw-bold(for='foodFacility') with Food  :
+                                    .col-sm-7
+                                        if college.hostelFacilities 
+                                            .form-check.form-check-inline
+                                                input#foodFacilityRadio.form-check-input(type='radio' name="foodFacilityRadio" value=true checked=college.hostelFacilities.withFood)
+                                                label.form-check-label(for='foodFacilityRadio' ) Yes
+                                            .form-check.form-check-inline
+                                                input#foodFacilityRadio.form-check-input(type='radio' name="foodFacilityRadio" value=false checked=!college.hostelFacilities.withFood)
+                                                label.form-check-label(for='foodFacilityRadio' ) No
+                                        else 
+                                            .form-check.form-check-inline
+                                                input#foodFacilityRadio.form-check-input(type='radio' name="foodFacilityRadio" value=true )
+                                                label.form-check-label(for='foodFacilityRadio' ) Yes
+                                            .form-check.form-check-inline
+                                                input#foodFacilityRadio.form-check-input(type='radio' name="foodFacilityRadio" value=false)
+                                                label.form-check-label(for='foodFacilityRadio' ) No
+
+
+                                .mb-3.row.pd-5.g-1.ps-5
+                                    label.col-sm-3.col-form-label.fw-bold(for='cookingFacility') cooking facilities #{college.hostelFacilities.cookingFacilites} :
+                                    .col-sm-7
+                                        if college.hostelFacilities 
+                                            .form-check.form-check-inline
+                                                input#cookingFacilityRadio.form-check-input(type='radio' name="cookingFacilityRadio" value=true checked=college.hostelFacilities.cookingFacilites)
+                                                label.form-check-label(for='cookingFacilityRadio' ) Yes
+                                            .form-check.form-check-inline
+                                                input#cookingFacilityRadio.form-check-input(type='radio' name="cookingFacilityRadio" value=false checked=!college.hostelFacilities.cookingFacilites)
+                                                label.form-check-label(for='cookingFacilityRadio' ) No
+                                       
+
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='collegeToHostelDistance') Proximity from College to Hostel :
+                                .col-sm-7
+                                    input.form-control.bg-li#collegeToHostelDistance(type='text' placeholder="Proximity from College to Hostel" value=college.proximityFromCollegetoHostel )
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='labraryFacility') library facilities :
+                                .col-sm-7
+                                    .form-check.form-check-inline
+                                        input#libraryFacility.form-check-input(type='radio' name="libraryFacility" value=true checked=college.libraryFacilities)
+                                        label.form-check-label(for='libraryFacility' ) Yes
+                                    .form-check.form-check-inline
+                                        input#libraryFacility.form-check-input(type='radio' name="libraryFacility" value=false checked=!college.libraryFacilities)
+                                        label.form-check-label(for='libraryFacility' ) No
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='libraryImages') library Images :
+                                .col-sm-7
+                                    input.form-control.bg-li#libraryImages(type='file' multiple placeholder="library Images"  )
+                                    .d-flex.flex-wrap 
+                                        each doc in college.libraryImages
+                                            img(src=doc style="width:200px;")
+                            .mb-3.row
+                                label.col-sm-3.col-form-label.fw-bold(for='sportsActivity') Sports/ Indoor Activities :
+                                .col-sm-7
+                                    #addNewSprots
+                                        each docs in college.sportIndoorActivities
+                                            input.form-control.bg-li.sportsActivity.mt-3(type='text' placeholder="Sports/ Indoor Activities" value=docs )
+                                    .d-grid.mt-3
+                                        button.btn.btn-success.btn-block#addSport Add Sports
+                            div(class="d-grid mt-2")
+                                button.btn.btn-primary.btn-block(type='submit') Update 
+

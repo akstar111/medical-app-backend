@@ -1,0 +1,103 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Manage Modules
+            .me-3.flex-grow-1.bd-highlight
+                form.mt-0(action='')
+                    .p-1.bg-light.rounded.rounded-pill.shadow-sm.mt-0
+                        .input-group
+                            input.form-control.border-0.bg-light(type='search' placeholder="What're you searching for?" aria-describedby='button-addon1')
+                            .input-group-append
+                                button#button-addon1.btn.btn-link.text-secondary(type='submit')
+                                    i.fa.fa-search
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold Akstar111
+            .p-2.bd-highlight
+                img.login-user-image(src='/Assets/image/profile.jpg' alt='user image')
+        hr
+        .d-flex
+            .flex-grow-1.d-flex.justify-content-between
+                h5.fw-bold.mt-3.ms-3 Modules
+                button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop-Facilities')
+                    | Add More
+                #staticBackdrop-Facilities.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                    .modal-dialog.modal-dialog-scrollable
+                        .modal-content
+                            .modal-header
+                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                    | Add Driver Details
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .modal-body
+                                form.row.g-3(id=`create_new_homecare_service`)
+                                    .col-md-12
+                                        label.form-label(for='title')
+                                            | Service Name
+                                            span.text-danger *
+                                        input#name.form-control(type='text' placeholder='Service Name' required='')
+                                    .col-md-12
+                                        label.form-label(for='phone')
+                                            | Service Description  
+                                            span.text-danger *
+                                        input#description.form-control(type='text'  placeholder='Service Description' required='')
+                                    input(type='file' id=`serviceImage`)
+                                    .col-12.text-center
+                                        button.btn.main-color-background.color-white(type='submit')
+                                            | Add Facility
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                    | Cancel
+
+            .p-2
+                p.text-primary.text-decoration-underline.m-0
+        hr.m-0
+        div.mt-4
+            .row.row-cols-1.row-cols-md-3.g-4#update_homecare_service
+                each doc,index in modules
+                    .col
+                        .card
+                            img.card-img-top.mx-auto.d-block(src=doc.bannerImage  style="width:200px;")
+                            .d-flex.justify-content-between
+                                .card-body
+                                    h5.card-title= doc.name
+                                    p.card-text= doc.description
+                                .d-flex.flex-wrap.align-content-center
+                                    a.col-3.main-color(href='#')
+                                        i.fa-solid.fa-pen.justify-content-md-end.main-color.float-end( data-bs-toggle='modal' data-bs-target=`#myModel-${index}`)
+                                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' id=`myModel-${index}` aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                            .modal-dialog.modal-dialog-scrollable
+                                                .modal-content
+                                                    .modal-header
+                                                        h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                            | Add Facilities Details
+                                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                    .modal-body
+                                                        form.row.g-3#update_service( data-index=index  data-service=doc.hiwhcsmID)
+                                                            .col-md-12
+                                                                label.form-label(for='title')
+                                                                    | Service Name
+                                                                    span.text-danger *
+                                                                input.form-control(type='text' id=`name-${index}` value=doc.name placeholder='Driver Name' required='')
+                                                            .col-md-12
+                                                                label.form-label(for='phone')
+                                                                    | Service Description 
+                                                                    span.text-danger *
+                                                                input.form-control(type='text' value=doc.description id=`description-${index}` placeholder='phone' required='')
+                                                            img.mx-auto.d-block(src=doc.bannerImage style="width:200px;")
+                                                            input(type='file' id=`serviceImage-${index}` accept='image/jpeg, image/png, image/jpg')
+                                                            .col-12.text-center
+                                                                button.btn.main-color-background.color-white(type='submit' )
+                                                                    | Update Service
+                                                    .modal-footer
+                                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                            | Cancel
+

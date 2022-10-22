@@ -1,0 +1,4 @@
+{
+    "doctor": ["heart", "lungs"],
+    "ENT": ["ear", "nose"]
+}

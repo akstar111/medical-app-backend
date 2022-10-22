@@ -1,0 +1,237 @@
+extends ../../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    .scrollmenu.display-header.p-3
+        a.nav-link.scroll-nav.p-1.scroll-nav-active(href='/vendor/blood-bank') Profile
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/manage-blood') Manage Blood
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/quotes') Purchase
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/job') Post job
+        a.nav-link.scroll-nav.p-1(href='/vendor/blood-bank/advertisement/') Advertisement
+        a.nav-link.scroll-nav.p-1(href='./Donate-for-us.html') Donate for us
+        a.nav-link.scroll-nav.p-1#logoutM log out
+    // Mobile nav section
+    // Nav and Content section
+
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            .col-2.p-0.border.m-0.border-color.display-none
+                ul.nav.flex-column.p-0.m-0
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(aria-current='page' href='/vendor/blood-bank') Profile
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/manage-blood') Manage Blood
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link.vendor-nav-link-active(href='/vendor/blood-bank/quotes')
+                            | Purchase
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/job') Post job
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='/vendor/blood-bank/advertisement/') Advertisement
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+                    li.nav-item
+                        a.nav-link.border.vendor-nav-link#logoutW log out
+            .col-10.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+                if bloodbank
+                    .p-2
+                        h3.vendor-heading.fs-4.mb-0
+                            | #{partner.company}
+                        p.mt-0
+                            | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                            | voluptates quo qui corporis nam rem.
+                    hr
+                    .p-3
+                        .p-5.pt-2.nav-tabs-section
+                            ul#pills-tab.nav.nav-pills.nav-justified.mb-3(role='tablist')
+                                li.nav-item.border.rounded(role='presentation')
+                                    button#pills-home-tab.nav-link.inside-nav.active.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-home' type='button' role='tab' aria-controls='pills-home' aria-selected='true')
+                                        | New Request
+                                li.nav-item.border.rounded(role='presentation')
+                                    button#pills-profile-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                                        | Active Request
+                                li.nav-item.border.rounded(role='presentation')
+                                    button#pills-contact-tab.nav-link.inside-nav.fw-bold(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                                        | History
+                            #pills-tabContent.tab-content
+                                #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                                    .mt-5
+                                        form#request_quotes
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='inputPassword') Select Available Product
+                                                .col-sm-7
+                                                    select.form-select.bg-li.border#productName(aria-label='Default select example')
+                                                        option(selected='') Select Product
+                                                        each doc in names
+                                                            option(value=doc)= doc
+
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='description') Product Description:
+                                                .col-sm-7
+                                                    textarea#description.form-control.bg-li(rows='3')
+                                                        | Good quality
+                                            .mb-3.row
+                                                label.col-sm-3.col-form-label.fw-bold(for='quantity') No Of Quantity Required *:
+                                                .col-sm-7
+                                                    input.form-control.bg-l#quantity(type='text' placeholder='Quotation Valid Until')
+
+                                            .text-center
+                                                button.btn.btn-danger.ps-5.pe-5.me-5(type='button')
+                                                    | Cancel
+                                                button.btn.btn-success.ps-4.pe-4.me-s(type='submit')
+                                                    | Send Request
+                                    .row.mt-5
+                                        h6.col-6.fw-bold.main-color.mt-3.text-head
+                                            | Pending Request
+                                    hr.m-0
+                                    if request
+                                        .mt-3.table-responsive.table-font
+                                            table.table.table-bordered
+                                                thead
+                                                    tr
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Product Name
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Product Quantity
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Quoted Vendors
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Date
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Status
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Delete
+                                                tbody#manage_quotes
+                                                    each doc,index in request
+                                                        tr
+                                                            th(scope='row')= doc.productName
+                                                            td= doc.quantity
+                                                            td= doc.total
+                                                            td= new Date(doc.proposalDate).toLocaleString()
+                                                            td Requested
+                                                            td
+                                                                a.pointer.cursor-pointer.btn.btn-danger#cancel_quotes(data-index=index data-bloodreId=doc._id) cancel
+
+                                    else 
+                                        p 
+                                        | currently you don't have any active requested service.
+                                if activeList.length
+                                    #pills-profile.tab-pane.fade(role='tabpanel' aria-labelledby='pills-profile-tab')
+                                        each doc in activeList
+                                            .border.rounded.p-3.mt-4
+                                                .d-flex.bd-highlight.ms-0
+                                                    .me-auto.bd-highlight
+                                                        h6.fs-5.secondary-color.fw-bold
+                                                            | #{doc.productName}
+                                                    .p-2.bd-highlight
+                                                        i.fa-solid.fa-trash.text-danger.fs-5
+                                                    .p-2.bd-highlight.ms-4
+                                                        i.fa-solid.fa-pen.secondary-color.fs-5
+                                                div
+                                                    h6.fw-bold.text-dark
+                                                        | Product Description:
+                                                        span.text-secondary.fw-normal= doc.productDescription
+
+                                                div
+                                                    h6.fw-bold.text-dark
+                                                        | Quantity:
+                                                        span.text-secondary.fw-normal= doc.quantity
+                                                .d-flex.bd-highlight.ms-0
+                                                    .me-auto.bd-highlight
+                                                        h6.fw-bold.text-dark
+                                                            | Quoted Date:
+                                                            span.text-secondary.fw-normal= new Date(doc.proposalDate).toLocaleDateString()
+                                                    .p-2.bd-highlight
+                                                        a(href=`/vendor/blood-bank/quotes/lowest-quotes/${doc._id}`) View
+                                else 
+                                    p 
+                                        | currently you don't have any active requested service.
+                                if history.length
+                                    #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                                        h6.col-6.fw-bold.main-color.mt-5.text-head
+                                            | History
+                                        hr.m-0
+                                        .mt-3.table-responsive
+                                            table.table.table-bordered.table-font
+                                                thead
+                                                    tr
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Vendor Name
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            |  Quantity
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Price per piece
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Sample Image
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Date
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Update Status
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | View
+                                                tbody
+                                                 each doc,index in history
+                                                    tr
+                                                        th(scope='row')= doc.partner.name
+                                                        td= doc.quantity
+                                                        td= doc.estimateCost
+                                                        td
+                                                            a.pointer.cursor-pointer(data-bs-toggle='modal' data-bs-target='#staticBackdrop2') View
+                                                        td= new Date(doc.proposalDate).toLocaleDateString()
+                                                        td.text-primary= doc.proposeStatus === 'rejected-by-user' ? "Rejected" : "Completed"
+                                                        td
+                                                            a(href=`/vendor/blood-bank/get-a-quote/${doc.hiwmmqrrsID}`) View
+                                                    
+                                            // Modal
+                                            #staticBackdrop2.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title
+                                                                | Product Details
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body
+                                                            .row
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                                .col-md-2.mt-3.col-lg-6
+                                                                    img.img-fluid(src='https://source.unsplash.com/collection/190727/1500x900' alt='image')
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+                                else 
+                                     p 
+                                        | currently you don't have any active history.
+                else 
+                    div(class="d-grid m-5")
+                        a.btn.btn-success.btn-block(href="/vendor/blood-bank") Create Your Profile

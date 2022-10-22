@@ -1,0 +1,95 @@
+extends ../../layout/adminBase
+
+block append head 
+    link(rel='stylesheet' type='text/css' href='/Assets/slick/slick.css')
+    link(rel='stylesheet' type='text/css' href='/Assets/slick/slick-theme.css')
+
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+    script(type='text/javascript' src='https://code.jquery.com/jquery-1.11.0.min.js')
+    script(type='text/javascript' src='https://code.jquery.com/jquery-migrate-1.2.1.min.js')
+    script(type='text/javascript' src='/Assets/slick/slick.min.js')
+    script(type='text/javascript').
+        $(document).ready(function () {
+        $(".family-members-list").slick();
+        });
+
+
+block block
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Overview
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold= user.name
+            .p-2.bd-highlight
+                img.login-user-image(src=user.profileImage alt='user image')
+        hr
+        .d-flex.mt-3
+            .flex-grow-1
+                h5.fw-bold.mt-3.ms-3.fs-5 Medical Records Management
+        hr.m-0
+        .family-members-list#medical_record_change_member(data-id=user.id)
+            each doc in records
+                div(data-id=doc.hiwmID)
+                    .card.mb-3.w-75.m-auto
+                        .row.g-0
+                            .col-md-4
+                                img.img-fluid.rounded-start.Pill-Reminder-member-image(src=doc.profileImage alt='...')
+                            .col-md-8
+                                .card-body
+                                    .row
+                                        .col-5
+                                            p.fw-bold.secondary-color Name
+                                        .col-7
+                                            p.fw-bold.text-secondary : #{doc.name}
+                                    .row
+                                        .col-5
+                                            p.fw-bold.secondary-color Phone Number
+                                        .col-7
+                                            p.fw-bold.text-secondary : #{doc.phone}
+                                    .row
+                                        .col-5
+                                            p.fw-bold.secondary-color Created
+                                        .col-7
+                                            p.fw-bold.text-secondary
+                                                | : #{new Date(doc.createdAt).toLocaleDateString()}
+                                    .row
+                                        .col-5
+                                            p.fw-bold.secondary-color
+                                                | Relation With User
+                                        .col-7
+                                            p.fw-bold.text-secondary : #{doc.type}
+
+        .modal-body.table-responsive.mt-2
+            table.table.table-bordered.table-font
+                thead
+                    tr
+                      
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Records Category
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Document Name
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Date
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Description
+                        th.color-white.main-color-background.text-center(scope='col')
+                            | Documents
+                tbody#add_active_member_medical_records
+                    -const data = records[0]
+                    each doc in data.records
+                        tr
+                          
+                            td= doc.recordType
+                            td= doc.documentName
+                            td= new Date(doc.issuedDate).toLocaleDateString()
+                            td= doc.description
+                            td
+                                a(href=doc.report) View Document
+

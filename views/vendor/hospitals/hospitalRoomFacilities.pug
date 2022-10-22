@@ -1,0 +1,355 @@
+extends ../../layout/base
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")
+
+block block 
+    // Hero Section
+    .vendor-hero-image(style=`background-image: url(${partner.bannerImage})`)
+        img.m-auto.d-block.vendor-image(src=partner.profileImage alt='vendor Image')
+    // Hero Section
+    h3.center-heading.fs-4.text-center=partner.company
+    hr
+    // Mobile nav section
+    include layout/mobileSidebar
+    // Mobile nav section
+    // Nav and Content section
+    .container.ps-4.pe-4
+        .row
+            include layout/pcSidebar
+            .col-9.border.border-color.width-100.p-0
+                #carouselExampleIndicators.carousel.slide(data-bs-ride='carousel')
+                    .carousel-indicators
+                        each doc,index in partner.imageGallery
+                            button(type='button' class=`${index === 0 ? "active" :""}` data-bs-target='#carouselExampleIndicators' data-bs-slide-to=index aria-current=`${index === 0 ?"true" : "false"}` aria-label=`Slide ${index}`)
+                    .carousel-inner
+                        each doc,index in partner.imageGallery
+                            .carousel-item.side-h(class=`${index === 0 ? "active" :""}`)
+                                img.d-block.w-100(src=doc alt='Vendor images')
+
+                .p-2
+                    h3.vendor-heading.fs-4.mb-0=partner.company
+                    p.mt-0
+                        | Lorem ipsum dolor, sit amet consectetur adipisicing elit. Possimus
+                        | voluptates quo qui corporis nam rem.
+                        hr.mt-2.mb-2
+                    .pt-5.ps-2.pt-2.nav-tabs-section
+                        ul#pills-tab.nav.nav-pills.nav-justified.mb-3.flex-nowrap(role='tablist')
+
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-profile-tab.nav-link.inside-nav.fw-bold.active.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-profile' type='button' role='tab' aria-controls='pills-profile' aria-selected='false')
+                                    | Room Facilities Manage
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-contact-tab.nav-link.inside-nav.fw-bold.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-contact' type='button' role='tab' aria-controls='pills-contact' aria-selected='false')
+                                    | Room Images
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-canteen-tab.nav-link.inside-nav.fw-bold.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-canteen' type='button' role='tab' aria-controls='pills-canteen' aria-selected='false')
+                                    | Canteen Images
+
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-guest-tab.nav-link.inside-nav.fw-bold.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-guest' type='button' role='tab' aria-controls='pills-guest' aria-selected='false')
+                                    | Guest Room Images
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-availFalities-tab.nav-link.inside-nav.fw-bold.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-availFalities' type='button' role='tab' aria-controls='pills-availFalities' aria-selected='false')
+                                    | Facilities
+                            li.nav-item.border.rounded(role='presentation')
+                                button#pills-speciality-tab.nav-link.inside-nav.fw-bold.text-nowrap(data-bs-toggle='pill' data-bs-target='#pills-speciality' type='button' role='tab' aria-controls='pills-speciality' aria-selected='false')
+                                    | Speciality
+
+                    #pills-tabContent.tab-content
+
+                        #pills-profile.tab-pane.fade.active.show(role='tabpanel' aria-labelledby='pills-profile-tab')
+                            h6.col-6.fw-bold.main-color.text-head
+                                | Order List
+
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Services
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#staticBackdrop')
+                                        | Add More
+                                // Modal
+                                #staticBackdrop.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Facilities Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-3#add_hospital_room_facility()
+
+                                                    .col-md-12
+                                                        label.form-label(for='facilityName')
+                                                            | Facility Name
+                                                            span.text-danger *
+                                                        input#facilityName.form-control(type='text' placeholder='Facility Name' required='')
+                                                    .col-md-12
+                                                        label.form-label(for='description')
+                                                            | Description 
+                                                            span.text-danger *
+                                                        input#description.form-control(type='text' placeholder='Description' required='')
+                                                    .col-md-12
+                                                        label.form-label(for='banner')
+                                                            | Service Banner 
+                                                            span.text-danger *
+                                                        input#banner.form-control(type='file'  required=''  accept='image/jpeg, image/png, image/jpg')
+
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Facilities
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+
+                            .mt-3
+                                .row.row-cols-1.row-cols-md-4.g-3#update_hospital_room_facilities
+                                    each doc,index in room
+                                        .col
+                                            .card.h-100
+                                                img.card-img-top(src=doc.bannerImage alt='Product Iamge')
+                                                .card-body.mt-0.p-1
+                                                    .row
+                                                        h5.card-title.mt-0.fs-6.fw-bold.col-9
+                                                            | #{doc.name}
+                                                        a.col-3.main-color()
+                                                            i.fa-solid.fa-pen.justify-content-md-end.main-color(data-bs-toggle='modal' data-bs-target=`#staticBackdrop-${index}`)
+                                                    p.card-text.text-hidden.m-0.fs-7= doc.description
+
+                                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id=`staticBackdrop-${index}` aria-hidden='true')
+                                                .modal-dialog.modal-dialog-scrollable
+                                                    .modal-content
+                                                        .modal-header
+                                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                                | Update Facilties Details
+                                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                                        .modal-body
+                                                            form.row.g-3#update_service(data-index=index data-id=doc.howmhdrfID)
+                                                                .col-md-12
+                                                                    label.form-label(for='facilityName')
+                                                                        | Facilitie Name
+                                                                        span.text-danger *
+                                                                    input.form-control(id=`facilityName${index}` type='text' value=doc.name placeholder='Facility Name' required='')
+
+                                                                .col-md-12
+                                                                    label.form-label(for='description')
+                                                                        | Description 
+                                                                        span.text-danger *
+
+                                                                    input.form-control(id=`description${index}` type='text' value=doc.description placeholder='Description' required='')
+                                                                .col-md-12
+                                                                    label.form-label(for='banner')
+                                                                        | Service Banner 
+                                                                        span.text-danger *
+                                                                    br
+                                                                    img(src=doc.bannerImage, style='width:120px')
+
+                                                                    input.mt-3.form-control(id=`banner${index}` type='file' accept='image/jpeg, image/png, image/jpg')
+                                                                .col-12.text-center
+                                                                    button.btn.main-color-background.color-white(type='submit')
+                                                                        | Update Facilitie
+                                                        .modal-footer
+                                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                                | Cancel
+                                    hr.m-0    
+
+                        #pills-contact.tab-pane.fade(role='tabpanel' aria-labelledby='pills-contact-tab')
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Services
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#openRoomImages')
+                                        | Add More
+                                #openRoomImages.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Facilities Details
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-3.add_hospital_images(data-for='rooms')
+                                                    .col-md-12
+                                                        label.form-label(for='banner')
+                                                            | Room Images
+                                                            span.text-danger *
+                                                        input.form-control(type='file' id=`rooms_images`  required='' multiple  accept='image/jpeg, image/png, image/jpg')
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Images
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+                                .d-flex.flex-wrap.justify-content-around.remove_hospital_images
+                                    each doc,index in roomImages
+                                        div
+                                            img.mt-2(src=doc id=`imageroomsData${index}` style='width:200px')
+                                            br
+                                            .d-grid
+                                                button.btn.btn-danger.btn-block.rounded-0(id='deleteImages' data-for='rooms' data-index=index) Delete
+
+
+                        #pills-canteen.tab-pane.fade(role='tabpanel' aria-labelledby='pills-canteen-tab')
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Services
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#openCanteenImages')
+                                        | Add More
+                                #openCanteenImages.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Canteen Images
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-3.add_hospital_images(data-for='canteens')
+                                                    .col-md-12
+                                                        label.form-label(for='banner')
+                                                            | Canteen Images
+                                                            span.text-danger *
+                                                        input.form-control(type='file'  id=`canteens_images` required='' multiple  accept='image/jpeg, image/png, image/jpg')
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Images
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+                                .d-flex.flex-wrap.justify-content-around.remove_hospital_images
+                                    each doc,index in canteenImages
+                                        div
+                                            img.mt-2(src=doc id=`imagecanteensData${index}` style='width:200px')
+                                            br
+                                            .d-grid
+                                                button.btn.btn-danger.btn-block.rounded-0(id='deleteImages' data-for="canteens" data-index=index) Delete
+                        #pills-guest.tab-pane.fade(role='tabpanel' aria-labelledby='pills-guest-tab')
+                            .row
+                                h6.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Add and Edit Your Services
+                                .col-6.d-grid.gap-2.d-md-flex.justify-content-md-end.m-0
+                                    button.btn.main-color-background.color-white.m-0.text-head(type='button' data-bs-toggle='modal' data-bs-target='#openGuestsImages')
+                                        | Add More
+                                #openGuestsImages.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+
+                                    .modal-dialog.modal-dialog-scrollable
+                                        .modal-content
+                                            .modal-header
+                                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                    | Add Canteen Images
+                                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                            .modal-body
+                                                form.row.g-3.add_hospital_images(data-for='guests')
+                                                    .col-md-12
+                                                        label.form-label(for='banner')
+                                                            | Canteen Images
+                                                            span.text-danger *
+                                                        input.form-control(type='file'  id=`guests_images` required='' multiple  accept='image/jpeg, image/png, image/jpg')
+                                                    .col-12.text-center
+                                                        button.btn.main-color-background.color-white(type='submit')
+                                                            | Add Images
+                                            .modal-footer
+                                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                    | Cancel
+                                .d-flex.flex-wrap.justify-content-around.remove_hospital_images
+                                    each doc,index in guestRoomImages
+                                        div
+                                            img.mt-2(src=doc id=`imageguestsData${index}` style='width:200px')
+                                            br
+                                            .d-grid
+                                                button.btn.btn-danger.btn-block.rounded-0(id='deleteImages' data-for="guests" data-index=index) Delete
+                        #pills-availFalities.tab-pane.fade(role='tabpanel' aria-labelledby='pills-availFalities-tab')
+                            .row
+                                h4.col-6.fw-bold.main-color.mt-3.text-head
+                                    | Available Hospital Facilities
+                                -const nearCon = JSON.stringify(availableFacilities) !== '{}'
+                                form.row.g-3#manage_hospital_available_facilities(data-for='guests')
+                                    .mb-3.row
+                                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Number of Beds:
+                                        .col-sm-7
+                                            input.form-control.bg-li#totalBeds(type='text' placeholder='Beds' value=availableFacilities.numberOfBeds )
+                                    .mb-3.row
+                                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Number of Operation Theater:
+                                        .col-sm-7
+                                            input.form-control.bg-li#totalOperationTheater(type='text' placeholder='Operation Theater' value=availableFacilities.numberOfOperationTheater )
+                                    .mb-3.row
+                                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Personal Nursing Care:
+                                        .col-sm-7
+                                            .form-check.form-check-inline
+                                                input#personalNursingCareRadio.form-check-input(type='radio' name="personalNursingCare" value=1 required checked=nearCon ? availableFacilities && availableFacilities.personalNursingCare ? true : false : false )
+                                                label.form-check-label(for='personalNursingCareRadio' ) Yes
+                                            .form-check.form-check-inline
+                                                input#personalNursingCareRadio2.form-check-input(type='radio' name="personalNursingCare" value=0 checked=nearCon ?  availableFacilities && !availableFacilities.personalNursingCare ? true : false : false )
+                                                label.form-check-label(for='personalNursingCareRadio2' ) No
+                                    .mb-3.row
+                                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Number of Ventilators:
+                                        .col-sm-7
+                                            input.form-control.bg-li#totalVentilators(type='text' placeholder='Ventilators' value=availableFacilities.numberOfVendilators )
+                                    .mb-3.row
+                                        label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Number of Ambulance:
+                                        .col-sm-7
+                                            input.form-control.bg-li#totalAmbulance(type='text'  placeholder='Ambulance' value=availableFacilities.numberOfAmbulance )
+                                    .col-12.text-center
+                                        button.btn.main-color-background.color-white(type='submit')
+                                            | #{nearCon ? "Update" : "Add"} Facilities
+                        #pills-speciality.tab-pane.fade(role='tabpanel' aria-labelledby='pills-speciality-tab')
+                                .row
+                                    h4.col-6.fw-bold.main-color.mt-3.text-head
+                                        | Available Hospital Speciality
+                                   
+                                    form.row.g-3#manage_hospital_available_specialities(data-for='guests')
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Currency Exchange:
+                                            .col-sm-7
+                                                .form-check.form-check-inline
+                                                    input#currencyExcanageRadio.form-check-input(type='radio' name="currencyExcanage" value=1 required checked= speciality.currencyExcanage ? true : false)
+                                                    label.form-check-label(for='currencyExcanageRadio' ) Yes
+                                                .form-check.form-check-inline
+                                                    input#currencyExcanageRadio2.form-check-input(type='radio' name="currencyExcanage" value=0 checked= !speciality.currencyExcanage ? true: false )
+                                                    label.form-check-label(for='currencyExcanageRadio2' ) No
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Threadless Playing Area:
+                                            .col-sm-7
+                                                .form-check.form-check-inline
+                                                    input#threadlessPlayingAreaRadio.form-check-input(type='radio' name="threadlessPlayingArea" value=1 required checked= speciality.threadlessPlayingArea ? true : false)
+                                                    label.form-check-label(for='threadlessPlayingAreaRadio' ) Yes
+                                                .form-check.form-check-inline
+                                                    input#threadlessPlayingAreaRadio2.form-check-input(type='radio' name="threadlessPlayingArea" value=0 checked= !speciality.threadlessPlayingArea ? true: false )
+                                                    label.form-check-label(for='threadlessPlayingAreaRadio2' ) No
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Hospital Packegs:
+                                            .col-sm-7
+                                                .form-check.form-check-inline
+                                                    input#hospitalPackagesRadio.form-check-input(type='radio' name="hospitalPackages" value=1 required checked= speciality.hospitalPackages ? true : false)
+                                                    label.form-check-label(for='hospitalPackagesRadio' ) Yes
+                                                .form-check.form-check-inline
+                                                    input#hospitalPackagesRadio2.form-check-input(type='radio' name="hospitalPackages" value=0 checked= !speciality.hospitalPackages ? true: false )
+                                                    label.form-check-label(for='hospitalPackagesRadio2' ) No
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Testing Labs Available:
+                                            .col-sm-7
+                                                .form-check.form-check-inline
+                                                    input#testingLabAvailablitRadio.form-check-input(type='radio' name="testingLabAvailablit" value=1 required checked= speciality.testingLabAvailablit ? true : false)
+                                                    label.form-check-label(for='testingLabAvailablitRadio' ) Yes
+                                                .form-check.form-check-inline
+                                                    input#testingLabAvailablitRadio2.form-check-input(type='radio' name="testingLabAvailablit" value=0 checked= !speciality.testingLabAvailablit ? true: false )
+                                                    label.form-check-label(for='testingLabAvailablitRadio2' ) No
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Second Opinion:
+                                            .col-sm-7
+                                                .form-check.form-check-inline
+                                                    input#secondOptionRadio.form-check-input(type='radio' name="secondOption" value=1 required checked= speciality.secondOption ? true : false)
+                                                    label.form-check-label(for='secondOptionRadio' ) Yes
+                                                .form-check.form-check-inline
+                                                    input#secondOptionRadio2.form-check-input(type='radio' name="secondOption" value=0 checked= !speciality.secondOption ? true: false )
+                                                    label.form-check-label(for='secondOptionRadio2' ) No
+                                    
+                                        .mb-3.row
+                                            label.col-sm-3.col-form-label.fw-bold(for='contactPerson') Name of the diagnostic machine available:
+                                            .col-sm-7
+                                                input.form-control.bg-li#diagnosticMachines(type='text'  placeholder='Ambulance' value=speciality.diagnosticMachines )
+                                        .col-12.text-center
+                                            button.btn.main-color-background.color-white(type='submit')
+                                                | Update Facilities

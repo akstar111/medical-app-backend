@@ -1,0 +1,141 @@
+.d-flex.bd-highlight.mt-3
+    .p-2.flex-grow-1.bd-highlight
+        h6.fs-5.text-body.fw-bold.text-uppercase
+            | Manage Vendors
+    .p-2.bd-highlight
+        i.fa-solid.fa-bell.fs-5.text-body
+    .p-2.bd-highlight
+        h6.fs-5.text-body.fw-bold |
+    .p-2.bd-highlight
+        //- h6.fs-5.text-body.fw-bold=partner.name
+    .p-2.bd-highlight
+        img.login-user-image(src=partner.profileImage alt='user image')
+hr
+// Hero Section
+.vendor-hero-image(style=`background-image:url(${partner.bannerImage})`)
+    img.m-auto.d-block.vendor-image.float-start(src=partner.profileImage alt='vendor Image')
+// Hero Section
+h3.left-25.fs-4.text-uppercase.fw-bold.mt-1
+    | #{partner.company}
+p.left-25.mt-5
+    | Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, ea.
+hr.m-100
+
+ul.nav.nav-pills.nav-fill.d-flex.flex-nowrap.justify-content-around
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(aria-current='page' class=`${activeList==='personal' && 'active'}` href=`./personal-deatils`) Account Profile
+    if partner.for === "Homecare service" || partner.for === "De-Addiction service"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./service-and-facilities' class=`${activeList==='service' && 'active'}`) Service AND FACILITIES
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./booking-management' class=`${activeList==='booking' && 'active'}`) BOOKING MANAGEMENT
+    if partner.for === "Ambulance Service"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./ambulance-drivers' 
+                class=`${activeList==='ambulance-driver' && 'active'}`) Ambulance Drivers
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./ambulance-facilities' 
+                class=`${activeList==='ambulance-facilities' && 'active'}`) Ambulance Facilities
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./ambulance-quotes-management' 
+                class=`${activeList==='ambulance-quotes' && 'active'}`) Ambulance Quotes
+    if partner.for === "Blood Bank"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./blood-management' 
+                class=`${activeList==='bloodbank-bloods' && 'active'}`) Blood Management
+    if partner.for === "Meet the Expert"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./expert-service-management' 
+                class=`${activeList==='expert-services' && 'active'}`) Services and Facilities 
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./expert-booking-management' 
+                class=`${activeList==='expert-booking' && 'active'}`) Booking Management 
+
+    if partner.for === "Study Abroad"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./college-management' 
+                class=`${activeList==='college' && 'active'}`) College Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./course-management' 
+                class=`${activeList==='course' && 'active'}`) Course Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./facilities-management' 
+                class=`${activeList==='facilities' && 'active'}`) Facilities Management
+    if partner.for === "Hospital"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./hospital-service-management' 
+                class=`${activeList==='service' && 'active'}`) Service Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./hospital-facilities-management' 
+                class=`${activeList==='facilitie' && 'active'}`) Facilities Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./hospital-specialist-management' 
+                class=`${activeList==='specialist' && 'active'}`) Specialist Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./hospital-room-facilities-management' 
+                class=`${activeList==='room' && 'active'}`) Hospital Details Management
+        if partner.hospital.hospitalPackage
+            li.nav-item
+                a.nav-link.vendor-manange-nav.text-uppercase(href='./package-management' 
+                    class=`${activeList==='package' && 'active'}`) Package Management
+        if partner.hospital.medicalTourism
+            li.nav-item
+                a.nav-link.vendor-manange-nav.text-uppercase(href='./tourism/nearby-facilities-management' 
+                    class=`${activeList==='nearby' && 'active'}`) Nearby Management
+
+    if partner.for === "Hearing AID"
+        if partner.hearingAid.serviceType === "shop"
+            li.nav-item
+                a.nav-link.vendor-manange-nav.text-uppercase(href='./hearingaid-products-management' 
+                    class=`${activeList==='hearingaidProduct' && 'active'}`) Hearing aid Products and Orders
+        if partner.hearingAid.serviceType === 'hospital'
+            li.nav-item
+                a.nav-link.vendor-manange-nav.text-uppercase(href='./hospital-booking-management' 
+                    class=`${activeList==='booking' && 'active'}`) Hospital Booking Management
+    if partner.for === "Differently Abled"    
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./differently-abled-products-management' 
+                class=`${activeList==='differentlyProduct' && 'active'}`) Differently Abled Products and Orders
+    if partner.for === "Speak To Us"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./slots-management' 
+                class=`${activeList==='slots' && 'active'}`) Slots Management
+    if partner.for === "Opticals"
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./product-management' 
+                class=`${activeList==='products' && 'active'}`) Products Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./opticals-booking-management' 
+                class=`${activeList==='booking' && 'active'}`) Booking Management
+    if partner.for === "Fitness"
+        if partner.fitness.serviceType === 'gym'
+            li.nav-item
+                a.nav-link.vendor-manange-nav.text-uppercase(href='./equipment-management' 
+                    class=`${activeList==='equip' && 'active'}`) Equipment Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./fitness-facilities-management' 
+                class=`${activeList==='facilities' && 'active'}`) Facilities Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./fitness-video-management' 
+                class=`${activeList==='videos' && 'active'}`) Video Management
+    if partner.for === 'Laboratory'
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./laboratory-booking-management' 
+                class=`${activeList==='bookings' && 'active'}`) Booking Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./laboratory-services-management' 
+                class=`${activeList==='services' && 'active'}`) Service Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./laboratory-facilities-management' 
+                class=`${activeList==='facilities' && 'active'}`) Facilities Management
+        li.nav-item
+            a.nav-link.vendor-manange-nav.text-uppercase(href='./laboratory-lab-images-management' 
+                class=`${activeList==='images' && 'active'}`) Lab Images Management
+    
+    //- li.nav-item
+    //-     a.nav-link.vendor-manange-nav.text-uppercase(href='./Home-Care-Purchase.html') Purchase
+    //- li.nav-item
+    //-     a.nav-link.vendor-manange-nav.text-uppercase(href='./Manage-Job-Post.html') Job Management
+    //- li.nav-item
+    //-     a.nav-link.vendor-manange-nav.text-uppercase(href='./Manage-Ads.html') Advertisement
+hr.mt-2.mb-2

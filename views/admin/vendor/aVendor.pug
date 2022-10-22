@@ -1,0 +1,171 @@
+extends ../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase
+                    | Manage Vendors
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold= vendor.name
+            .p-2.bd-highlight
+                img.login-user-image(src=vendor.profileImage alt='user image')
+        .d-flex.flex-wrap.mt-4
+            each doc in vendor.otherVendors
+                a(href=`/admin/vendor-management/view-vendor/${doc.id}`)
+                    p.user-profile-nav( class=`${doc.name === vendor.for && 'active'}`)= doc.name
+        hr
+        // Hero Section
+        .vendor-hero-image(style=`background-image:url(${vendor.bannerImage})`)
+            img.m-auto.d-block.vendor-image.float-start(src=vendor.profileImage alt='vendor Image')
+        // Hero Section
+        h3.left-25.fs-4.text-uppercase.fw-bold.mt-1
+            | #{vendor.company}
+        p.left-25.mt-5
+            | Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, ea.#{ vendor.for}
+        hr.m-100
+        .row.row-cols-1.row-cols-md-4.g-4.mb-5.mt-5.justify-content-center
+            .col
+                a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/personal-deatils`)
+                    .second-card.h-100.cursor-pointer
+                        .text-center.p-3
+                            i.fa-solid.fa-user.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                            h6.fw-bold.text-uppercase.mt-1.text-body
+                                | Personal Info
+            if vendor.for === "Homecare service" || vendor.for === "De-Addiction service"
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/booking-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-house-chimney-crack.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | #{vendor.for} Bookings
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/service-and-facilities`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | #{vendor.for} Services
+            if vendor.for === 'Ambulance Service'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/ambulance-drivers`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | #{vendor.for} Drivers
+
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/facilities`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | #{vendor.for} Facilities
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/ambulance-quotes-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | #{vendor.for} Quotes Management
+            if vendor.for === 'Blood Bank'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/blood-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Blood Management
+            if vendor.for === 'Meet the Expert'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/expert-service-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Service Management
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/expert-booking-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Booking Management
+            if vendor.for === 'Study Abroad'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/college-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | College Management
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/course-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Course Management
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/facilities-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Facilities Management
+            if vendor.for === 'Hospital'
+                if vendor.hospital.hospitalPackage
+                    .col
+                        a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/package-management`)
+                            .second-card.h-100.cursor-pointer
+                                .text-center.p-3
+                                    i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                    h6.fw-bold.text-uppercase.mt-1.text-body
+                                        | package Management
+            if vendor.for === 'Speak To Us'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/slots-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Slots Management
+            if vendor.for === 'Opticals'
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/product-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Product Management
+                .col
+                    a(href=`/admin/vendor-management/vendor-details/${vendor.for}/${vendor.hiwpmID}/opticals-booking-management`)
+                        .second-card.h-100.cursor-pointer
+                            .text-center.p-3
+                                i.fa-solid.fa-blender-phone.p-4.color-white.secondary-color-back.second-c-border.fs-1
+                                h6.fw-bold.text-uppercase.mt-1.text-body
+                                    | Booking Management
+
+            //- .col
+            //-     a(href='./Manage-Job-Post.html')
+            //-         .second-card.h-100.cursor-pointer
+            //-             .text-center.p-3
+            //-                 i.fa-solid.fa-briefcase.p-4.color-white.secondary-color-back.second-c-border.fs-1
+            //-                 h6.fw-bold.text-uppercase.mt-1.text-body
+            //-                     | POST JOB
+            //- .col
+            //-     a(href='./Manage-Ads.html')
+            //-         .second-card.h-100.cursor-pointer
+            //-             .text-center.p-3
+            //-                 i.fa-solid.fa-rectangle-ad.p-4.color-white.secondary-color-back.second-c-border.fs-1
+            //-                 h6.fw-bold.text-uppercase.mt-1.text-body
+            //-                     | ADVERTISEMENT

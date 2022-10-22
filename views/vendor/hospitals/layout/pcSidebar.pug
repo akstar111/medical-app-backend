@@ -1,0 +1,27 @@
+.col-3.p-0.border.m-0.border-color.display-none
+    ul.nav.flex-column.p-0.m-0
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "home" ? "vendor-nav-link-active" : "" }` aria-current='page' href='/vendor/hospital') Manage Profile
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "service" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/service-management') Service Management
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "facilities" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/facilities-management') Facilities Management
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "specialist" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/specialist-management') Specialist Management
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "room" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/hospital-room-management') Hospital Details Management
+        if partner.hospital && partner.hospital.hospitalPackage
+            li.nav-item
+                a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "package" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/package-management') Package Management
+        if partner.hospital && partner.hospital.medicalTourism
+            li.nav-item
+                a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "nearby" ? "vendor-nav-link-active" : "" }` href='/vendor/hospital/nearby-facility-management') Nearby Management
+        //-     a.nav-link.border.vendor-nav-link(href='./Purchase.html') Purchase 
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Post-job.html') Post job
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Advertisement.html') Advertisement
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+        li.nav-item
+            a.nav-link.border.vendor-nav-link#logoutW log out

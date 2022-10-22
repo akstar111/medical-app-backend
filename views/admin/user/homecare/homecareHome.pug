@@ -1,0 +1,291 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")   
+
+block block
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Overview
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold= user.name
+            .p-2.bd-highlight
+                img.login-user-image(src=user.profileImage alt='user image')
+        hr
+        .row.row-cols-1.row-cols-md-4.g-4
+            .col
+                a()
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Total Booking
+                        h2.fw-bold.count-text= books.active.length + books.history.length 
+            .col
+                a()
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head Active 
+                        h2.fw-bold.count-text= books.active.length 
+            .col
+                a()
+                    .text-center.card-admin
+                        p.fw-bold.fs-5.card-head History
+                        h2.fw-bold.count-text=  books.history.length 
+        h5.fw-bold.mt-3.ms-3 Active books
+        hr.m-0 
+        table.table.table-bordered.table-font
+            thead
+                tr
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Service Provider Name
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Service Provider Phone
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Applied Service Name
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Applied Service Type
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | City
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Status 
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Details
+            tbody#homecare_quote_status_user
+                each doc,index in books.active
+                    tr
+                        td= doc.partner.name
+                        td= doc.partner.phone
+                        td= doc.serviceDetails.serviceName
+                        td= doc.serviceDetails.serviceType
+                        td= doc.serviceDetails.city
+                        td
+                            select.form-select.update_status(id=`updateStatus-${index}` data-apply=doc.hiwhcssID data-index=index )
+                                if doc.status === 'pending'
+                                    option(value=""  selected) Pending
+                                else 
+                                    option(value="") pending
+                                if doc.status === "accepted"
+                                    option(value="accepted" selected) Accepted
+                                else
+                                    option(value="accepted" ) Accepted
+                                if doc.status === "rejected"
+                                    option(value="rejected" selected) Rejected
+                                else
+                                    option(value="rejected" ) Rejected
+                                option(value='canceled') Canceled
+                                option(value='completed') completed
+                        td
+                            a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails-${inds}-${index}`) View
+                            // Modal
+                            .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `activeBookingdetails-${inds}-${index}` aria-hidden='true')
+                                .modal-dialog.modal-dialog-scrollable
+                                    .modal-content
+                                        .modal-header
+                                            h5#staticBackdropLabel.modal-title
+                                                | Booking Details
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                        .modal-body.table-responsive
+                                            table.table.table-bordered
+                                                thead
+                                                    tr
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                            | Booking Details
+                                                        th.color-white.main-color-background.text-center(scope='col')
+                                                        //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                tbody
+                                                    //- tr
+                                                        th(scope='row') Booking Id
+                                                        td #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                    tr
+                                                        th(scope='row') Service Provider Name
+                                                        td= doc.partner.name
+                                                    tr
+                                                        th(scope='row') Service Provider Phone
+                                                        td= doc.partner.phone
+                                                    tr
+                                                        th(scope='row') Applied Service Name
+                                                        td= doc.serviceDetails.serviceName
+                                                    tr
+                                                        th(scope='row') Applied Service Type
+                                                        td=  doc.serviceDetails.serviceType
+                                                    tr
+                                                        th(scope='row') Applied Service Citys
+                                                        td=doc.serviceDetails.city
+                                                    tr
+                                                        th(scope='row') User's Address Details
+                                                        td 
+                                                            p
+                                                                b User name : 
+                                                                span= doc.addressDetails.name
+
+                                                            p
+                                                                b Email :  
+                                                                span= doc.addressDetails.email ? doc.addressDetails.email : "-"
+                                                            p
+                                                                b Phone-1 :  
+                                                                span= doc.addressDetails.phone1
+                                                            p
+                                                                b Phone-2 :  
+                                                                span= doc.addressDetails.phone2
+                                                            p
+                                                                b Address :  
+                                                                span= doc.addressDetails.address
+                                                            p
+                                                                b Pincode :  
+                                                                span= doc.addressDetails.pincode
+                                                            p
+                                                                b City :  
+                                                                span= doc.addressDetails.city
+                                                            p
+                                                                b State :  
+                                                                span= doc.addressDetails.state
+
+                                                    tr
+                                                        th(scope='row') Price From
+                                                        td=doc.serviceDetails.priceFrom
+                                                    tr
+                                                        th(scope='row') Price To
+                                                        td=doc.serviceDetails.priceTo
+                                                    tr
+                                                        th(scope='row') Vendor Response
+                                                        td=doc.vendorDescription ? doc.vendorDescription : "-"
+                                                    tr
+                                                        th(scope='row') Vendor Response Time
+                                                        td=doc.vendorActionDate ? new Date(doc.vendorActionDate).toLocaleDateString() : "-"
+                                                    tr
+                                                        th(scope='row') User Response
+                                                        td=doc.userDescription ? doc.userDescription : "-"
+                                                    tr
+                                                        th(scope='row') User Response Time 
+                                                        td=doc.userActionDate ? new Date(doc.userActionDate).toLocaleDateString() : "-"
+                                                    tr
+                                                        th(scope='row') Booked Date
+                                                        td=new Date(doc.createdAt).toLocaleDateString()
+
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                | Cancel
+        hr.m-0
+        h5.fw-bold.mt-3.ms-3 books Historys
+        hr.m-0
+
+        table.table.table-bordered.table-font
+            thead
+                tr
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Service Provider Name
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Service Provider Phone
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Applied Service Name
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Applied Service Type
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | City
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Status 
+                    th.color-white.main-color-background.text-center(scope='col')
+                        | Details
+            tbody
+                each doc,index in books.history
+                    tr
+                    td= doc.partner.name
+                    td= doc.partner.phone
+                    td= doc.serviceDetails.serviceName
+                    td= doc.serviceDetails.serviceType
+                    td= doc.serviceDetails.city
+                    td= doc.status
+                    td
+                        a.text-primary.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#activeBookingdetails-${inds}-${index}`) View
+                        // Modal
+                        .modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' id= `activeBookingdetails-${inds}-${index}` aria-hidden='true')
+                            .modal-dialog.modal-dialog-scrollable
+                                .modal-content
+                                    .modal-header
+                                        h5#staticBackdropLabel.modal-title
+                                            | Booking Details
+                                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                    .modal-body.table-responsive
+                                        table.table.table-bordered
+                                            thead
+                                                tr
+                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                        | Booking Details
+                                                    th.color-white.main-color-background.text-center(scope='col')
+                                                    //-     | Booking ID - #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                            tbody
+                                                //- tr
+                                                    th(scope='row') Booking Id
+                                                    td #{doc._id.toString().slice(-6)}-#{doc.hiwnrqID.slice(0,doc.hiwnrqID.indexOf('-'))}#{doc.batch.slice(doc.batch.lastIndexOf('-'),doc.batch.length)}
+                                                tr
+                                                    th(scope='row') Service Provider Name
+                                                    td= doc.partner.name
+                                                tr
+                                                    th(scope='row') Service Provider Phone
+                                                    td= doc.partner.phone
+                                                tr
+                                                    th(scope='row') Applied Service Name
+                                                    td= doc.serviceDetails.serviceName
+                                                tr
+                                                    th(scope='row') Applied Service Type
+                                                    td=  doc.serviceDetails.serviceType
+                                                tr
+                                                    th(scope='row') Applied Service City
+                                                    td=doc.serviceDetails.city
+                                                tr
+                                                    th(scope='row') User's Address Details
+                                                    td 
+                                                        p
+                                                            b User name : 
+                                                            span= doc.addressDetails.name
+
+                                                        p
+                                                            b Email :  
+                                                            span= doc.addressDetails.email ? doc.addressDetails.email : "-"
+                                                        p
+                                                            b Phone-1 :  
+                                                            span= doc.addressDetails.phone1
+                                                        p
+                                                            b Phone-2 :  
+                                                            span= doc.addressDetails.phone2
+                                                        p
+                                                            b Address :  
+                                                            span= doc.addressDetails.address
+                                                        p
+                                                            b Pincode :  
+                                                            span= doc.addressDetails.pincode
+                                                        p
+                                                            b City :  
+                                                            span= doc.addressDetails.city
+                                                        p
+                                                            b State :  
+                                                            span= doc.addressDetails.state
+
+                                                tr
+                                                    th(scope='row') Price From
+                                                    td=doc.serviceDetails.priceFrom
+                                                tr
+                                                    th(scope='row') Price To
+                                                    td=doc.serviceDetails.priceTo
+                                                tr
+                                                    th(scope='row') Vendor Response
+                                                    td=doc.vendorDescription ? doc.vendorDescription : "-"
+                                                tr
+                                                    th(scope='row') Vendor Response Time
+                                                    td=doc.vendorActionDate ? new Date(doc.vendorActionDate).toLocaleString() : "-"
+                                                tr
+                                                    th(scope='row') User Response 
+                                                    td=doc.userDescription ? doc.userDescription : "-"
+                                                tr
+                                                    th(scope='row') User Response Time
+                                                    td=doc.userActionDate ? new Date(doc.userActionDate).toLocaleString() : "-"
+                                                tr
+                                                    th(scope='row') Booked Date
+                                                    td=new Date(doc.createdAt).toLocaleDateString()
+
+                                    .modal-footer
+                                        button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                            | Cancel
+        hr.m-0

@@ -1,0 +1,15 @@
+.col-2.p-0.border.m-0.border-color.display-none
+    ul.nav.flex-column.p-0.m-0
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "home" ? "vendor-nav-link-active" : "" }` aria-current='page' href='/vendor/hearingaid') Profile
+        if partner.hearingAid.serviceType === "hospital"
+            li.nav-item
+                a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "hospital" ? "vendor-nav-link-active" : "" }` href='/vendor/hearingaid/hospital-booking-management') Hospital Bookings
+        if partner.hearingAid.serviceType === "shop"
+            li.nav-item
+                a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "product" ? "vendor-nav-link-active" : "" }` href='/vendor/hearingaid/hearingaid-product-management') Hearing Product & Orders
+            li.nav-item
+                a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "diffproduct" ? "vendor-nav-link-active" : "" }` href='/vendor/hearingaid/differently-abled-product-management')  Differently Abled Product & Orders
+
+        li.nav-item
+            a.nav-link.border.vendor-nav-link#logoutW log out

@@ -1,0 +1,45 @@
+extends ../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Manage Vendors
+            .me-3.flex-grow-1.bd-highlight
+                form.mt-0(action='')
+                    .p-1.bg-light.rounded.rounded-pill.shadow-sm.mt-0
+                        .input-group
+                            input.form-control.border-0.bg-light(type='search' placeholder="What're you searching for?" aria-describedby='button-addon1')
+                            .input-group-append
+                                button#button-addon1.btn.btn-link.text-secondary(type='submit')
+                                    i.fa.fa-search
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold Akstar111
+            .p-2.bd-highlight
+                img.login-user-image(src='./Assets/image/profile.jpg' alt='user image')
+        hr
+        .d-flex
+            .flex-grow-1
+                h5.fw-bold.mt-3.ms-3 Total Vendors
+            .p-2
+                p.text-primary.text-decoration-underline.m-0= vendors.length
+        hr.m-0
+        div
+         each doc in vendors
+            a(href=`/admin/vendor-management/view-vendor/${doc.hiwpmID}`)
+                .d-flex.mt-2.border.p-0.rounded
+                    .p-2
+                        img.login-user-image(src=doc.profileImage alt='user image')
+                    .p-2
+                        h6.fs-6.mt-2.text-uppercase.text-body.fw-bold.main-color
+                            | #{doc.name}
+                    .ms-auto.p-2
+                        p.m-0.mt-2.text-secondary= new Date(doc.createdAt).toLocaleDateString()
+            

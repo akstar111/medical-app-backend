@@ -1,0 +1,97 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex.mt-3
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5
+                        | Manage Blood Units Available
+                .mt-2
+                    a.secondary-color.cursor-pointer(data-bs-toggle='modal' data-bs-target='#staticBackdrop-addblood') Add Blood
+                // Modal
+                #staticBackdrop-addblood.modal.fade(data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                    .modal-dialog.modal-dialog-scrollable
+                        .modal-content
+                            .modal-header
+                                h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                    | Add New Blood Group
+                                button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                            .modal-body
+                                form.row.g-3#available_blood_units(data-partner=partner.hiwpmID)
+                                    .col-md-12
+                                        label.form-label(for='newBloodGroup')
+                                            | Blood Group
+                                            span.text-danger *
+                                        input#newBloodGroup.form-control(type='text' placeholder='Blood Group' required='')
+                                    .col-md-12
+                                        label.form-label(for='newUnit')
+                                            | Units Available
+                                            span.text-danger *
+                                        input#newUnit.form-control(type='text' placeholder='Units Available' required='')
+                                    .col-12.text-center
+                                        button.btn.main-color-background.color-white(type='submit')
+                                            | Add Blood
+                            .modal-footer
+                                button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                    | Cancel
+            hr.m-0
+            .modal-body.table-responsive.mt-2
+                if partner.bloodBank && partner.bloodBank.bloodDetails && partner.bloodBank.bloodDetails.length
+                    table.table.table-bordered.text-center
+                        thead
+                            tr
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Blood Group
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Units Available
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Last Update
+                                th.color-white.main-color-background.text-center(scope='col')
+                                    | Manage
+                        tbody
+
+                            each doc,index in partner.bloodBank.bloodDetails
+                                tr
+                                    td= doc.bloodType
+                                    td= doc.availableUnits
+                                    td #{new Date(doc.lastUpdate).toLocaleString()}
+                                    td
+                                        a.m-0.p-0.cursor-pointer(data-bs-toggle='modal' data-bs-target=`#staticBackdrop-Editblood-${index}`) Edit
+                else 
+                    tr 
+                        p There are no blood details available for you.
+
+                    // Modal
+                #update_blood_units
+                    if partner.bloodBank && partner.bloodBank.bloodDetails && partner.bloodBank.bloodDetails.length
+                        each doc,index in partner.bloodBank.bloodDetails
+                            .modal.fade(data-bs-backdrop='static' id=`staticBackdrop-Editblood-${index}` data-bs-keyboard='false' tabindex='-1' aria-labelledby='staticBackdropLabel' aria-hidden='true')
+                                .modal-dialog.modal-dialog-scrollable
+                                    .modal-content
+                                        .modal-header
+                                            h5#staticBackdropLabel.modal-title.text-uppercase.main-color
+                                                | Edit Blood Group Details
+                                            button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                                        .modal-body
+                                            form.row.g-3
+                                                .col-md-12
+                                                    label.form-label
+                                                        | Blood Group
+                                                        span.text-danger *
+                                                    input.form-control(id=`bloodType-${index}` type='text' value=doc.bloodType placeholder='Blood Group' required='')
+                                                .col-md-12
+                                                    label.form-label
+                                                        | Units Available
+                                                        span.text-danger *
+                                                    input.form-control(type='text' id=`bloodUnit-${index}` value=doc.availableUnits placeholder='Units Available' required='')
+                                                .col-12.text-center
+                                                    button.btn.main-color-background.color-white#updateBlood(type='submit' data-index=index data-bloodid=doc.hiwbbbdID data-partner=partner.hiwpmID)
+                                                        | Update
+                                        .modal-footer
+                                            button.btn.btn-secondary(type='button' data-bs-dismiss='modal')
+                                                | Cancel

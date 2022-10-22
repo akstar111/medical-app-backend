@@ -1,0 +1,47 @@
+extends ../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/vendor/bundleVendor.js")     
+
+block block 
+    #right.col-9
+        .d-flex.bd-highlight.mt-3
+            .p-2.flex-grow-1.bd-highlight
+                h6.fs-5.text-body.fw-bold.text-uppercase Manage Vendors
+            .me-3.flex-grow-1.bd-highlight
+                form.mt-0(action='')
+                    .p-1.bg-light.rounded.rounded-pill.shadow-sm.mt-0
+                        .input-group
+                            input.form-control.border-0.bg-light(type='search' placeholder="What're you searching for?" aria-describedby='button-addon1')
+                            .input-group-append
+                                button#button-addon1.btn.btn-link.text-secondary(type='submit')
+                                    i.fa.fa-search
+            .p-2.bd-highlight
+                i.fa-solid.fa-bell.fs-5.text-body
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold |
+            .p-2.bd-highlight
+                h6.fs-5.text-body.fw-bold= user.name
+            .p-2.bd-highlight
+                img.login-user-image(src=user.profileImage alt='user image')
+        hr
+        .d-flex
+            .flex-grow-1
+                h5.fw-bold.mt-3.ms-3 Modules
+            .p-2
+                p.text-primary.text-decoration-underline.m-0
+        hr.m-0
+        div
+            .row.p-3
+                a.col.m-3.shadow.p-3.bg-primary.text-white.pt-4(href=`/admin/user-management/homecare-services/${user.hiwuueidmID}`)
+                    p.fw-bold.text-center Homecare Service
+                a.col.m-3.shadow.p-3.bg-primary.text-white.pt-4(href=`/admin/user-management/De-Addiction service/${user.hiwuueidmID}`)
+                    p.fw-bold.text-center De-Addiction service
+                a.col.m-3.shadow.p-3.bg-primary.text-white.pt-4(href=`/admin/user-management/ambulance-serivice/${user.hiwuueidmID}`)
+                    p.fw-bold.text-center Ambulance Service
+            .row.p-3
+                a.col.m-3.shadow.p-3.bg-primary.text-white.pt-4(href=`/admin/user-management/ambulance-serivice/${user.hiwuueidmID}`)
+                    p.fw-bold.text-center 
+                a.col.m-3.shadow.p-3.bg-primary.text-white.pt-4(href=`/admin/user-management/ambulance-serivice/${user.hiwuueidmID}`)
+                    p.fw-bold.text-center Ambulance Service
+              

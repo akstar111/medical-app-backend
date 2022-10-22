@@ -1,0 +1,132 @@
+extends ../../layout/adminBase
+
+block append script 
+    script(src="/JS/bundle/admin/bundleAdmin.js")     
+
+block block 
+    #right.col-9 
+        include ../../shared/detailsList
+        .p-3
+            .d-flex
+                .flex-grow-1
+                    h5.fw-bold.mt-3.ms-3.fs-5 College Facilities Management
+            hr.m-0
+            form#update_studyabroad_facilities(data-id=partner.hiwpmID) 
+                div
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='indianFoodInsideHostel') indian food availablity Inside Hostel 
+                        .col-sm-7
+                            input.form-control.bg-li#indianFoodInsideHostel(type='text' value=college.indianFoodAvailablityinHostel placeholder="indian food availablity Inside Hostel " )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='monthlyHouseRentalOutsideUni') Monthly House Rental outside the University (approximately)
+                        .col-sm-7
+                            input.form-control.bg-li#monthlyHouseRentalOutsideUni(type='text' value=college.monthlyRentalAvailablityOutsideCollege placeholder="Monthly House Rental outside the University (approximately)" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='dailyTravelExpen') Daily Travel  Expenditure (approximately)
+                        .col-sm-7
+                            input.form-control.bg-li#dailyTravelExpen(type='text' value=college.travelExpenditure placeholder="Daily Travel  Expenditure (approximately)" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='nearAirport') nearest airport
+                        .col-sm-7
+                            input.form-control.bg-li#nearAirport(type='text' value=college.nearestAirport placeholder="nearest airport" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='distanceToArirportToClg') Distance from Airport to College
+                        .col-sm-7
+                            input.form-control.bg-li#distanceToArirportToClg(type='text' value=college.distanceAirporttoCollege placeholder="Distance from Airport to College" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='busFacilities') Bus Facilities
+                        .col-sm-7
+                            .form-check.form-check-inline
+                                input#busFacilities.form-check-input(type='radio' name="busFacilities" value=true checked=college.busFacilities)
+                                label.form-check-label(for='busFacilities' ) Yes
+                            .form-check.form-check-inline
+                                input#busFacilities.form-check-input(type='radio' name="busFacilities" value=false checked=!college.busFacilities)
+                                label.form-check-label(for='busFacilities' ) No
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='proxiFromCollegeToEBS') Proximity from College to Indian Embassy
+                        .col-sm-7
+                            input.form-control.bg-li#proxiFromCollegeToEBS(type='text' value=college.proximityFromCollegetoIndianEmbassy placeholder="Proximity from College to Indian Embassy" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Indian Embassy contact Details
+
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='minimumPercentage') Address  
+                            .col-sm-7
+                                input.form-control.bg-li#indianEmbassyAddress(type='text' value=`${college.indianEmbassyContactDetails && college.indianEmbassyContactDetails.address ? college.indianEmbassyContactDetails.address :"" }` placeholder="Address" )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='Phone') Phone
+                            .col-sm-7
+                                input.form-control.bg-li#indianEmbassyPhone(type='text' value=`${college.indianEmbassyContactDetails && college.indianEmbassyContactDetails.phone ? college.indianEmbassyContactDetails.phone :"" }` placeholder="Phone" )
+                        .mb-3.row.pd-5.g-1.ps-5
+                            label.col-sm-3.col-form-label.fw-bold(for='email') Email
+                            .col-sm-7
+                                input.form-control.bg-li#indianEmbassyEmail(type='text' value=`${college.indianEmbassyContactDetails && college.indianEmbassyContactDetails.email ? college.indianEmbassyContactDetails.email :"" }` placeholder="Email" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='nearCountryViaRoad') Nearest Country Via Road
+                        .col-sm-7
+                            input.form-control.bg-li#nearCountryViaRoad(type='text' value=college.nearestCountryvaiRoad placeholder="Nearest Country Via Road" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='nearIndainRes') near by indian Restaurants
+                        .col-sm-7
+                            input.form-control.bg-li#nearIndainRes(type='text' placeholder="near by indian Restaurants" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='trsportModeAvail') Mode of Transportation available nearby
+                        .col-sm-7
+                            input.form-control.bg-li#trsportModeAvail(type='text' 
+                            placeholder="Mode of Transportation available nearby" )
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='visaFormality') Visa Formality
+                        .col-sm-7
+                            .form-check.form-check-inline
+                                input#visaFormality.form-check-input(type='radio' name="visaFormality" value=true checked=college.visaFormality)
+                                label.form-check-label(for='visaFormality' ) Yes
+                            .form-check.form-check-inline
+                                input#visaFormality.form-check-input(type='radio' name="visaFormality" value=false checked=!college.visaFormality)
+                                label.form-check-label(for='visaFormality' ) No
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='politicalStablity') Polical Stablity
+                        .col-sm-7
+                            .form-check.form-check-inline
+                                input#politicalStablity.form-check-input(type='radio' name="politicalStablity" value=true checked=college.politicalStablity)
+                                label.form-check-label(for='politicalStablity' ) Yes
+                            .form-check.form-check-inline
+                                input#politicalStablity.form-check-input(type='radio' name="politicalStablity" value=false checked=!college.politicalStablity)
+                                label.form-check-label(for='politicalStablity' ) No
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='womenSafety') Women Safety
+                        .col-sm-7
+                            .form-check.form-check-inline
+                                input#womenSafety.form-check-input(type='radio' name="womenSafety" value=true checked=college.womenSafety)
+                                label.form-check-label(for='womenSafety' ) Yes
+                            .form-check.form-check-inline
+                                input#womenSafety.form-check-input(type='radio' name="womenSafety" value=false checked=!college.womenSafety)
+                                label.form-check-label(for='womenSafety' ) No
+
+                    .mb-3.row
+                        label.col-sm-3.col-form-label.fw-bold(for='hostelFacilities') Other Embassy
+                        div#addOtherEmbassys
+                            each docs,index in college.otherEmbassy 
+                                div.oEmbassyDeatils(data-id=index)
+                                    .mb-3.row.pd-5.g-1.ps-5
+                                        label.col-sm-3.col-form-label.fw-bold(for='minimumPercentage') Address  
+                                        .col-sm-7
+                                            input.form-control.bg-li(type='text' id=`oEmbassyAddress-${index}` value=docs.address placeholder="Address  " )
+                                    .mb-3.row.pd-5.g-1.ps-5
+                                        label.col-sm-3.col-form-label.fw-bold(for='entranceExam') Phone
+                                        .col-sm-7
+                                            input.form-control.bg-li(type='text' id=`oEmbassyPhone-${index}` value=docs.phone placeholder="Phone" )
+                                    .mb-3.row.pd-5.g-1.ps-5
+                                        label.col-sm-3.col-form-label.fw-bold(for='entranceExam') Email
+                                        .col-sm-7
+                                            input.form-control.bg-li(type='text' id=`oEmbassyEmail-${index}` value=docs.email placeholder="Email" )
+                                        .mb-3.row.pd-5.g-1.ps-5
+                                        label.col-sm-3.col-form-label.fw-bold(for='entranceExam') Website
+                                        .col-sm-7
+                                            input.form-control.bg-li(type='text' id=`oEmbassyWebsite-${index}` value=docs.website placeholder="Website" )
+                                hr
+                    .d-grid
+                        button.btn.btn-outline-primary#addEmbassy(type='button') Add Other Embassys
+                    div(class="d-grid mt-2")    
+                        button.btn.btn-primary.btn-block(type='submit') Update 
+

@@ -1,0 +1,27 @@
+.d-flex.bd-highlight.mt-3
+    .p-2.flex-grow-1.bd-highlight
+        h6.fs-5.text-body.fw-bold.text-uppercase
+            | Manage Vendors
+    .p-2.bd-highlight
+        i.fa-solid.fa-bell.fs-5.text-body
+    .p-2.bd-highlight
+        h6.fs-5.text-body.fw-bold |
+    .p-2.bd-highlight
+        //- h6.fs-5.text-body.fw-bold=partner.name
+    .p-2.bd-highlight
+        img.login-user-image(src=user.profileImage alt='user image')
+
+hr.m-50
+
+ul.nav.nav-pills.nav-fill
+
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./user-fund-donation' 
+            class=`${activeList==='fund' && 'active'}`) Fund Donation
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./user-fund-requests' 
+            class=`${activeList==='fundreq' && 'active'}`) User Fund Requests
+    li.nav-item
+        a.nav-link.vendor-manange-nav.text-uppercase(href='./differently-abled-order-management' 
+            class=`${activeList==='differOrder' && 'active'}`) Differently Abled Order Management
+

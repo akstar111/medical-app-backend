@@ -1,0 +1,20 @@
+.col-2.p-0.border.m-0.border-color.display-none
+    ul.nav.flex-column.p-0.m-0
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "home" ? "vendor-nav-link-active" : "" }` aria-current='page' href='/vendor/homecare-services') Manage Home care
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "services" ? "vendor-nav-link-active" : "" }` href='/vendor/homecare-services/services') home care Services
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "facilities" ? "vendor-nav-link-active" : ""}`  href='/vendor/homecare-services/facilities') home care facilities
+        li.nav-item
+            a.nav-link.border.vendor-nav-link(class=`${ activeScreen === "booking" ? "vendor-nav-link-active" : ""}`  href='/vendor/homecare-services/booking-management') manage booking
+        li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Purchase.html') Purchase 
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Post-job.html') Post job
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Advertisement.html') Advertisement
+        //- li.nav-item
+        //-     a.nav-link.border.vendor-nav-link(href='./Donate-for-us.html') Donate for us
+        li.nav-item
+            a.nav-link.border.vendor-nav-link#logoutW log out
