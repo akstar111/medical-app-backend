@@ -4,7 +4,7 @@ const insuranceModel = require('../models/Insurance/insuranceModel');
 
 // ============================================================
 // import util
-const AppError = require('../util/appError');
+const AppError = require('../util/AppError');
 const catchAsync = require('../util/catchAsync');
 
 // ============================================================
