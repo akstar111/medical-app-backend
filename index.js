@@ -226,7 +226,7 @@ app.all('*', (req, res, next) => {
     next(new AppError(`undefiefd url ${req.originalUrl}`, 404));
 });
 app.use(globalErrorController);
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(3000, () => {
     // eslint-disable-next-line no-console
     console.log(`Port listen in ${process.env.PORT}`);
 });
